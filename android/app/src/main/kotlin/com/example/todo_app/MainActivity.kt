@@ -1,4 +1,4 @@
-package com.taichi.pointapp
+package com.example.todo_app
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
