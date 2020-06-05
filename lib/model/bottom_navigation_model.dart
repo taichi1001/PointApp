@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/ui/all_todos_screen.dart';
-import 'package:todo_app/ui/completed_todos_screen.dart';
-import 'package:todo_app/ui/incompleted_todos_screen.dart';
+import 'package:todo_app/ui/all_records_screen.dart';
+import 'package:todo_app/ui/completed_records_screen.dart';
+import 'package:todo_app/ui/incompleted_records_screen.dart';
 
 class BottomNavigationModel with ChangeNotifier{  
   final List<Widget> options = [

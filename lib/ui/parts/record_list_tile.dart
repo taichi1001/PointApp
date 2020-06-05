@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/model/record_model.dart';
-import 'package:todo_app/ui/record_Screen.dart';
+import 'package:todo_app/ui/record_contents_screen.dart';
 
-class TodoListTile extends StatelessWidget {
+class RecordListTile extends StatelessWidget {
   final Record record;
 
-  const TodoListTile({
+  const RecordListTile({
     Key key,
     @required this.record,
   }) : super(key: key);
@@ -21,7 +21,7 @@ class TodoListTile extends StatelessWidget {
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context){
-              return RecordView(record: record);
+              return RecordContentsView(record: record);
             }
           )
         ),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/entity/record.dart';
-import 'package:todo_app/ui/parts/todo_list_tile.dart';
+import 'package:todo_app/ui/parts/record_list_tile.dart';
 
-class TodoListView extends StatelessWidget {
+class RecordListView extends StatelessWidget {
   final List<Record> list;
-  const TodoListView({
+  const RecordListView({
     Key key,
     @required this.list,
   }) : super(key: key);
@@ -18,7 +18,7 @@ class TodoListView extends StatelessWidget {
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) {
         var record = list[index];
-        return TodoListTile(record: record);
+        return RecordListTile(record: record);
       },
       itemCount: list.length,
     );

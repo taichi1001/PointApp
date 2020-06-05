@@ -7,11 +7,12 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseService {
   static final _databaseVersion = 1;
-  static final _databaseName = "todo.db";
+  static final _databaseName = "record.db";
 
   //tableName
-  static final todoTableName = "todo";
-  
+  static final recordTableName = "record";
+  static final recordContentsTableName = "record_contents";
+
   static final DatabaseService dbProvider = DatabaseService();
 
   Database _database;
@@ -38,10 +39,19 @@ class DatabaseService {
 
   void initDB(Database database, int version) async {
     await database.execute('''
-      CREATE TABLE $todoTableName (
+      CREATE TABLE $recordTableName (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         is_done INTEGER NOT NULL
+      )
+    ''');
+    await database.execute('''
+      CREATE TABLE $recordContentsTableName (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        record_id INTEGER NOT NULL,
+        count INTEGER NOT NULL,
+        name TEXT NOT NULL,
+        score INTEGER
       )
     ''');
   }

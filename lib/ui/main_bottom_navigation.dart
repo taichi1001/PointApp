@@ -64,7 +64,7 @@ class AddTodoDialog extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    final model = Provider.of<RecordModel>(context, listen: true);
+    final recordModel = Provider.of<RecordModel>(context, listen: true);
     final titleTextEditingController = TextEditingController();
     return AlertDialog(
       title: Text('新規作成'),
@@ -88,7 +88,7 @@ class AddTodoDialog extends StatelessWidget {
         FlatButton(
             child: Text("OK"),
             onPressed: () {
-              model.add(Record(title: titleTextEditingController.text));
+              recordModel.add(Record(title: titleTextEditingController.text));
               Navigator.pop(context);
             }
         ),
