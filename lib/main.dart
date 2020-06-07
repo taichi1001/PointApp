@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/model/Participant_model.dart';
 import 'package:todo_app/model/bottom_navigation_model.dart';
 import 'package:todo_app/model/record_model.dart';
 import 'package:todo_app/model/record_contents_model.dart';
@@ -22,7 +23,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<RecordContentsModel>(
           create: (context) => RecordContentsModel(),
-        ),        
+        ),
+        ChangeNotifierProvider<ParticipantModel>(
+          create: (context) => ParticipantModel(),
+        ),
       ],
       child: MaterialApp(
         title: 'Todo App Sample',
