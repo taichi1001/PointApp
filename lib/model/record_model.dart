@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/repository/record_repository.dart';
 
-class RecordModel with ChangeNotifier{
+class RecordModel with ChangeNotifier {
   List<Record> _allRecordList = [];
   List<Record> get allRecordContentsList => _allRecordList;
-  List<Record> get incompletedTodoList => _allRecordList.where((record) => record.isDone == false).toList();
-  List<Record> get completedTodoList => _allRecordList.where((record) => record.isDone == true).toList();
+  List<Record> get incompletedTodoList =>
+      _allRecordList.where((record) => record.isDone == false).toList();
+  List<Record> get completedTodoList =>
+      _allRecordList.where((record) => record.isDone == true).toList();
 
   final RecordRepository repo = RecordRepository();
 
-  RecordModel(){
+  RecordModel() {
     _fetchAll();
   }
 
@@ -34,7 +36,7 @@ class RecordModel with ChangeNotifier{
     update(record);
   }
 
-  void changeNumberCount(Record record, int newCount) async{
+  void changeNumberCount(Record record, int newCount) async {
     record.numberCount = newCount;
     update(record);
   }
@@ -43,5 +45,4 @@ class RecordModel with ChangeNotifier{
     await repo.deleteRecordById(record.id);
     _fetchAll();
   }
-
 }

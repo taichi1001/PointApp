@@ -12,8 +12,7 @@ class IncompletedTodosScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Incompleted Todos"),
       ),
-      body: RecordListView(list: model.incompletedTodoList),        
+      body: RecordListView(list: model.incompletedTodoList),
     );
-
   }
 }

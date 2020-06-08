@@ -9,7 +9,6 @@ import 'package:todo_app/ui/parts/input_record_contents_list_view.dart';
 import '../entity/record_contents.dart';
 import '../model/record_contents_model.dart';
 
-
 class RecordContentsView extends StatelessWidget {
   final Record record;
   final List<RecordContents> contents;
@@ -22,7 +21,6 @@ class RecordContentsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(record.title),
@@ -34,16 +32,20 @@ class RecordContentsView extends StatelessWidget {
           textColor: Colors.white,
           onPressed: () {
             showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (BuildContext context){
-                  return ParticipantSettingAlertDialog(record: record,);
-                },
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return ParticipantSettingAlertDialog(
+                  record: record,
+                );
+              },
             );
           },
         ),
       ),
-      floatingActionButton: InputRecordContentsButton(record: record,),
+      floatingActionButton: InputRecordContentsButton(
+        record: record,
+      ),
     );
   }
 }
@@ -68,7 +70,8 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
                 Text('人数'),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ParticipantSettingAlertDialogDropdownButton(record: record),
+                  child: ParticipantSettingAlertDialogDropdownButton(
+                      record: record),
                 )
               ],
             ),
@@ -83,7 +86,7 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
         ),
         FlatButton(
           child: Text('OK'),
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
         ),
@@ -108,12 +111,12 @@ class NameList extends StatelessWidget {
       width: 150.0,
       child: ListView.builder(
         shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index){
+        itemBuilder: (BuildContext context, int index) {
           _controllers.add(new TextEditingController());
           return TextField(
             controller: _controllers[index],
           );
-          },
+        },
         itemCount: int.parse(model.rangeValue),
       ),
     );
@@ -126,7 +129,7 @@ class ParticipantSettingAlertDialogDropdownButton extends StatelessWidget {
     Key key,
     @required this.record,
   }) : super(key: key);
-   
+
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<RecordModel>(context, listen: true);
@@ -135,24 +138,20 @@ class ParticipantSettingAlertDialogDropdownButton extends StatelessWidget {
       icon: Icon(Icons.arrow_downward),
       iconSize: 18,
       elevation: 16,
-      style: TextStyle(
-          color: Colors.deepPurple
-      ),
+      style: TextStyle(color: Colors.deepPurple),
       underline: Container(
         height: 2,
         color: Colors.deepPurpleAccent,
       ),
       onChanged: (String newValue) {
         model.changeNumberCount(record, int.parse(newValue));
-        },
-      items: rangeNumberCount
-          .map<DropdownMenuItem<String>>((String value) {
+      },
+      items: rangeNumberCount.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value.toString(),
           child: Text(value.toString()),
         );
-      })
-          .toList(),
+      }).toList(),
     );
   }
 }
@@ -174,9 +173,10 @@ class InputRecordContentsButton extends StatelessWidget {
             context: context,
             barrierDismissible: false,
             builder: (BuildContext context) {
-              return InputRecordContentsAlertDialog(record: record,);
-            }
-        );
+              return InputRecordContentsAlertDialog(
+                record: record,
+              );
+            });
       },
     );
   }
@@ -191,18 +191,23 @@ class InputRecordContentsAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recordContents = Provider.of<RecordContentsModel>(context, listen: true);
+    final recordContents =
+        Provider.of<RecordContentsModel>(context, listen: true);
     return AlertDialog(
       title: Text('新規作成'),
       content: SingleChildScrollView(
-        child: InputRecordContentsListView(list: recordContents.recordContentsList(record),),
+        child: InputRecordContentsListView(
+          list: recordContents.recordContentsList(record),
+        ),
       ),
       actions: <Widget>[
         FlatButton(
           child: Text('Cancel'),
           onPressed: () => Navigator.pop(context),
         ),
-        InputRecordContentsAlertDialogOkButton(list: recordContents.recordContentsList(record),),
+        InputRecordContentsAlertDialogOkButton(
+          list: recordContents.recordContentsList(record),
+        ),
       ],
     );
   }
@@ -210,14 +215,12 @@ class InputRecordContentsAlertDialog extends StatelessWidget {
 
 class InputRecordContentsAlertDialogOkButton extends StatelessWidget {
   final List<RecordContents> list;
-  const InputRecordContentsAlertDialogOkButton({
-    Key key,
-    @required this.list
-  }) : super(key: key);
+  const InputRecordContentsAlertDialogOkButton({Key key, @required this.list})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if(list.isEmpty){
+    if (list.isEmpty) {
       return Container();
     }
     return FlatButton(
@@ -225,7 +228,6 @@ class InputRecordContentsAlertDialogOkButton extends StatelessWidget {
         onPressed: () {
 //              recordContents.add(RecordContents(title: titleTextEditingController.text));
           Navigator.pop(context);
-        }
-    );
+        });
   }
 }

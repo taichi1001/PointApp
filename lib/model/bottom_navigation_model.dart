@@ -3,7 +3,7 @@ import 'package:todo_app/ui/all_records_screen.dart';
 import 'package:todo_app/ui/completed_records_screen.dart';
 import 'package:todo_app/ui/incompleted_records_screen.dart';
 
-class BottomNavigationModel with ChangeNotifier{  
+class BottomNavigationModel with ChangeNotifier {
   final List<Widget> options = [
     AllRecordsScreen(),
     IncompletedTodosScreen(),

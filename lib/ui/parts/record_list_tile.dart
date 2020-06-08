@@ -19,13 +19,11 @@ class RecordListTile extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: _CheckBoxButton(record: record),
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context){
-              return RecordContentsView(record: record, contents: contents.recordContentsList(record));
-            }
-          )
-        ),
+        onTap: () =>
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return RecordContentsView(
+              record: record, contents: contents.recordContentsList(record));
+        })),
         trailing: _RemoveButton(record: record),
       ),
     );
@@ -36,7 +34,7 @@ class _CheckBoxButton extends StatelessWidget {
   final Record record;
 
   const _CheckBoxButton({
-    Key key, 
+    Key key,
     @required this.record,
   }) : super(key: key);
 
@@ -44,7 +42,9 @@ class _CheckBoxButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = Provider.of<RecordModel>(context, listen: true);
     return FlatButton(
-      child: record.isDone ? Icon(Icons.check_box) : Icon(Icons.check_box_outline_blank),
+      child: record.isDone
+          ? Icon(Icons.check_box)
+          : Icon(Icons.check_box_outline_blank),
       onPressed: () {
         model.toggleIsDone(record);
       },
@@ -56,7 +56,7 @@ class _RemoveButton extends StatelessWidget {
   final Record record;
 
   const _RemoveButton({
-    Key key, 
+    Key key,
     @required this.record,
   }) : super(key: key);
 

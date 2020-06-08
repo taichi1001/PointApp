@@ -5,9 +5,10 @@ import 'package:todo_app/model/bottom_navigation_model.dart';
 import 'package:todo_app/model/record_model.dart';
 
 class MainBottomNavigation extends StatelessWidget {
-    @override
+  @override
   Widget build(BuildContext context) {
-    final bottomNavigationModel = Provider.of<BottomNavigationModel>(context, listen: true);
+    final bottomNavigationModel =
+        Provider.of<BottomNavigationModel>(context, listen: true);
     return Scaffold(
       body: Center(
         child: bottomNavigationModel.getSelectedScreen(),
@@ -48,12 +49,11 @@ class AddTodoButton extends StatelessWidget {
       child: Icon(Icons.add),
       onPressed: () {
         showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return AddTodoDialog();
-          }
-        );
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AddTodoDialog();
+            });
       },
     );
   }
@@ -61,7 +61,7 @@ class AddTodoButton extends StatelessWidget {
 
 class AddTodoDialog extends StatelessWidget {
   AddTodoDialog({Key key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     final recordModel = Provider.of<RecordModel>(context, listen: true);
@@ -73,9 +73,7 @@ class AddTodoDialog extends StatelessWidget {
           children: <Widget>[
             TextField(
               controller: titleTextEditingController,
-              decoration: InputDecoration(
-                  labelText: 'Title'
-              ),
+              decoration: InputDecoration(labelText: 'Title'),
             ),
           ],
         ),
@@ -90,8 +88,7 @@ class AddTodoDialog extends StatelessWidget {
             onPressed: () {
               recordModel.add(Record(title: titleTextEditingController.text));
               Navigator.pop(context);
-            }
-        ),
+            }),
       ],
     );
   }

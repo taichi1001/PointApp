@@ -12,7 +12,7 @@ class AllRecordsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("All Records"),
       ),
-      body: RecordListView(list: model.allRecordContentsList),        
+      body: RecordListView(list: model.allRecordContentsList),
     );
   }
 }

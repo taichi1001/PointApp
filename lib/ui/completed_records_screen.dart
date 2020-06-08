@@ -12,7 +12,7 @@ class CompletedTodosScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Completed Todos"),
       ),
-      body: RecordListView(list: model.completedTodoList),        
+      body: RecordListView(list: model.completedTodoList),
     );
   }
 }

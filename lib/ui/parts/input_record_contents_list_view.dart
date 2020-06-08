@@ -11,7 +11,7 @@ class InputRecordContentsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(list.isEmpty) {
+    if (list.isEmpty) {
       return Center(child: Text("先に名前を入力してください"));
     }
 

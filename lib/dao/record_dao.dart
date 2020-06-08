@@ -42,5 +42,4 @@ class RecordDao {
 
     return result;
   }
-
 }

@@ -6,9 +6,11 @@ class RecordContentsRepository {
 
   Future getAllRecordsContents() => recordContentsDao.getAll();
 
-  Future insertRecordContents(RecordContents recordContents) => recordContentsDao.create(recordContents);
+  Future insertRecordContents(RecordContents recordContents) =>
+      recordContentsDao.create(recordContents);
 
-  Future updateRecordContents(RecordContents recordContents) => recordContentsDao.update(recordContents);
+  Future updateRecordContents(RecordContents recordContents) =>
+      recordContentsDao.update(recordContents);
 
   Future deleteRecordContentsById(int id) => recordContentsDao.delete(id);
 
