@@ -36,8 +36,8 @@ class RecordModel with ChangeNotifier {
     update(record);
   }
 
-  void changeNumberCount(Record record, int newCount) async {
-    record.numberCount = newCount;
+  void changeNumberPeople(Record record, int newCount) async {
+    record.numberPeople = newCount;
     update(record);
   }
 

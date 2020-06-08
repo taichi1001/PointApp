@@ -23,7 +23,7 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
                 Text('人数'),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: _SettingParticipant(
+                  child: _SettingNumberPeople(
                       record: record),
                 )
               ],
@@ -49,18 +49,17 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
 }
 
 class _NameList extends StatelessWidget {
+  final Record record;
   const _NameList({
     Key key,
     @required this.record,
   }) : super(key: key);
 
-  final Record record;
-
   @override
   Widget build(BuildContext context) {
     List<TextEditingController> _controllers = new List();
     return Container(
-      height: 50.0 * record.numberCount,
+      height: 50.0 * record.numberPeople,
       width: 150.0,
       child: ListView.builder(
         shrinkWrap: true,
@@ -70,15 +69,15 @@ class _NameList extends StatelessWidget {
             controller: _controllers[index],
           );
         },
-        itemCount: record.numberCount,
+        itemCount: record.numberPeople,
       ),
     );
   }
 }
 
-class _SettingParticipant extends StatelessWidget {
+class _SettingNumberPeople extends StatelessWidget {
   final Record record;
-  const _SettingParticipant({
+  const _SettingNumberPeople({
     Key key,
     @required this.record,
   }) : super(key: key);
@@ -87,7 +86,7 @@ class _SettingParticipant extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = Provider.of<RecordModel>(context, listen: true);
     return DropdownButton<String>(
-      value: record.numberCount.toString(),
+      value: record.numberPeople.toString(),
       icon: Icon(Icons.arrow_downward),
       iconSize: 18,
       elevation: 16,
@@ -97,7 +96,7 @@ class _SettingParticipant extends StatelessWidget {
         color: Colors.deepPurpleAccent,
       ),
       onChanged: (String newValue) {
-        model.changeNumberCount(record, int.parse(newValue));
+        model.changeNumberPeople(record, int.parse(newValue));
       },
       items: rangeNumberCount.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(

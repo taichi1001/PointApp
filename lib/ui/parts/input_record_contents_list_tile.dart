@@ -14,7 +14,7 @@ class InputRecordContentsListTile extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: Text('name'),
-        title: Text(recordContents.name),
+        title: Text(recordContents.nameId.toString()),
       ),
     );
   }

@@ -12,6 +12,7 @@ class DatabaseService {
   //tableName
   static final recordTableName = "record";
   static final recordContentsTableName = "record_contents";
+  static final nameTableName = "name";
 
   static final DatabaseService dbProvider = DatabaseService();
 
@@ -50,9 +51,17 @@ class DatabaseService {
       CREATE TABLE $recordContentsTableName (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         record_id INTEGER NOT NULL,
+        name_id INTEGER NOT NULL,
         count INTEGER NOT NULL,
+        score INTEGER NOT NULL
+      )
+    ''');
+    await database.execute('''
+      CREATE TABLE $nameTableName (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        record_id INTEGER NOT NULL,
         name TEXT NOT NULL,
-        score INTEGER
+        remark TEXT
       )
     ''');
   }
