@@ -42,6 +42,7 @@ class DatabaseService {
       CREATE TABLE $recordTableName (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
+        number_people INTEGER NOT NULL ,
         is_done INTEGER NOT NULL
       )
     ''');

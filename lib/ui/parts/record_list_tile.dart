@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/model/record_model.dart';
+import 'package:todo_app/model/record_contents_model.dart';
 import 'package:todo_app/ui/record_contents_screen.dart';
 
 class RecordListTile extends StatelessWidget {
@@ -14,13 +15,14 @@ class RecordListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final contents = Provider.of<RecordContentsModel>(context, listen: true);
     return Card(
       child: ListTile(
         leading: _CheckBoxButton(record: record),
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context){
-              return RecordContentsView(record: record);
+              return RecordContentsView(record: record, contents: contents.recordContentsList(record));
             }
           )
         ),

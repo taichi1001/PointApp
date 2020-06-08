@@ -2,17 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/entity/record_contents.dart';
-import 'package:todo_app/model/Participant_model.dart';
+import 'package:todo_app/entity/util.dart';
+import 'package:todo_app/model/record_model.dart';
 import 'package:todo_app/model/record_contents_model.dart';
 import 'package:todo_app/ui/parts/input_record_contents_list_view.dart';
+import '../entity/record_contents.dart';
+import '../model/record_contents_model.dart';
 
 
 class RecordContentsView extends StatelessWidget {
   final Record record;
+  final List<RecordContents> contents;
 
   const RecordContentsView({
     Key key,
     @required this.record,
+    @required this.contents,
   }) : super(key: key);
 
   @override
@@ -32,7 +37,7 @@ class RecordContentsView extends StatelessWidget {
                 context: context,
                 barrierDismissible: false,
                 builder: (BuildContext context){
-                  return ParticipantSettingAlertDialog();
+                  return ParticipantSettingAlertDialog(record: record,);
                 },
             );
           },
@@ -44,10 +49,15 @@ class RecordContentsView extends StatelessWidget {
 }
 
 class ParticipantSettingAlertDialog extends StatelessWidget {
+  final Record record;
+  const ParticipantSettingAlertDialog({
+    Key key,
+    @required this.record,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final model = Provider.of<ParticipantModel>(context, listen: true);
+    final model = Provider.of<RecordContentsModel>(context, listen: true);
     return AlertDialog(
       title: Text('参加者設定'),
       content: SingleChildScrollView(
@@ -58,7 +68,7 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
                 Text('人数'),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ParticipantSettingAlertDialogDropdownButton(),
+                  child: ParticipantSettingAlertDialogDropdownButton(record: record),
                 )
               ],
             ),
@@ -88,7 +98,7 @@ class NameList extends StatelessWidget {
     @required this.model,
   }) : super(key: key);
 
-  final ParticipantModel model;
+  final RecordContentsModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -111,14 +121,17 @@ class NameList extends StatelessWidget {
 }
 
 class ParticipantSettingAlertDialogDropdownButton extends StatelessWidget {
-
-  String dropdownValue = 'One';
-  ParticipantSettingAlertDialogDropdownButton({Key key}) : super(key: key);
+  final Record record;
+  const ParticipantSettingAlertDialogDropdownButton({
+    Key key,
+    @required this.record,
+  }) : super(key: key);
+   
   @override
   Widget build(BuildContext context) {
-    final model = Provider.of<ParticipantModel>(context, listen: true);
+    final model = Provider.of<RecordModel>(context, listen: true);
     return DropdownButton<String>(
-      value: model.rangeValue,
+      value: record.numberCount.toString(),
       icon: Icon(Icons.arrow_downward),
       iconSize: 18,
       elevation: 16,
@@ -130,9 +143,9 @@ class ParticipantSettingAlertDialogDropdownButton extends StatelessWidget {
         color: Colors.deepPurpleAccent,
       ),
       onChanged: (String newValue) {
-        model.setRangeValue(newValue);
+        model.changeNumberCount(record, int.parse(newValue));
         },
-      items: model.rangePeople
+      items: rangeNumberCount
           .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value.toString(),
@@ -179,7 +192,6 @@ class InputRecordContentsAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final recordContents = Provider.of<RecordContentsModel>(context, listen: true);
-    final titleTextEditingController = TextEditingController();
     return AlertDialog(
       title: Text('新規作成'),
       content: SingleChildScrollView(

@@ -19,23 +19,28 @@ class RecordModel with ChangeNotifier{
     notifyListeners();
   }
 
-  void add(Record todo) async {
-    await repo.insertRecord(todo);
+  void add(Record record) async {
+    await repo.insertRecord(record);
     _fetchAll();
   }
 
-  void update(Record todo) async {
-    await repo.updateRecord(todo);
+  void update(Record record) async {
+    await repo.updateRecord(record);
     _fetchAll();
   }
 
-  void toggleIsDone(Record todo) async {
-    todo.isDone = !todo.isDone;
-    update(todo);
+  void toggleIsDone(Record record) async {
+    record.isDone = !record.isDone;
+    update(record);
   }
 
-  void remove(Record todo) async {
-    await repo.deleteRecordById(todo.id);
+  void changeNumberCount(Record record, int newCount) async{
+    record.numberCount = newCount;
+    update(record);
+  }
+
+  void remove(Record record) async {
+    await repo.deleteRecordById(record.id);
     _fetchAll();
   }
 
