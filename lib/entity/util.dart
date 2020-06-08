@@ -1,3 +1,3 @@
 import 'package:quiver/iterables.dart';
 
-var rangeNumberCount = range(0, 10).map((value) => value.toString()).toList();
+List<String> rangeNumberCount = range(1, 5).map((value) => value.toString()).toList();

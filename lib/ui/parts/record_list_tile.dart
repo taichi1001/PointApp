@@ -19,6 +19,7 @@ class RecordListTile extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: _CheckBoxButton(record: record),
+        title: Text(record.title),
         onTap: () =>
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
           return RecordContentsView(

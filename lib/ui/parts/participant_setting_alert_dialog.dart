@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/entity/util.dart';
 import 'package:todo_app/model/record_model.dart';
+import 'package:todo_app/model/name_model.dart';
 
 class ParticipantSettingAlertDialog extends StatelessWidget {
   final Record record;
@@ -13,6 +14,9 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final recordModel = Provider.of<RecordModel>(context, listen: true);
+    final nameModel = Provider.of<NameModel>(context, listen: true);
+    List<TextEditingController> _controllers = new List();
     return AlertDialog(
       title: Text('参加者設定'),
       content: SingleChildScrollView(
@@ -28,7 +32,20 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
                 )
               ],
             ),
-            _NameList(record: record),
+            Container(
+              height: 50.0 * recordModel.getNumberPeople(record),
+              width: 150.0,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  _controllers.add(new TextEditingController());
+                  return TextField(
+                    controller: _controllers[index],
+                  );
+                  },
+                itemCount: record.numberPeople,
+              ),
+            ),
           ],
         ),
       ),
@@ -40,37 +57,11 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
         FlatButton(
           child: Text('OK'),
           onPressed: () {
+            nameModel.setNameList(_controllers);
             Navigator.pop(context);
           },
         ),
       ],
-    );
-  }
-}
-
-class _NameList extends StatelessWidget {
-  final Record record;
-  const _NameList({
-    Key key,
-    @required this.record,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    List<TextEditingController> _controllers = new List();
-    return Container(
-      height: 50.0 * record.numberPeople,
-      width: 150.0,
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          _controllers.add(new TextEditingController());
-          return TextField(
-            controller: _controllers[index],
-          );
-        },
-        itemCount: record.numberPeople,
-      ),
     );
   }
 }
@@ -86,7 +77,7 @@ class _SettingNumberPeople extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = Provider.of<RecordModel>(context, listen: true);
     return DropdownButton<String>(
-      value: record.numberPeople.toString(),
+      value: model.getNumberPeople(record).toString(),
       icon: Icon(Icons.arrow_downward),
       iconSize: 18,
       elevation: 16,
@@ -100,8 +91,8 @@ class _SettingNumberPeople extends StatelessWidget {
       },
       items: rangeNumberCount.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
-          value: value.toString(),
-          child: Text(value.toString()),
+          value: value,
+          child: Text(value),
         );
       }).toList(),
     );

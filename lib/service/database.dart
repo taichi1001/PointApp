@@ -59,9 +59,7 @@ class DatabaseService {
     await database.execute('''
       CREATE TABLE $nameTableName (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        record_id INTEGER NOT NULL,
-        name TEXT NOT NULL,
-        remark TEXT
+        name TEXT NOT NULL
       )
     ''');
   }
