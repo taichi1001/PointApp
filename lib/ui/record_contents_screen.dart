@@ -25,28 +25,30 @@ class RecordContentsView extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Container(
-            height: 600.0,
-            width: 500.0,
+            height: 100.0,
+            width: 200.0,
             child: Row(
               children: <Widget>[
                 _NameGrid(contents: contents)
                         ]),
           ),
-          RaisedButton(
-            child: Text("参加者設定"),
-            color: Colors.amber[800],
-            textColor: Colors.white,
-            onPressed: () {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (BuildContext context) {
-                  return ParticipantSettingAlertDialog(
-                    record: record,
-                  );
-                },
-              );
-            },
+          Center(
+            child: RaisedButton(
+              child: Text("参加者設定"),
+              color: Colors.amber[800],
+              textColor: Colors.white,
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return ParticipantSettingAlertDialog(
+                      record: record,
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),

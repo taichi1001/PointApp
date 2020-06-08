@@ -18,17 +18,15 @@ class NameModel with ChangeNotifier {
 //  遅そうなので改善案模索中
 //  ここ直す
   List<Name> getRecordNameList(List<RecordContents> recordContentsList){
-    var list =[];
-
+    List<Name> list =[];
     _allNameList.forEach((Name name) {
       recordContentsList.forEach((RecordContents recordContents) {
         if(name.id == recordContents.nameId){
-          list.add(name.id);
+          list.add(name);
         }
       });
     });
     var returnList = list.toSet().toList();
-    print(returnList);
     return returnList;
   }
 
