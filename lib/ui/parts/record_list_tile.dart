@@ -44,8 +44,8 @@ class _CheckBoxButton extends StatelessWidget {
     final model = Provider.of<RecordModel>(context, listen: true);
     return FlatButton(
       child: record.isDone
-          ? Icon(Icons.check_box)
-          : Icon(Icons.check_box_outline_blank),
+          ? const Icon(Icons.check_box)
+          : const Icon(Icons.check_box_outline_blank),
       onPressed: () {
         model.toggleIsDone(record);
       },
@@ -65,7 +65,7 @@ class _RemoveButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = Provider.of<RecordModel>(context, listen: true);
     return FlatButton(
-      child: Icon(Icons.delete_forever),
+      child: const Icon(Icons.delete_forever),
       onPressed: () {
         model.remove(record);
       },

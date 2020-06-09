@@ -5,9 +5,9 @@ import 'package:todo_app/ui/incompleted_records_screen.dart';
 
 class BottomNavigationModel with ChangeNotifier {
   final List<Widget> options = [
-    AllRecordsScreen(),
-    IncompletedTodosScreen(),
-    CompletedTodosScreen(),
+    const AllRecordsScreen(),
+    const IncompletedTodosScreen(),
+    const CompletedTodosScreen(),
   ];
 
   int _selectedIndex = 0;

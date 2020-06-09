@@ -15,44 +15,42 @@ class NameModel with ChangeNotifier {
     _fetchAll();
   }
 
-//  遅そうなので改善案模索中
-//  ここ直す
   List<Name> getRecordNameList(List<RecordContents> recordContentsList){
-    List<Name> list =[];
-    _allNameList.forEach((Name name) {
-      recordContentsList.forEach((RecordContents recordContents) {
+    final list =[];
+    for(final name in _allNameList){
+      for(final recordContents in recordContentsList){
         if(name.id == recordContents.nameId){
-          list.add(name);
+          list.add(name.name);
         }
-      });
-    });
-    var returnList = list.toSet().toList();
-    return returnList;
-  }
+      }
+    }
+    final nameList = list.toSet().toList();
+    return nameList;
+  }  
 
-  void setNameList(List<TextEditingController> list) async {
-    list.forEach((name) {
-      var nameInstance = Name(name: name.text);
+  Future setNameList(List<TextEditingController> list) async {
+    for(final name in list){
+      final nameInstance = Name(name: name.text);
       add(nameInstance);
-    });
+    }
   }
 
-  void _fetchAll() async {
+  Future _fetchAll() async {
     _allNameList = await repo.getAllName();
     notifyListeners();
   }
 
-  void add(Name name) async {
+  Future add(Name name) async {
     await repo.insertName(name);
     _fetchAll();
   }
 
-  void update(Name name) async {
+  Future update(Name name) async {
     await repo.updateName(name);
     _fetchAll();
   }
 
-  void remove(Name name) async {
+  Future remove(Name name) async {
     await repo.deleteNameById(name.id);
     _fetchAll();
   }

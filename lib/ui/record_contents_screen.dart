@@ -34,7 +34,7 @@ class RecordContentsView extends StatelessWidget {
           ),
           Center(
             child: RaisedButton(
-              child: Text("参加者設定"),
+              child: const Text('参加者設定'),
               color: Colors.amber[800],
               textColor: Colors.white,
               onPressed: () {
@@ -72,10 +72,10 @@ class _NameGrid extends StatelessWidget {
     final nameModel = Provider.of<NameModel>(context, listen: true);
 
     if(nameModel.getRecordNameList(contents).isEmpty){
-      return Text('名前を設定してください');
+      return const Text('名前を設定してください');
     }
     return GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
         ),
         itemBuilder: (context, index){

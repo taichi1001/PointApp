@@ -14,9 +14,9 @@ class Record {
       );
 
   Map<String, dynamic> toDatabaseJson() => {
-        "id": this.id,
-        "title": this.title,
-        "number_people": this.numberPeople,
-        "is_done": this.isDone ? 1 : 0,
+        'id': id,
+        'title': title,
+        'number_people': numberPeople,
+        'is_done': isDone ? 1 : 0,
       };
 }

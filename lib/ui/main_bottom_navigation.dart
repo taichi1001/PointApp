@@ -35,7 +35,7 @@ class MainBottomNavigation extends StatelessWidget {
           bottomNavigationModel.change(index);
         },
       ),
-      floatingActionButton: AddTodoButton(),
+      floatingActionButton: const AddTodoButton(),
     );
   }
 }
@@ -52,7 +52,7 @@ class AddTodoButton extends StatelessWidget {
             context: context,
             barrierDismissible: false,
             builder: (BuildContext context) {
-              return AddTodoDialog();
+              return const AddTodoDialog();
             });
       },
     );
@@ -60,31 +60,31 @@ class AddTodoButton extends StatelessWidget {
 }
 
 class AddTodoDialog extends StatelessWidget {
-  AddTodoDialog({Key key}) : super(key: key);
+  const AddTodoDialog({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final recordModel = Provider.of<RecordModel>(context, listen: true);
     final titleTextEditingController = TextEditingController();
     return AlertDialog(
-      title: Text('新規作成'),
+      title: const Text('新規作成'),
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
             TextField(
               controller: titleTextEditingController,
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: const InputDecoration(labelText: 'Title'),
             ),
           ],
         ),
       ),
       actions: <Widget>[
         FlatButton(
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
           onPressed: () => Navigator.pop(context),
         ),
         FlatButton(
-            child: Text("OK"),
+            child: const Text('OK'),
             onPressed: () {
               recordModel.add(Record(title: titleTextEditingController.text));
               Navigator.pop(context);
