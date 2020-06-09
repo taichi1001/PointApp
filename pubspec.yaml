@@ -33,6 +33,8 @@ dependencies:
 
   quiver: ^2.1.3
 
+  pedantic_mono: any
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
