@@ -1,7 +1,6 @@
 class Name {
   int id;
   String name;
- 
 
   Name({this.id, this.name,});
 
@@ -12,7 +11,7 @@ class Name {
       );
 
   Map<String, dynamic> toDatabaseJson() => {
-        "id": this.id,
-        "name":this.name,
+        'id': id,
+        'name':name,
       };
 }

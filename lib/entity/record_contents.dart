@@ -17,10 +17,10 @@ class RecordContents {
       );
 
   Map<String, dynamic> toDatabaseJson() => {
-        "id": this.id,
-        "record_id": this.recordId,
-        "name_id":this.nameId,
-        "count": this.count,
-        "score": this.score,
+        'id': id,
+        'record_id': recordId,
+        'name_id': nameId,
+        'count': count,
+        'score': score,
       };
 }

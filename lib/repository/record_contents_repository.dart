@@ -4,7 +4,7 @@ import 'package:todo_app/entity/record_contents.dart';
 class RecordContentsRepository {
   final recordContentsDao = RecordContentsDao();
 
-  Future getAllRecordsContents() => recordContentsDao.getAll();
+  Future<List<RecordContents>> getAllRecordsContents() => recordContentsDao.getAll();
 
   Future insertRecordContents(RecordContents recordContents) =>
       recordContentsDao.create(recordContents);

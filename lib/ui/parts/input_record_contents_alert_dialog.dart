@@ -18,7 +18,6 @@ class InputRecordContentsAlertDialog extends StatelessWidget {
     final recordContents =
         Provider.of<RecordContentsModel>(context, listen: true);
     return AlertDialog(
-      title: Text('新規作成'),
       content: SingleChildScrollView(
         child: InputRecordContentsListView(
           list: recordContents.recordContentsList(record),
@@ -26,7 +25,7 @@ class InputRecordContentsAlertDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         FlatButton(
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
           onPressed: () => Navigator.pop(context),
         ),
         _OkButton(
@@ -48,7 +47,7 @@ class _OkButton extends StatelessWidget {
       return Container();
     }
     return FlatButton(
-        child: Text("OK"),
+        child: const Text('OK'),
         onPressed: () {
 //              recordContents.add(RecordContents(title: titleTextEditingController.text));
           Navigator.pop(context);

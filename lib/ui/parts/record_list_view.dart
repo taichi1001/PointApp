@@ -12,12 +12,12 @@ class RecordListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (list.isEmpty) {
-      return Center(child: Text("No Items"));
+      return const Center(child: Text('No Items'));
     }
 
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) {
-        var record = list[index];
+        final record = list[index];
         return RecordListTile(record: record);
       },
       itemCount: list.length,

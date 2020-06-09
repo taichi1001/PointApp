@@ -12,12 +12,12 @@ class InputRecordContentsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (list.isEmpty) {
-      return Center(child: Text("先に名前を入力してください"));
+      return const Center(child: Text('先に名前を入力してください'));
     }
 
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) {
-        var recordContents = list[index];
+        final recordContents = list[index];
         return InputRecordContentsListTile(recordContents: recordContents);
       },
       itemCount: list.length,

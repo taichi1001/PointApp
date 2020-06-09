@@ -22,32 +22,32 @@ class RecordModel with ChangeNotifier {
     _fetchAll();
   }
 
-  void _fetchAll() async {
+  Future _fetchAll() async {
     _allRecordList = await repo.getAllRecords();
     notifyListeners();
   }
 
-  void add(Record record) async {
+  Future add(Record record) async {
     await repo.insertRecord(record);
     _fetchAll();
   }
 
-  void update(Record record) async {
+  Future update(Record record) async {
     await repo.updateRecord(record);
     _fetchAll();
   }
 
-  void toggleIsDone(Record record) async {
+  Future toggleIsDone(Record record) async {
     record.isDone = !record.isDone;
     update(record);
   }
 
-  void changeNumberPeople(Record record, int newCount) async {
+  Future changeNumberPeople(Record record, int newCount) async {
     record.numberPeople = newCount;
     update(record);
   }
 
-  void remove(Record record) async {
+  Future remove(Record record) async {
     await repo.deleteRecordById(record.id);
     _fetchAll();
   }

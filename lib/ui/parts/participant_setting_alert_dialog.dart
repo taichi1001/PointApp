@@ -16,15 +16,15 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final recordModel = Provider.of<RecordModel>(context, listen: true);
     final nameModel = Provider.of<NameModel>(context, listen: true);
-    List<TextEditingController> _controllers = new List();
+    final List<TextEditingController> _controllers = [];
     return AlertDialog(
-      title: Text('参加者設定'),
+      title: const Text('参加者設定'),
       content: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Row(
               children: <Widget>[
-                Text('人数'),
+                const Text('人数'),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: _SettingNumberPeople(
@@ -38,7 +38,7 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
               child: ListView.builder(
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  _controllers.add(new TextEditingController());
+                  _controllers.add(TextEditingController());
                   return TextField(
                     controller: _controllers[index],
                   );
@@ -51,11 +51,11 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         FlatButton(
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
           onPressed: () => Navigator.pop(context),
         ),
         FlatButton(
-          child: Text('OK'),
+          child: const Text('OK'),
           onPressed: () {
             nameModel.setNameList(_controllers);
             Navigator.pop(context);

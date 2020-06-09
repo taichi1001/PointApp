@@ -13,7 +13,7 @@ class InputRecordContentsListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        leading: Text('name'),
+        leading: const Text('name'),
         title: Text(recordContents.nameId.toString()),
       ),
     );
