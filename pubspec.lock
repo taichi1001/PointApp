@@ -95,13 +95,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.6.0"
-  pedantic_mono:
-    dependency: "direct main"
-    description:
-      name: pedantic_mono
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.9.1"
   platform:
     dependency: transitive
     description:
