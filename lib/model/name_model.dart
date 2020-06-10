@@ -1,57 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/entity/record_contents.dart';
+import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/entity/name.dart';
+import 'package:todo_app/entity/correspondence_name_record.dart';
+import 'package:todo_app/repository/correspondence_name_record_repository.dart';
 import 'package:todo_app/repository/name_repository.dart';
-
-import '../entity/record_contents.dart';
 
 class NameModel with ChangeNotifier {
   List<Name> _allNameList = [];
+  List<CorrespondenceNameRecord> _allCorrespondenceList = [];
   List<Name> get allNameList => _allNameList;
 
-  final repo = NameRepository();
+
+  final nameRepo = NameRepository();
+  final correspondenceRepo = CorrespondenceNameRecordRepository();
 
   NameModel() {
     _fetchAll();
   }
 
-  List<String> getRecordNameList(List<RecordContents> recordContentsList){
-    final List<String> list =[];
-    for(final name in _allNameList) {
-      for (final recordContents in recordContentsList) {
-        if(name.id == recordContents.nameId){
-          list.add(name.name);
+  List<Name> getRecordNameList(Record record){
+    final List<Name> nameList = [];
+    final List<CorrespondenceNameRecord> list = _allCorrespondenceList.where((correspondence) => correspondence.recordId == record.id).toList();
+    for(final correspondance in list){
+      for(final name in _allNameList){
+        if(correspondance.nameId == name.id){
+          nameList.add(name);
         }
       }
     }
-    final returnList = list.toSet().toList();
-    return returnList;
-  }
-
-  Future setNameList(List<TextEditingController> list) async {
-    for(final textEditingController in list){
-      final name = Name(name: textEditingController.text);
-      add(name);
-    }
+    return nameList;
   }
 
   Future _fetchAll() async {
-    _allNameList = await repo.getAllName();
+    _allNameList = await nameRepo.getAllName();
+    _allCorrespondenceList = await correspondenceRepo.getAllCorrespondence();
     notifyListeners();
   }
 
+  Future setNameList(List<TextEditingController> textList, Record record) async {
+    for(final text in textList){
+      add(Name(name: text.text));
+      _setCorrespondenceNameRecord(text, record);
+    }
+  }
+
+  Future _setCorrespondenceNameRecord(TextEditingController text, Record record) async {
+    for(final names in _allNameList){
+      if(names.name == text.text){
+        setCorrespondence(CorrespondenceNameRecord(nameId: names.id ,recordId: record.id));
+      }
+    }
+  }
+
+
+  Future setCorrespondence(CorrespondenceNameRecord correspondence) async{
+    await correspondenceRepo.insertCorrespondence(correspondence);
+    _fetchAll();
+  }
+
   Future add(Name name) async {
-    await repo.insertName(name);
+    await nameRepo.insertName(name);
     _fetchAll();
   }
 
   Future update(Name name) async {
-    await repo.updateName(name);
+    await nameRepo.updateName(name);
     _fetchAll();
   }
 
   Future remove(Name name) async {
-    await repo.deleteNameById(name.id);
+    await nameRepo.deleteNameById(name.id);
     _fetchAll();
   }
 }

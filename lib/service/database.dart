@@ -13,6 +13,7 @@ class DatabaseService {
   static const recordTableName = 'record';
   static const recordContentsTableName = 'record_contents';
   static const nameTableName = 'name';
+  static const correspondenceNameRecordTableName = 'correspondence_name_Record';
 
   static final DatabaseService dbProvider = DatabaseService();
 
@@ -64,5 +65,12 @@ class DatabaseService {
         name TEXT NOT NULL
       )
     ''');
+    await database.execute('''
+      CREATE TABLE $correspondenceNameRecordTableName (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name_id INTEGER NOT NULL,
+        record_id INTEGER NOT NULL
+      )
+    ''');    
   }
 }

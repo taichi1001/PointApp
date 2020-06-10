@@ -8,12 +8,10 @@ import 'package:todo_app/ui/parts/participant_setting_alert_dialog.dart';
 
 class RecordContentsView extends StatelessWidget {
   final Record record;
-  final List<RecordContents> contents;
 
   const RecordContentsView({
     Key key,
     @required this.record,
-    @required this.contents,
   }) : super(key: key);
 
   @override
@@ -29,7 +27,7 @@ class RecordContentsView extends StatelessWidget {
             width: 200.0,
             child: Row(
               children: <Widget>[
-                _NameGrid(contents: contents)
+                _NameGrid(record: record)
                         ]),
           ),
           Center(
@@ -60,26 +58,26 @@ class RecordContentsView extends StatelessWidget {
 }
 
 class _NameGrid extends StatelessWidget {
-  final List<RecordContents> contents;
+  final Record record;
 
   const _NameGrid({
     Key key,
-    @required this.contents,
+    @required this.record,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final nameModel = Provider.of<NameModel>(context, listen: true);
 
-    if(nameModel.getRecordNameList(contents).isEmpty){
+    if(nameModel.getRecordNameList(record).isEmpty){
       return const Text('名前を設定してください');
     }
     return GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: nameModel.getRecordNameList(record).length,
         ),
         itemBuilder: (context, index){
-          return Text(nameModel.getRecordNameList(contents)[index]);});
+          return Text(nameModel.getRecordNameList(record)[index].name);});
   }
 }
 

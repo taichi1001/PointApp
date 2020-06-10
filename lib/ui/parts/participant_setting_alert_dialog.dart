@@ -57,7 +57,7 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
         FlatButton(
           child: const Text('OK'),
           onPressed: () {
-            nameModel.setNameList(_controllers);
+            nameModel.setNameList(_controllers, record);
             Navigator.pop(context);
           },
         ),
