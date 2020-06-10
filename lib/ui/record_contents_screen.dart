@@ -22,7 +22,10 @@ class RecordContentsView extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          _NameGrid(record: record),
+          SizedBox(
+              height: 200,
+              width: 200,
+              child: _NameGrid(record: record)),
           Center(
             child: RaisedButton(
               child: const Text('参加者設定'),
@@ -63,11 +66,14 @@ class _NameGrid extends StatelessWidget {
     final nameModel = Provider.of<NameModel>(context, listen: true);
 
     if(nameModel.getRecordNameList(record).isEmpty){
-      return const Text('名前を設定してください');
+      return Text('名前を設定してください');
     }
     return GridView.builder(
+        itemCount: nameModel.getRecordNameList(record).length,
+//        physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: nameModel.getRecordNameList(record).length,
+//          crossAxisCount: nameModel.getRecordNameList(record).length,
+        crossAxisCount: 3
         ),
         itemBuilder: (context, index){
           return Text(nameModel.getRecordNameList(record)[index].name);});
