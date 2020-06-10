@@ -22,14 +22,7 @@ class RecordContentsView extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          Container(
-            height: 100.0,
-            width: 200.0,
-            child: Row(
-              children: <Widget>[
-                _NameGrid(record: record)
-                        ]),
-          ),
+          _NameGrid(record: record),
           Center(
             child: RaisedButton(
               child: const Text('参加者設定'),
