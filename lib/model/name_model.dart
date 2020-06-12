@@ -19,7 +19,7 @@ class NameModel with ChangeNotifier {
   }
 
   // レコードに対応する名前のリストを取得
-  List<Name> getRecordNameList(Record record){
+  List<Name> getRecordNameList(Record record) {
     final List<Name> nameList = [];
     final List<CorrespondenceNameRecord> correspondanceList = _allCorrespondenceList.where((correspondence) => correspondence.recordId == record.id).toList();
     for(final correspondance in correspondanceList){
@@ -41,7 +41,7 @@ class NameModel with ChangeNotifier {
   // 名前と、レコードと名前の対応をそれぞれDBに記録
   Future setNameList(List<TextEditingController> textList, Record record) async {
     for(final text in textList){
-      add(Name(name: text.text));
+      await add(Name(name: text.text));
       _setCorrespondenceNameRecord(text, record);
     }
   }
@@ -49,7 +49,7 @@ class NameModel with ChangeNotifier {
   Future _setCorrespondenceNameRecord(TextEditingController text, Record record) async {
     for(final names in _allNameList){
       if(names.name == text.text){
-        setCorrespondence(CorrespondenceNameRecord(nameId: names.id ,recordId: record.id));
+        await setCorrespondence(CorrespondenceNameRecord(nameId: names.id ,recordId: record.id));
       }
     }
   }

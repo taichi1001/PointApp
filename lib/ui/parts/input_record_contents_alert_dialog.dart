@@ -7,16 +7,14 @@ import 'package:todo_app/ui/parts/input_record_contents_list_view.dart';
 
 
 class InputRecordContentsAlertDialog extends StatelessWidget {
-  final Record record;
   const InputRecordContentsAlertDialog({
     Key key,
-    @required this.record,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final recordContents =
-        Provider.of<RecordContentsModel>(context, listen: true);
+    final record = Provider.of<Record>(context, listen: true);
+    final recordContents = Provider.of<RecordContentsModel>(context, listen: true);
     return AlertDialog(
       content: SingleChildScrollView(
         child: InputRecordContentsListView(

@@ -6,17 +6,15 @@ import 'package:todo_app/model/record_model.dart';
 import 'package:todo_app/model/name_model.dart';
 
 class ParticipantSettingAlertDialog extends StatelessWidget {
-  final Record record;
   const ParticipantSettingAlertDialog({
     Key key,
-    @required this.record,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final recordModel = Provider.of<RecordModel>(context, listen: true);
-    final nameModel = Provider.of<NameModel>(context, listen: true);
     final List<TextEditingController> _controllers = [];
+    final nameModel = Provider.of<NameModel>(context, listen: false);
+
     return AlertDialog(
       title: const Text('参加者設定'),
       content: SingleChildScrollView(
@@ -25,25 +23,27 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
             Row(
               children: <Widget>[
                 const Text('人数'),
-                Padding(
+                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: _SettingNumberPeople(
-                      record: record),
+                  child: _SettingNumberPeople(),
                 )
               ],
             ),
-            Container(
-              height: 50.0 * recordModel.getNumberPeople(record),
-              width: 150.0,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  _controllers.add(TextEditingController());
-                  return TextField(
-                    controller: _controllers[index],
-                  );
-                  },
-                itemCount: record.numberPeople,
+            Consumer<Record>(
+              builder:(context, record, _)=>
+                Container(
+                height: 50.0 * record.numberPeople,
+                width: 150.0,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: record.numberPeople,
+                  itemBuilder: (BuildContext context, int index) {
+                    _controllers.add(TextEditingController());
+                    return TextField(
+                      controller: _controllers[index],
+                    );
+                    },
+                ),
               ),
             ),
           ],
@@ -54,12 +54,14 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
           child: const Text('Cancel'),
           onPressed: () => Navigator.pop(context),
         ),
+        Consumer<Record>(builder: (context, record, child)=>
         FlatButton(
           child: const Text('OK'),
           onPressed: () {
             nameModel.setNameList(_controllers, record);
             Navigator.pop(context);
-          },
+            },
+          ),
         ),
       ],
     );
@@ -67,34 +69,32 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
 }
 
 class _SettingNumberPeople extends StatelessWidget {
-  final Record record;
-  const _SettingNumberPeople({
-    Key key,
-    @required this.record,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final model = Provider.of<RecordModel>(context, listen: true);
-    return DropdownButton<String>(
-      value: model.getNumberPeople(record).toString(),
-      icon: Icon(Icons.arrow_downward),
-      iconSize: 18,
-      elevation: 16,
-      style: TextStyle(color: Colors.deepPurple),
-      underline: Container(
-        height: 2,
-        color: Colors.deepPurpleAccent,
+    final model = Provider.of<RecordModel>(context, listen: false);
+    return Consumer<Record>(
+      builder: (context, record, _)=>
+      DropdownButton<String>(
+        value: record.numberPeople.toString(),
+        icon: Icon(Icons.arrow_downward),
+        iconSize: 18,
+        elevation: 16,
+        style: TextStyle(color: Colors.deepPurple),
+        underline: Container(
+          height: 2,
+          color: Colors.deepPurpleAccent,
+        ),
+        onChanged: (String newValue) {
+          model.changeNumberPeople(record, int.parse(newValue));
+        },
+        items: rangeNumberCount.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
       ),
-      onChanged: (String newValue) {
-        model.changeNumberPeople(record, int.parse(newValue));
-      },
-      items: rangeNumberCount.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
     );
   }
 }

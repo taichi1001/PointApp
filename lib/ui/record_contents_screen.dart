@@ -1,31 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/entity/record.dart';
-import 'package:todo_app/entity/record_contents.dart';
 import 'package:todo_app/model/name_model.dart';
 import 'package:todo_app/ui/parts/input_record_contents_alert_dialog.dart';
 import 'package:todo_app/ui/parts/participant_setting_alert_dialog.dart';
 
 class RecordContentsView extends StatelessWidget {
-  final Record record;
-
   const RecordContentsView({
     Key key,
-    @required this.record,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
     appBar: AppBar(
-        title: Text(record.title),
+        title: Consumer<Record>(builder: (context, record, _) => Text(record.title)),
       ),
       body: Column(
         children: <Widget>[
-          SizedBox(
+          const SizedBox(
               height: 200,
               width: 200,
-              child: _NameGrid(record: record)),
+              child: _NameGrid()
+          ),
           Center(
             child: RaisedButton(
               child: const Text('参加者設定'),
@@ -36,9 +33,7 @@ class RecordContentsView extends StatelessWidget {
                   context: context,
                   barrierDismissible: false,
                   builder: (BuildContext context) {
-                    return ParticipantSettingAlertDialog(
-                      record: record,
-                    );
+                    return const ParticipantSettingAlertDialog();
                   },
                 );
               },
@@ -46,34 +41,30 @@ class RecordContentsView extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: _InputRecordContentsButton(
-        record: record,
-      ),
+      floatingActionButton: const _InputRecordContentsButton(),
     );
   }
 }
 
 class _NameGrid extends StatelessWidget {
-  final Record record;
 
   const _NameGrid({
     Key key,
-    @required this.record,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final nameModel = Provider.of<NameModel>(context, listen: true);
+    final record = Provider.of<Record>(context, listen: true);
 
     if(nameModel.getRecordNameList(record).isEmpty){
-      return Text('名前を設定してください');
+      return const Text('名前を設定してください');
     }
     return GridView.builder(
         itemCount: nameModel.getRecordNameList(record).length,
-//        physics: const NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//          crossAxisCount: nameModel.getRecordNameList(record).length,
-        crossAxisCount: 3
+          crossAxisCount: nameModel.getRecordNameList(record).length,
         ),
         itemBuilder: (context, index){
           return Text(nameModel.getRecordNameList(record)[index].name);});
@@ -81,11 +72,8 @@ class _NameGrid extends StatelessWidget {
 }
 
 class _InputRecordContentsButton extends StatelessWidget {
-  final Record record;
-
   const _InputRecordContentsButton({
     Key key,
-    @required this.record,
   }) : super(key: key);
 
   @override
@@ -94,13 +82,12 @@ class _InputRecordContentsButton extends StatelessWidget {
       child: Icon(Icons.add),
       onPressed: () {
         showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return InputRecordContentsAlertDialog(
-                record: record,
-              );
-            });
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return const InputRecordContentsAlertDialog();
+          },
+        );
       },
     );
   }

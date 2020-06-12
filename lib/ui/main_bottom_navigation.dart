@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/model/bottom_navigation_model.dart';
-import 'package:todo_app/model/record_model.dart';
 
 class MainBottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final bottomNavigationModel =
-        Provider.of<BottomNavigationModel>(context, listen: true);
+    final bottomNavigationModel = Provider.of<BottomNavigationModel>(context, listen: true);
     return Scaffold(
       body: Center(
         child: bottomNavigationModel.getSelectedScreen(),
@@ -27,6 +24,10 @@ class MainBottomNavigation extends StatelessWidget {
             icon: Icon(Icons.check_box),
             title: Text('Completed'),
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.data_usage),
+            title: Text('DB'),
+          ),
         ],
         type: BottomNavigationBarType.fixed,
         currentIndex: bottomNavigationModel.selectedIndex,
@@ -35,61 +36,6 @@ class MainBottomNavigation extends StatelessWidget {
           bottomNavigationModel.change(index);
         },
       ),
-      floatingActionButton: const AddTodoButton(),
-    );
-  }
-}
-
-class AddTodoButton extends StatelessWidget {
-  const AddTodoButton({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      child: Icon(Icons.add),
-      onPressed: () {
-        showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return const AddTodoDialog();
-            });
-      },
-    );
-  }
-}
-
-class AddTodoDialog extends StatelessWidget {
-  const AddTodoDialog({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final recordModel = Provider.of<RecordModel>(context, listen: true);
-    final titleTextEditingController = TextEditingController();
-    return AlertDialog(
-      title: const Text('新規作成'),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            TextField(
-              controller: titleTextEditingController,
-              decoration: const InputDecoration(labelText: 'Title'),
-            ),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        FlatButton(
-          child: const Text('Cancel'),
-          onPressed: () => Navigator.pop(context),
-        ),
-        FlatButton(
-            child: const Text('OK'),
-            onPressed: () {
-              recordModel.add(Record(title: titleTextEditingController.text));
-              Navigator.pop(context);
-            }),
-      ],
     );
   }
 }
