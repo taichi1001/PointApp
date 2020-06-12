@@ -22,13 +22,14 @@ class DatabaseService {
   Future<Database> get database async {
     if (_database != null) {
       return _database;
-      }
-      _database = await createDatabase();
-      return _database;
     }
+    _database = await createDatabase();
+    return _database;
+  }
 
   Future createDatabase() async {
-    final Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    final Directory documentsDirectory =
+        await getApplicationDocumentsDirectory();
     final String path = join(documentsDirectory.path, _databaseName);
 
     final database = await openDatabase(path,
@@ -71,6 +72,6 @@ class DatabaseService {
         name_id INTEGER NOT NULL,
         record_id INTEGER NOT NULL
       )
-    ''');    
+    ''');
   }
 }

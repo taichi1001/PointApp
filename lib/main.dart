@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<ManageDBModel>(
           create: (context) => ManageDBModel(),
-        ),       
+        ),
       ],
       child: MaterialApp(
         title: 'Todo App Sample',

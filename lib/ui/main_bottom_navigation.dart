@@ -5,7 +5,8 @@ import 'package:todo_app/model/bottom_navigation_model.dart';
 class MainBottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final bottomNavigationModel = Provider.of<BottomNavigationModel>(context, listen: true);
+    final bottomNavigationModel =
+        Provider.of<BottomNavigationModel>(context, listen: true);
     return Scaffold(
       body: Center(
         child: bottomNavigationModel.getSelectedScreen(),

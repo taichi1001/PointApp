@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Record with ChangeNotifier{
+class Record with ChangeNotifier {
   int id;
   String title;
   int numberPeople;

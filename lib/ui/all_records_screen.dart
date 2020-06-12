@@ -24,7 +24,7 @@ class AddTodoButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      child: Icon(Icons.add),
+      child: const Icon(Icons.add),
       onPressed: () {
         showDialog(
             context: context,

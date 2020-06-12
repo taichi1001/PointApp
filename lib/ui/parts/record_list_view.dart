@@ -17,7 +17,8 @@ class RecordListView extends StatelessWidget {
 
     return ListView.builder(
       itemCount: model.allRecordContentsList.length,
-      itemBuilder: (BuildContext context, int index) => ChangeNotifierProvider.value(
+      itemBuilder: (BuildContext context, int index) =>
+          ChangeNotifierProvider.value(
         value: model.allRecordContentsList[index],
         child: const RecordListTile(),
       ),

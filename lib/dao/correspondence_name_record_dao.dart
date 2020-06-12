@@ -15,7 +15,9 @@ class CorrespondenceNameRecordDao {
     final db = await dbProvider.database;
     final List<Map<String, dynamic>> result = await db.query(tableName);
     final List<CorrespondenceNameRecord> correspondence = result.isNotEmpty
-        ? result.map((item) => CorrespondenceNameRecord.fromDatabaseJson(item)).toList()
+        ? result
+            .map((item) => CorrespondenceNameRecord.fromDatabaseJson(item))
+            .toList()
         : [];
     return correspondence;
   }

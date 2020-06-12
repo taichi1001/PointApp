@@ -6,11 +6,9 @@ class NameRepository {
 
   Future getAllName() => nameDao.getAll();
 
-  Future insertName(Name name) =>
-      nameDao.create(name);
+  Future insertName(Name name) => nameDao.create(name);
 
-  Future updateName(Name name) =>
-      nameDao.update(name);
+  Future updateName(Name name) => nameDao.update(name);
 
   Future deleteNameById(int id) => nameDao.delete(id);
 

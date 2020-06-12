@@ -5,12 +5,10 @@ class CorrespondenceNameRecord {
 
   CorrespondenceNameRecord({this.id, this.nameId, this.recordId});
 
-  factory CorrespondenceNameRecord.fromDatabaseJson(Map<String, dynamic> data) =>
+  factory CorrespondenceNameRecord.fromDatabaseJson(
+          Map<String, dynamic> data) =>
       CorrespondenceNameRecord(
-        id: data['id'],
-        nameId: data['name_id'],
-        recordId: data['record_id']
-      );
+          id: data['id'], nameId: data['name_id'], recordId: data['record_id']);
 
   Map<String, dynamic> toDatabaseJson() => {
         'id': id,

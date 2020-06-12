@@ -16,20 +16,19 @@ class ManageDBModel with ChangeNotifier {
   List<Record> get allRecordList => _allRecordList;
   List<RecordContents> get allRecordContentsList => _allRecordContentsList;
   List<Name> get allNameList => _allNameList;
-  List<CorrespondenceNameRecord> get allCorrespondenceList => _allCorrespondenceList;
-
+  List<CorrespondenceNameRecord> get allCorrespondenceList =>
+      _allCorrespondenceList;
 
   final nameRepo = NameRepository();
   final correspondenceRepo = CorrespondenceNameRecordRepository();
   final recordRepo = RecordRepository();
   final recordContentsRepo = RecordContentsRepository();
 
-
   ManageDBModel() {
     fetchAll();
   }
 
-  Future fetchAll() async{
+  Future fetchAll() async {
     _allRecordList = await recordRepo.getAllRecords();
     _allRecordContentsList = await recordContentsRepo.getAllRecordsContents();
     _allNameList = await nameRepo.getAllName();

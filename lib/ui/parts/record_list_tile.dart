@@ -13,15 +13,14 @@ class RecordListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Consumer<Record>(
-        builder: (context, record, _) =>
-        ListTile(
+        builder: (context, record, _) => ListTile(
           leading: const _CheckBoxButton(),
           title: Text(record.title),
           trailing: const _RemoveButton(),
           onTap: () =>
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             return const RecordContentsView();
-            })),
+          })),
         ),
       ),
     );
@@ -29,7 +28,6 @@ class RecordListTile extends StatelessWidget {
 }
 
 class _CheckBoxButton extends StatelessWidget {
-
   const _CheckBoxButton({
     Key key,
   }) : super(key: key);
@@ -38,11 +36,10 @@ class _CheckBoxButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = Provider.of<RecordModel>(context, listen: false);
     return Consumer<Record>(
-      builder: (context, record, _) =>
-      FlatButton(
+      builder: (context, record, _) => FlatButton(
         child: record.isDone
-        ? const Icon(Icons.check_box)
-        : const Icon(Icons.check_box_outline_blank),
+            ? const Icon(Icons.check_box)
+            : const Icon(Icons.check_box_outline_blank),
         onPressed: () {
           model.toggleIsDone(record);
         },
@@ -60,8 +57,7 @@ class _RemoveButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = Provider.of<RecordModel>(context, listen: false);
     return Consumer<Record>(
-      builder: (context, record, child) =>
-      FlatButton(
+      builder: (context, record, child) => FlatButton(
         child: const Icon(Icons.delete_forever),
         onPressed: () {
           model.remove(record);
