@@ -21,4 +21,10 @@ class Record with ChangeNotifier {
         'number_people': numberPeople,
         'is_done': isDone ? 1 : 0,
       };
+
+  Future changeNumberPeople(int newCount) async {
+    numberPeople = newCount;
+    notifyListeners();
+
+  }
 }

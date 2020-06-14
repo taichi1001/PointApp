@@ -19,7 +19,7 @@ class RecordListTile extends StatelessWidget {
           trailing: const _RemoveButton(),
           onTap: () =>
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return const RecordContentsView();
+            return RecordContentsView(record: record);
           })),
         ),
       ),

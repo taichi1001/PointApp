@@ -6,39 +6,48 @@ import 'package:todo_app/ui/parts/input_record_contents_alert_dialog.dart';
 import 'package:todo_app/ui/parts/participant_setting_alert_dialog.dart';
 
 class RecordContentsView extends StatelessWidget {
+  final Record record;
   const RecordContentsView({
+    @required this.record,
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Consumer<Record>(
-            builder: (context, record, _) => Text(record.title)),
-      ),
-      body: Column(
-        children: <Widget>[
-          const SizedBox(height: 200, width: 200, child: _NameGrid()),
-          Center(
-            child: RaisedButton(
-              child: const Text('参加者設定'),
-              color: Colors.amber[800],
-              textColor: Colors.white,
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return const ParticipantSettingAlertDialog();
-                  },
-                );
-              },
+    return ChangeNotifierProvider.value(
+      value: record,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Consumer<Record>(
+              builder: (context, record, _) => Text(record.title)),
+        ),
+        body: Column(
+          children: <Widget>[
+            const SizedBox(
+                height: 200,
+                width: 200,
+                child: _NameGrid()
             ),
-          ),
-        ],
+            Center(
+              child: RaisedButton(
+                child: const Text('参加者設定'),
+                color: Colors.amber[800],
+                textColor: Colors.white,
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return ParticipantSettingAlertDialog(record: record);
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+        floatingActionButton: const _InputRecordContentsButton(),
       ),
-      floatingActionButton: const _InputRecordContentsButton(),
     );
   }
 }
@@ -58,9 +67,11 @@ class _NameGrid extends StatelessWidget {
     }
     return GridView.builder(
         itemCount: nameModel.getRecordNameList(record).length,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: nameModel.getRecordNameList(record).length,
+//        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+//          crossAxisCount: nameModel.getRecordNameList(record).length
+          crossAxisCount: 4,
+
         ),
         itemBuilder: (context, index) {
           return Text(nameModel.getRecordNameList(record)[index].name);
