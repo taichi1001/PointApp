@@ -16,10 +16,7 @@ class ParticipantSettingAlertDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<TextEditingController> _controllers = [];
     final nameModel = Provider.of<NameModel>(context, listen: false);
-    for(final name in nameModel.getRecordNameList(record)){
-      final _controller = TextEditingController(text: name.name); 
-      _controllers.add(_controller);
-    }
+
     return ChangeNotifierProvider.value(
       value: record,
       child: AlertDialog(
