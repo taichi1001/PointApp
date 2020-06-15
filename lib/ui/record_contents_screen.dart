@@ -71,7 +71,6 @@ class _NameGrid extends StatelessWidget {
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
 //          crossAxisCount: nameModel.getRecordNameList(record).length
           crossAxisCount: 4,
-
         ),
         itemBuilder: (context, index) {
           return Text(nameModel.getRecordNameList(record)[index].name);

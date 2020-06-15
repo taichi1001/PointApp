@@ -10,11 +10,6 @@ class RecordModel with ChangeNotifier {
   List<Record> get completedTodoList =>
       _allRecordList.where((record) => record.isDone == true).toList();
 
-  // int getNumberPeople(Record argRecord) =>
-  //     _allRecordList.where((record) => record.numberPeople == argRecord.numberPeople)
-  //         .toList()[0]
-  //         .numberPeople;
-
   final RecordRepository repo = RecordRepository();
 
   RecordModel() {
