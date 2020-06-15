@@ -1,3 +1,4 @@
+import 'package:sqflite/sqflite.dart';
 import 'package:todo_app/service/database.dart';
 import 'package:todo_app/entity/name.dart';
 
@@ -7,7 +8,7 @@ class NameDao {
 
   Future<int> create(Name name) async {
     final db = await dbProvider.database;
-    final result = db.insert(tableName, name.toDatabaseJson());
+    final result = db.insert(tableName, name.toDatabaseJson(), conflictAlgorithm: ConflictAlgorithm.replace);
     return result;
   }
 
