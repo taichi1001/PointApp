@@ -41,37 +41,16 @@ class NameModel with ChangeNotifier {
   }
 
   // 名前と、レコードと名前の対応をそれぞれDBに記録
-  void setNameList(
-      List<TextEditingController> textList, Record record) {
+  Future setNewName(
+      List<TextEditingController> textList, Record record) async {
     for (final text in textList) {
-      add(Name(name: text.text));
-      print(_allNameList);
-      _setCorrespondenceNameRecord(text, record);
+      final nameId = await nameRepo.insertName(Name(name: text.text));
+      await correspondenceRepo.insertCorrespondence(CorrespondenceNameRecord(nameId:nameId, recordId: record.id));
     }
-  }
-
-  // レコードと名前の対応をDBに記録
-  void _setCorrespondenceNameRecord(
-      TextEditingController text, Record record) {
-    for (final names in _allNameList) {
-      _fetchAll();
-      print('start');
-      print(names.name);
-      if (names.name == text.text) {
-        print(names.name);
-        print('end');
-        setCorrespondence(
-            CorrespondenceNameRecord(nameId: names.id, recordId: record.id));
-      }
-    }
-  }
-
-  Future setCorrespondence(CorrespondenceNameRecord correspondence) async {
-    await correspondenceRepo.insertCorrespondence(correspondence);
     _fetchAll();
   }
 
-  void add(Name name) {
+  Future add(Name name) async {
     nameRepo.insertName(name);
     _fetchAll();
   }
