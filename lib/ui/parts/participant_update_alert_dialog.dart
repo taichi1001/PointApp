@@ -25,22 +25,7 @@ class ParticipantUpdateAlertDialog extends StatelessWidget {
       child: AlertDialog(
         title: const Text('参加者設定'),
         content: SingleChildScrollView(
-          child: Consumer<Record>(
-            builder: (context, record, _) => Container(
-              height: 50.0 * record.numberPeople,
-              width: 150.0,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: record.numberPeople,
-                itemBuilder: (BuildContext context, int index) {
-                  _controllers.add(TextEditingController());
-                  return TextField(
-                    controller: _controllers[index],
-                  );
-                },
-              ),
-            ),
-          ),
+          child: _InputName(controllers: _controllers),
         ),
         actions: <Widget>[
           FlatButton(
@@ -57,6 +42,35 @@ class ParticipantUpdateAlertDialog extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _InputName extends StatelessWidget {
+  const _InputName({
+    Key key,
+    @required List<TextEditingController> controllers,
+  }) : _controllers = controllers, super(key: key);
+
+  final List<TextEditingController> _controllers;
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<Record>(
+      builder: (context, record, _) => Container(
+        height: 50.0 * record.numberPeople,
+        width: 150.0,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: record.numberPeople,
+          itemBuilder: (BuildContext context, int index) {
+            _controllers.add(TextEditingController());
+            return TextField(
+              controller: _controllers[index],
+            );
+          },
+        ),
       ),
     );
   }
