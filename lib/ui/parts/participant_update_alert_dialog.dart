@@ -14,18 +14,34 @@ class ParticipantUpdateAlertDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final nameModel = Provider.of<NameModel>(context, listen: false);
     final List<TextEditingController> _controllers = [];
+    final List<TextEditingController> _controllersTmp = [];
     for (final name in nameModel.getRecordNameList(record)) {
       final _controller = TextEditingController(text: name.name);
+      final _controllerTmp = TextEditingController(text: name.name);
       _controllers.add(_controller);
+      _controllersTmp.add(_controllerTmp);
     }
-    final _controllersTmp = _controllers;
 
     return ChangeNotifierProvider.value(
       value: record,
       child: AlertDialog(
-        title: const Text('参加者設定'),
+        title: const Text('名前変更'),
         content: SingleChildScrollView(
-          child: _InputName(controllers: _controllers),
+          child: Consumer<Record>(
+            builder: (context, record, _) => Container(
+              height: 50.0 * record.numberPeople,
+              width: 150.0,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: record.numberPeople,
+                itemBuilder: (BuildContext context, int index) {
+                  return TextField(
+                    controller: _controllers[index],
+                  );
+                },
+              ),
+            ),
+          ),
         ),
         actions: <Widget>[
           FlatButton(
@@ -40,35 +56,6 @@ class ParticipantUpdateAlertDialog extends StatelessWidget {
               },
             ),
         ],
-      ),
-    );
-  }
-}
-
-class _InputName extends StatelessWidget {
-  const _InputName({
-    Key key,
-    @required List<TextEditingController> controllers,
-  }) : _controllers = controllers, super(key: key);
-
-  final List<TextEditingController> _controllers;
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<Record>(
-      builder: (context, record, _) => Container(
-        height: 50.0 * record.numberPeople,
-        width: 150.0,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: record.numberPeople,
-          itemBuilder: (BuildContext context, int index) {
-            _controllers.add(TextEditingController());
-            return TextField(
-              controller: _controllers[index],
-            );
-          },
-        ),
       ),
     );
   }

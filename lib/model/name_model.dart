@@ -39,8 +39,8 @@ class NameModel with ChangeNotifier {
     var index = 0;
     for(final text in newTextList){
       if(text.text != oldTextList[index].text){
-        for(final name in _allNameList){
-          if(oldTextList[index].text == name.name){
+        for(final name in _allNameList) {
+          if (oldTextList[index].text == name.name) {
             name.name = text.text;
             await nameRepo.updateName(name);
           }
