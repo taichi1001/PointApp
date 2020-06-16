@@ -63,14 +63,16 @@ class DatabaseService {
     await database.execute('''
       CREATE TABLE $nameTableName (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL
+        name TEXT NOT NULL,
+        UNIQUE(name)
       )
     ''');
     await database.execute('''
       CREATE TABLE $correspondenceNameRecordTableName (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name_id INTEGER NOT NULL,
-        record_id INTEGER NOT NULL
+        record_id INTEGER NOT NULL,
+        UNIQUE(name_id, record_id)
       )
     ''');
   }

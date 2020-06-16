@@ -44,8 +44,11 @@ class NameModel with ChangeNotifier {
   Future setNewName(
       List<TextEditingController> textList, Record record) async {
     for (final text in textList) {
-      final nameId = await nameRepo.insertName(Name(name: text.text));
-      await correspondenceRepo.insertCorrespondence(CorrespondenceNameRecord(nameId:nameId, recordId: record.id));
+      if(text.text.isNotEmpty) {
+        final nameId = await nameRepo.insertName(Name(name: text.text));
+        await correspondenceRepo.insertCorrespondence(
+            CorrespondenceNameRecord(nameId: nameId, recordId: record.id));
+      }
     }
     _fetchAll();
   }
