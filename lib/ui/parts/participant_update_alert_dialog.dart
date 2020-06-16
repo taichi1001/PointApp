@@ -32,15 +32,13 @@ class ParticipantUpdateAlertDialog extends StatelessWidget {
             child: const Text('Cancel'),
             onPressed: () => Navigator.pop(context),
           ),
-          Consumer<Record>(
-            builder: (context, record, child) => FlatButton(
+          FlatButton(
               child: const Text('OK'),
               onPressed: () {
                 nameModel.updateRecordName(_controllers, _controllersTmp);
                 Navigator.pop(context);
               },
             ),
-          ),
         ],
       ),
     );
