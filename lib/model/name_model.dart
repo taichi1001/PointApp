@@ -42,12 +42,13 @@ class NameModel with ChangeNotifier {
         for(final name in _allNameList){
           if(oldTextList[index].text == name.name){
             name.name = text.text;
-            await update(name);
+            await nameRepo.updateName(name);
           }
         }
       }
       index += 1;
     }
+    await _fetchAll();
   }
 
   Future _fetchAll() async {
@@ -63,7 +64,7 @@ class NameModel with ChangeNotifier {
       final nameId = await nameRepo.insertName(Name(name: text.text));
       await correspondenceRepo.insertCorrespondence(CorrespondenceNameRecord(nameId:nameId, recordId: record.id));
     }
-    _fetchAll();
+    await _fetchAll();
   }
 
   Future add(Name name) async {
