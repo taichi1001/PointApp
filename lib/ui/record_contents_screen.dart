@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/model/name_model.dart';
+import 'package:todo_app/model/record_contents_model.dart';
 import 'package:todo_app/ui/parts/input_record_contents_alert_dialog.dart';
 import 'package:todo_app/ui/parts/participant_update_alert_dialog.dart';
 
@@ -14,6 +15,7 @@ class RecordContentsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final model = Provider.of<RecordContentsModel>(context, listen: true);
     return ChangeNotifierProvider.value(
       value: record,
       child: Scaffold(
@@ -44,6 +46,21 @@ class RecordContentsScreen extends StatelessWidget {
                 },
               ),
             ),
+            DataTable(
+              columns: model.getDataColumn(record),
+              rows: const<DataRow>[]
+//                DataRow(
+//                  cells: <DataCell>[
+//                    DataCell(Text('1')),
+//                    DataCell(Text('2')),
+//                    DataCell(Text('3')),
+//                    DataCell(Text('4')),
+//                    DataCell(Text('5')),
+//                    DataCell(Text('6')),
+//                  ]
+//                )
+//              ],
+            )
           ],
         ),
         floatingActionButton: const _InputRecordContentsButton(),
