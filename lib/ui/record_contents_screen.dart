@@ -3,11 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/model/name_model.dart';
 import 'package:todo_app/ui/parts/input_record_contents_alert_dialog.dart';
-import 'package:todo_app/ui/parts/participant_setting_alert_dialog.dart';
+import 'package:todo_app/ui/parts/participant_update_alert_dialog.dart';
 
-class RecordContentsView extends StatelessWidget {
+class RecordContentsScreen extends StatelessWidget {
   final Record record;
-  const RecordContentsView({
+  const RecordContentsScreen({
     @required this.record,
     Key key,
   }) : super(key: key);
@@ -30,7 +30,7 @@ class RecordContentsView extends StatelessWidget {
             ),
             Center(
               child: RaisedButton(
-                child: const Text('参加者設定'),
+                child: const Text('名前変更'),
                 color: Colors.amber[800],
                 textColor: Colors.white,
                 onPressed: () {
@@ -38,7 +38,7 @@ class RecordContentsView extends StatelessWidget {
                     context: context,
                     barrierDismissible: false,
                     builder: (BuildContext context) {
-                      return ParticipantSettingAlertDialog(record: record);
+                      return ParticipantUpdateAlertDialog(record: record);
                     },
                   );
                 },

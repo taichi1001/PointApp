@@ -4,10 +4,11 @@ import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/entity/util.dart';
 import 'package:todo_app/model/record_model.dart';
 import 'package:todo_app/model/name_model.dart';
+import 'package:todo_app/ui/record_contents_screen.dart';
 
-class ParticipantSettingAlertScreen extends StatelessWidget {
+class ParticipantSettingScreen extends StatelessWidget {
   final Record record;
-  const ParticipantSettingAlertScreen({
+  const ParticipantSettingScreen({
     @required this.record,
     Key key,
   }) : super(key: key);
@@ -25,51 +26,68 @@ class ParticipantSettingAlertScreen extends StatelessWidget {
         ),
         body: Column(
           children: <Widget>[
-            SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      const Text('人数'),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: _SettingNumberPeople(),
-                      )
-                    ],
-                  ),
-                  Consumer<Record>(
-                    builder: (context, record, _) => Container(
-                      height: 50.0 * record.numberPeople,
-                      width: 150.0,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: record.numberPeople,
-                        itemBuilder: (BuildContext context, int index) {
-                          _controllers.add(TextEditingController());
-                          return TextField(
-                            controller: _controllers[index],
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            Row(
+              children: <Widget>[
+                const Text('人数'),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: _SettingNumberPeople(),
+                )
+              ],
             ),
+            SingleChildScrollView(
+              child: _InputName(controllers: _controllers),
+              ),
             FlatButton(
               child: const Text('Cancel'),
               onPressed: () => Navigator.pop(context),
-              ),
+            ),
             Consumer<Record>(
               builder: (context, record, child) => FlatButton(
                 child: const Text('OK'),
                 onPressed: () {
                   nameModel.setNewName(_controllers, record);
-                  Navigator.pop(context);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return RecordContentsScreen(record: record);
+                      },
+                    ),
+                  );
                 },
               ),
-            ),
+            )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _InputName extends StatelessWidget {
+  const _InputName({
+    Key key,
+    @required List<TextEditingController> controllers,
+  })  : _controllers = controllers,
+        super(key: key);
+
+  final List<TextEditingController> _controllers;
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<Record>(
+      builder: (context, record, _) => Container(
+        // height: 50.0 * record.numberPeople,
+        width: 150.0,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: record.numberPeople,
+          itemBuilder: (BuildContext context, int index) {
+            _controllers.add(TextEditingController());
+            return TextField(
+              controller: _controllers[index],
+            );
+          },
         ),
       ),
     );
