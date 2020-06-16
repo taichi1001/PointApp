@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/model/record_model.dart';
-import 'package:todo_app/ui/record_contents_screen.dart';
+import 'package:todo_app/ui/participant_setting_screen.dart';
+
+import '../../model/name_model.dart';
+import '../record_contents_screen.dart';
 
 class RecordListTile extends StatelessWidget {
   const RecordListTile({
@@ -11,16 +14,35 @@ class RecordListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final model = Provider.of<NameModel>(context, listen: false);
     return Card(
       child: Consumer<Record>(
         builder: (context, record, _) => ListTile(
           leading: const _CheckBoxButton(),
           title: Text(record.title),
           trailing: const _RemoveButton(),
-          onTap: () =>
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return RecordContentsView(record: record);
-          })),
+          onTap: () => {
+            if (model.getRecordNameList(record).isEmpty)
+              {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ParticipantSettingScreen(record: record);
+                    },
+                  ),
+                ),
+              }
+            else
+              {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return RecordContentsScreen(record: record);
+                    },
+                  ),
+                ),
+              }
+          },
         ),
       ),
     );

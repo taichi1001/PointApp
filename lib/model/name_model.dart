@@ -33,6 +33,23 @@ class NameModel with ChangeNotifier {
     }
     return nameList;
   }
+  
+  // レコードに対応する名前を更新するときに使う
+  Future updateRecordName(List<TextEditingController> newTextList, List<TextEditingController> oldTextList) async {
+    var index = 0;
+    for(final text in newTextList){
+      if(text.text != oldTextList[index].text){
+        for(final name in _allNameList){
+          if(oldTextList[index].text == name.name){
+            name.name = text.text;
+            await nameRepo.updateName(name);
+          }
+        }
+      }
+      index += 1;
+    }
+    await _fetchAll();
+  }
 
   Future _fetchAll() async {
     _allNameList = await nameRepo.getAllName();
@@ -50,7 +67,7 @@ class NameModel with ChangeNotifier {
             CorrespondenceNameRecord(nameId: nameId, recordId: record.id));
       }
     }
-    _fetchAll();
+    await _fetchAll();
   }
 
   Future add(Name name) async {
