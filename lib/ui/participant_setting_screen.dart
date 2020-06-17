@@ -47,7 +47,7 @@ class ParticipantSettingScreen extends StatelessWidget {
                 child: const Text('OK'),
                 onPressed: () {
                   nameModel.setNewName(_controllers, record);
-                  Navigator.of(context).push(
+                  Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) {
                         return RecordContentsScreen(record: record);

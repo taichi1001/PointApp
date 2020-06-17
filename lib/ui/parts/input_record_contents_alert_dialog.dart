@@ -18,7 +18,7 @@ class InputRecordContentsAlertDialog extends StatelessWidget {
     return AlertDialog(
       content: SingleChildScrollView(
         child: InputRecordContentsListView(
-          list: recordContents.recordContentsList(record),
+          list: recordContents.getRecordContentsList(record),
         ),
       ),
       actions: <Widget>[
@@ -27,7 +27,7 @@ class InputRecordContentsAlertDialog extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         _OkButton(
-          list: recordContents.recordContentsList(record),
+          list: recordContents.getRecordContentsList(record),
         ),
       ],
     );
