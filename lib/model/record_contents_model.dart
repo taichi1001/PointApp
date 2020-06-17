@@ -56,6 +56,7 @@ class RecordContentsModel with ChangeNotifier {
     final List<DataCell> dataCellList = [];
     for(final recordContents in recordContentsList){
       if(count == recordContents.count){
+        // ここでrecordContentsをconsumerに入れたらいい感じになるのでは？
         dataCellList.add(DataCell(Text(recordContents.score.toString())));
       }
     }
