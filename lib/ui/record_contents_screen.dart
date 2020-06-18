@@ -62,6 +62,7 @@ class RecordContentsScreen extends StatelessWidget {
                 );
               },
             ),
+            const Card(child: Text('順位'),),
           ],
         ),
       ),
