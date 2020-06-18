@@ -1,4 +1,6 @@
-class RecordContents {
+import 'package:flutter/cupertino.dart';
+
+class RecordContents with ChangeNotifier {
   int id;
   int recordId;
   int nameId;
