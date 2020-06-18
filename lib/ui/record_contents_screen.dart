@@ -14,11 +14,11 @@ class RecordContentsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recordContents = RecordContentsModel();
+    final recordContentsModel = RecordContentsModel();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
-          value: recordContents,
+          value: recordContentsModel,
         ),
         ChangeNotifierProvider.value(
           value: record,
@@ -80,10 +80,10 @@ class _DataTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<RecordContentsModel>(
-      builder: (context, recordContents, _) {
+      builder: (context, recordContentsModel, _) {
         return DataTable(
-          columns: recordContents.getDataColumn(record),
-          rows: recordContents.getDataRow(record),
+          columns: recordContentsModel.getDataColumn(record),
+          rows: recordContentsModel.getDataRow(record),
         );
       },
     );

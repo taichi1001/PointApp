@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/entity/record.dart';
+import 'package:todo_app/entity/name.dart';
 import 'package:todo_app/model/name_model.dart';
-
 
 class InputRecordContentsScreen extends StatelessWidget {
   final Record record;
@@ -19,7 +19,9 @@ class InputRecordContentsScreen extends StatelessWidget {
     return ChangeNotifierProvider.value(
       value: record,
       child: Scaffold(
-        appBar: AppBar(title: const Text('New Record'),),
+        appBar: AppBar(
+          title: const Text('New Record'),
+        ),
         body: Column(
           children: <Widget>[
             ListView.builder(
@@ -37,33 +39,40 @@ class InputRecordContentsScreen extends StatelessWidget {
                 );
               },
             ),
-            _OkButton(controllers: _controllers),
+            _OkButton(controllers: _controllers, nameList: nameList),
           ],
         ),
       ),
-    );   
+    );
   }
 }
 
 class _OkButton extends StatelessWidget {
   final List<TextEditingController> controllers;
+  final List<Name> nameList;
   const _OkButton({
     @required this.controllers,
+    @required this.nameList,
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if(controllers.map((ctr) => ctr.text).toList().isNotEmpty){
-      return RaisedButton(
-        child: const Text('OK'),
-        color: Colors.amber[800],
-        textColor: Colors.white,
-        onPressed: () {
-        },
+    if (controllers.map((ctr) => ctr.text).toList().isNotEmpty) {
+      return Consumer2(
+        builder: (context, record, recordContentsModel, child) => RaisedButton(
+          child: const Text('OK'),
+          color: Colors.amber[800],
+          textColor: Colors.white,
+          onPressed: () {
+            recordContentsModel.addCount();
+            recordContentsModel.addNewRecordContents(
+                controllers, record, nameList);
+          },
+        ),
       );
-    }else{
-      return Container(); 
+    } else {
+      return Container();
     }
   }
 }

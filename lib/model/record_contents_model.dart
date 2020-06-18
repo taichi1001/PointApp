@@ -3,12 +3,14 @@ import 'package:quiver/iterables.dart' as quiver;
 import 'package:flutter/material.dart';
 import 'package:todo_app/entity/record_contents.dart';
 import 'package:todo_app/entity/record.dart';
+import 'package:todo_app/entity/name.dart';
 import 'package:todo_app/model/name_model.dart';
 import 'package:todo_app/repository/record_contents_repository.dart';
 
 class RecordContentsModel with ChangeNotifier {
   List<RecordContents> _allRecordContentsList = [];
   List<RecordContents> get allRecordContentsList => _allRecordContentsList;
+  int _count = 0; 
 
   final RecordContentsRepository repo = RecordContentsRepository();
   final NameModel nameModel = NameModel();
@@ -17,10 +19,14 @@ class RecordContentsModel with ChangeNotifier {
     _fetchAll();
   }
 
-  List<DataColumn> getDataColumn(Record record){
+  void addCount(){
+    _count += 1;
+  }
+
+  List<DataColumn> getDataColumn(Record record) {
     final nameList = nameModel.getRecordNameList(record);
     final List<DataColumn> dataColumn = [];
-    for(final name in nameList){
+    for (final name in nameList) {
       dataColumn.add(DataColumn(label: Text(name.name)));
     }
     return dataColumn;
@@ -34,33 +40,50 @@ class RecordContentsModel with ChangeNotifier {
           .where((recordContents) => recordContents.recordId == record.id)
           .toList();
 
-  List<DataRow> getDataRow(Record record){
+  List<DataRow> getDataRow(Record record) {
     final recordContentsList = getRecordContentsList(record);
     final List<int> countRange = _getRecordCountRangeList(recordContentsList);
     final List<DataRow> dataRow = [];
-    for(final count in countRange){
-      dataRow.add(DataRow(cells:_getDataCell(count, recordContentsList)));
+    for (final count in countRange) {
+      dataRow.add(DataRow(cells: _getDataCell(count, recordContentsList)));
     }
     return dataRow;
   }
 
   List<int> _getRecordCountRangeList(List<RecordContents> recordContentsList) {
     final List<int> recordCountList = [];
-    recordContentsList.map((recordContents) => recordCountList.add(recordContents.count)).toList();
+    recordContentsList
+        .map((recordContents) => recordCountList.add(recordContents.count))
+        .toList();
     final int maxCount = recordCountList.reduce(max);
     final List<int> countRange = quiver.range(1, maxCount);
     return countRange;
   }
 
-  List<DataCell> _getDataCell(int count, List<RecordContents> recordContentsList){
+  List<DataCell> _getDataCell(
+      int count, List<RecordContents> recordContentsList) {
     final List<DataCell> dataCellList = [];
-    for(final recordContents in recordContentsList){
-      if(count == recordContents.count){
+    for (final recordContents in recordContentsList) {
+      if (count == recordContents.count) {
         // ここでrecordContentsをconsumerに入れたらいい感じになるのでは？
         dataCellList.add(DataCell(Text(recordContents.score.toString())));
       }
     }
-    return dataCellList; 
+    return dataCellList;
+  }
+
+  Future addNewRecordContents(List<TextEditingController> textList,
+      Record record, List<Name> nameList) async {
+    var index = 0;
+    for (final text in textList) {
+      await repo.insertRecordContents(RecordContents(
+          recordId: record.id,
+          nameId: nameList[index].id,
+          count: _count,
+          score: int.parse(text.text)));
+      index += 1;
+    }
+    await _fetchAll();
   }
 
   Future _fetchAll() async {
