@@ -31,8 +31,6 @@ class NameModel with ChangeNotifier {
         }
       }
     }
-    nameList.add(Name(id: 1, name: 'sasaki'));
-    nameList.add(Name(id: 2, name: 'kitaura'));
     return nameList;
   }
   

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/model/record_contents_model.dart';
-import 'package:todo_app/ui/parts/input_record_contents_alert_dialog.dart';
+import 'package:todo_app/ui/input_record_contents_screen.dart';
 import 'package:todo_app/ui/parts/participant_update_alert_dialog.dart';
 
 class RecordContentsScreen extends StatelessWidget {
@@ -47,10 +47,23 @@ class RecordContentsScreen extends StatelessWidget {
                 },
               ),
             ),
-            _DataTable(record: record)
+            _DataTable(record: record),
+            RaisedButton(
+              child: const Text('New'),
+              color: Colors.amber[800],
+              textColor: Colors.white,
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return InputRecordContentsScreen(record: record);
+                    },
+                  ),
+                );
+              },
+            ),
           ],
         ),
-        floatingActionButton: const _InputRecordContentsButton(),
       ),
     );
   }
@@ -67,32 +80,10 @@ class _DataTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<RecordContentsModel>(
-      builder: (context, recordContents, _){
+      builder: (context, recordContents, _) {
         return DataTable(
           columns: recordContents.getDataColumn(record),
           rows: recordContents.getDataRow(record),
-        );
-      },
-    );
-  }
-}
-
-class _InputRecordContentsButton extends StatelessWidget {
-  const _InputRecordContentsButton({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      child: const Icon(Icons.add),
-      onPressed: () {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return const InputRecordContentsAlertDialog();
-          },
         );
       },
     );
