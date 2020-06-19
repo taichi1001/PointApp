@@ -67,7 +67,7 @@ class _OkButton extends StatelessWidget {
           onPressed: () {
             recordContentsModel.addCount();
             recordContentsModel.addNewRecordContents(
-                controllers, record, nameList);
+                controllers, nameList);
           },
         ),
       );

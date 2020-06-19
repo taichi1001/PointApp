@@ -8,72 +8,31 @@ import 'package:todo_app/model/name_model.dart';
 import 'package:todo_app/repository/record_contents_repository.dart';
 
 class RecordContentsModel with ChangeNotifier {
+  Record record;
   List<RecordContents> _allRecordContentsList = [];
+  List<RecordContents> _recordContentsList = [];
+  List<List<RecordContents>> _recordContentsPerCount = [];
+  List<int> _countRange = [];
+  int _count = 0;
+
   List<RecordContents> get allRecordContentsList => _allRecordContentsList;
-  int _count = 0; 
+  List<RecordContents> get recordContentsList => _recordContentsList;
+  List<List<RecordContents>> get recordContentsPerCount =>
+      _recordContentsPerCount;
 
   final RecordContentsRepository repo = RecordContentsRepository();
   final NameModel nameModel = NameModel();
 
-  RecordContentsModel() {
+  RecordContentsModel({this.record}) {
     _fetchAll();
   }
 
-  void addCount(){
+  void addCount() {
     _count += 1;
   }
 
-  List<DataColumn> getDataColumn(Record record) {
-    final nameList = nameModel.getRecordNameList(record);
-    final List<DataColumn> dataColumn = [];
-    for (final name in nameList) {
-      dataColumn.add(DataColumn(label: Text(name.name)));
-    }
-    return dataColumn;
-  }
-
-//  入力されたレコードに対応するコンテンツを全て配列に取得
-//  配列からrecordContents.countの数が同じものどうしを<DataCell>配列にかためて、
-//  それをcountの順番に<DataRow>配列に入れる
-  List<RecordContents> getRecordContentsList(Record record) =>
-      _allRecordContentsList
-          .where((recordContents) => recordContents.recordId == record.id)
-          .toList();
-
-  List<DataRow> getDataRow(Record record) {
-    final recordContentsList = getRecordContentsList(record);
-    final List<int> countRange = _getRecordCountRangeList(recordContentsList);
-    final List<DataRow> dataRow = [];
-    for (final count in countRange) {
-      dataRow.add(DataRow(cells: _getDataCell(count, recordContentsList)));
-    }
-    return dataRow;
-  }
-
-  List<int> _getRecordCountRangeList(List<RecordContents> recordContentsList) {
-    final List<int> recordCountList = [];
-    recordContentsList
-        .map((recordContents) => recordCountList.add(recordContents.count))
-        .toList();
-    final int maxCount = recordCountList.reduce(max);
-    final List<int> countRange = quiver.range(1, maxCount);
-    return countRange;
-  }
-
-  List<DataCell> _getDataCell(
-      int count, List<RecordContents> recordContentsList) {
-    final List<DataCell> dataCellList = [];
-    for (final recordContents in recordContentsList) {
-      if (count == recordContents.count) {
-        // ここでrecordContentsをconsumerに入れたらいい感じになるのでは？
-        dataCellList.add(DataCell(Text(recordContents.score.toString())));
-      }
-    }
-    return dataCellList;
-  }
-
-  Future addNewRecordContents(List<TextEditingController> textList,
-      Record record, List<Name> nameList) async {
+  Future addNewRecordContents(
+      List<TextEditingController> textList, List<Name> nameList) async {
     var index = 0;
     for (final text in textList) {
       await repo.insertRecordContents(RecordContents(
@@ -86,8 +45,45 @@ class RecordContentsModel with ChangeNotifier {
     await _fetchAll();
   }
 
+  void _getRecordContentsPerCount() {
+    final List<List<RecordContents>> __recordContentsPerCount = [];
+
+    for (final count in _countRange) {
+      final List<RecordContents> perCount = [];
+      for (final recordContetns in _recordContentsList) {
+        if (recordContetns.count == count) {
+          perCount.add(recordContetns);
+        }
+      }
+      __recordContentsPerCount.add(perCount);
+    }
+    _recordContentsPerCount = __recordContentsPerCount;
+  }
+
+  void _getRecordContentsList() {
+    final List<RecordContents> tmp = _allRecordContentsList
+        .where((recordContents) => recordContents.recordId == record.id)
+        .toList();
+
+    _recordContentsList = tmp;
+  }
+
+  void _getRecordCountRange() {
+    final List<int> recordCountList = [];
+    _recordContentsList
+        .map((recordContents) => recordCountList.add(recordContents.count))
+        .toList();
+    final int maxCount = recordCountList.reduce(max);
+    final List<int> countRange = quiver.range(1, maxCount);
+
+    _countRange = countRange;
+  }
+
   Future _fetchAll() async {
     _allRecordContentsList = await repo.getAllRecordsContents();
+    _getRecordContentsList();
+    _getRecordContentsPerCount();
+    _getRecordCountRange();
     notifyListeners();
   }
 

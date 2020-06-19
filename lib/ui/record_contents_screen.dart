@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/entity/record.dart';
+import 'package:todo_app/entity/record_contents.dart';
 import 'package:todo_app/model/record_contents_model.dart';
+import 'package:todo_app/model/name_model.dart';
 import 'package:todo_app/ui/input_record_contents_screen.dart';
 import 'package:todo_app/ui/parts/participant_update_alert_dialog.dart';
 
@@ -14,7 +16,7 @@ class RecordContentsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recordContentsModel = RecordContentsModel();
+    final recordContentsModel = RecordContentsModel(record: record);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
@@ -62,7 +64,9 @@ class RecordContentsScreen extends StatelessWidget {
                 );
               },
             ),
-            const Card(child: Text('順位'),),
+            const Card(
+              child: Text('順位'),
+            ),
           ],
         ),
       ),
@@ -80,11 +84,33 @@ class _DataTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final nameModel = Provider.of<NameModel>(context, listen: false);
     return Consumer<RecordContentsModel>(
       builder: (context, recordContentsModel, _) {
         return DataTable(
-          columns: recordContentsModel.getDataColumn(record),
-          rows: recordContentsModel.getDataRow(record),
+          columns: nameModel
+              .getRecordNameList(record)
+              .map((name) => DataColumn(label: Text(name.name)))
+              .toList(),
+          rows: recordContentsModel.recordContentsPerCount
+              .map(
+                (perCount) => DataRow(
+                  cells: perCount
+                      .map(
+                        (recordContents) => DataCell(
+                          ChangeNotifierProvider.value(
+                            value: recordContents,
+                            child: Consumer<RecordContents>(
+                                builder: (context, recordContents, _) {
+                              return Text(recordContents.score.toString());
+                            }),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              )
+              .toList(),
         );
       },
     );
