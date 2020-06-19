@@ -12,8 +12,8 @@ class RecordContentsModel with ChangeNotifier {
   List<RecordContents> _allRecordContentsList = [];
   List<RecordContents> _recordContentsList = [];
   List<List<RecordContents>> _recordContentsPerCount = [];
-  List<int> _countRange = [];
   int _count = 0;
+  List<int> _countRange = [];
 
   List<RecordContents> get allRecordContentsList => _allRecordContentsList;
   List<RecordContents> get recordContentsList => _recordContentsList;
@@ -27,9 +27,9 @@ class RecordContentsModel with ChangeNotifier {
     _fetchAll();
   }
 
-  void addCount() {
-    _count += 1;
-  }
+  // void addCount() {
+  //   _count += 1;
+  // }
 
   Future addNewRecordContents(
       List<TextEditingController> textList, List<Name> nameList) async {
@@ -68,14 +68,15 @@ class RecordContentsModel with ChangeNotifier {
     _recordContentsList = tmp;
   }
 
-  void _getRecordCountRange() {
-    final List<int> recordCountList = [];
-    _recordContentsList
-        .map((recordContents) => recordCountList.add(recordContents.count))
-        .toList();
-    final int maxCount = recordCountList.reduce(max);
-    final List<int> countRange = quiver.range(1, maxCount);
+  void _getCount(){
+    final int maxCount =_recordContentsList.map((recordContents) => recordContents.count).toList().reduce(max);
 
+    _count = maxCount;
+    
+  }
+
+  void _getCountRange() {
+    final List<int> countRange = quiver.range(1, _count);
     _countRange = countRange;
   }
 
@@ -83,7 +84,8 @@ class RecordContentsModel with ChangeNotifier {
     _allRecordContentsList = await repo.getAllRecordsContents();
     _getRecordContentsList();
     _getRecordContentsPerCount();
-    _getRecordCountRange();
+    _getCount();
+    _getCountRange();
     notifyListeners();
   }
 
