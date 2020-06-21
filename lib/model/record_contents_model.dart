@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:quiver/iterables.dart' as quiver;
 import 'package:flutter/material.dart';
 import 'package:todo_app/entity/record_contents.dart';
 import 'package:todo_app/entity/record.dart';
@@ -13,7 +12,7 @@ class RecordContentsModel with ChangeNotifier {
   List<RecordContents> _recordContentsList = [];
   List<List<RecordContents>> _recordContentsPerCount = [];
   int _count = 0;
-  List<int> _countRange = [];
+//  List<int> _countRange = [];
 
   List<RecordContents> get allRecordContentsList => _allRecordContentsList;
   List<RecordContents> get recordContentsList => _recordContentsList;
@@ -27,9 +26,9 @@ class RecordContentsModel with ChangeNotifier {
     _fetchAll();
   }
 
-  // void addCount() {
-  //   _count += 1;
-  // }
+  void addCount(){
+    _count ++;
+}
 
   Future addNewRecordContents(
       List<TextEditingController> textList, List<Name> nameList) async {
@@ -48,14 +47,14 @@ class RecordContentsModel with ChangeNotifier {
   void _getRecordContentsPerCount() {
     final List<List<RecordContents>> __recordContentsPerCount = [];
 
-    for (final count in _countRange) {
+    for(int count = 1; count <= _count; count++){
       final List<RecordContents> perCount = [];
-      for (final recordContetns in _recordContentsList) {
-        if (recordContetns.count == count) {
-          perCount.add(recordContetns);
+      for (final recordContents in _recordContentsList) {
+        if (recordContents.count == count) {
+          perCount.add(recordContents);
         }
       }
-      __recordContentsPerCount.add(perCount);
+        __recordContentsPerCount.add(perCount);
     }
     _recordContentsPerCount = __recordContentsPerCount;
   }
@@ -69,24 +68,23 @@ class RecordContentsModel with ChangeNotifier {
   }
 
   void _getCount(){
-    final int maxCount =_recordContentsList.map((recordContents) => recordContents.count).toList().reduce(max);
+    int maxCount = 0;
+    if (_recordContentsList.isNotEmpty) {
+      maxCount = _recordContentsList.map((
+          recordContents) => recordContents.count).toList().reduce(max);
 
-    _count = maxCount;
+     }
+     _count = maxCount;
     
-  }
-
-  void _getCountRange() {
-    final List<int> countRange = quiver.range(1, _count);
-    _countRange = countRange;
   }
 
   Future _fetchAll() async {
     _allRecordContentsList = await repo.getAllRecordsContents();
     _getRecordContentsList();
-    _getRecordContentsPerCount();
     _getCount();
-    _getCountRange();
+    _getRecordContentsPerCount();
     notifyListeners();
+
   }
 
   Future add(RecordContents recordContents) async {

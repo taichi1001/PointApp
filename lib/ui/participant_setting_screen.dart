@@ -45,8 +45,8 @@ class ParticipantSettingScreen extends StatelessWidget {
             Consumer<Record>(
               builder: (context, record, child) => FlatButton(
                 child: const Text('OK'),
-                onPressed: () {
-                  nameModel.setNewName(_controllers, record);
+                onPressed: () async {
+                  await nameModel.setNewName(_controllers, record);
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) {

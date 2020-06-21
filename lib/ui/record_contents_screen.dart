@@ -31,43 +31,46 @@ class RecordContentsScreen extends StatelessWidget {
           title: Consumer<Record>(
               builder: (context, record, _) => Text(record.title)),
         ),
-        body: Column(
-          children: <Widget>[
-            Center(
-              child: RaisedButton(
-                child: const Text('名前変更'),
+        body: Container(
+          height: 800,
+          child: Column(
+            children: <Widget>[
+              Center(
+                child: RaisedButton(
+                  child: const Text('名前変更'),
+                  color: Colors.amber[800],
+                  textColor: Colors.white,
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return ParticipantUpdateAlertDialog(record: record);
+                      },
+                    );
+                  },
+                ),
+              ),
+              _DataTable(record: record),
+              RaisedButton(
+                child: const Text('New'),
                 color: Colors.amber[800],
                 textColor: Colors.white,
                 onPressed: () {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return ParticipantUpdateAlertDialog(record: record);
-                    },
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return InputRecordContentsScreen(record: record, recordContentsModel: recordContentsModel);
+                      },
+                    ),
                   );
                 },
               ),
-            ),
-            _DataTable(record: record),
-            RaisedButton(
-              child: const Text('New'),
-              color: Colors.amber[800],
-              textColor: Colors.white,
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return InputRecordContentsScreen(record: record);
-                    },
-                  ),
-                );
-              },
-            ),
-            const Card(
-              child: Text('順位'),
-            ),
-          ],
+              const Card(
+                child: Text('順位'),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -84,33 +87,36 @@ class _DataTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final nameModel = Provider.of<NameModel>(context, listen: false);
+    final nameModel = Provider.of<NameModel>(context, listen: true);
     return Consumer<RecordContentsModel>(
       builder: (context, recordContentsModel, _) {
-        return DataTable(
-          columns: nameModel
-              .getRecordNameList(record)
-              .map((name) => DataColumn(label: Text(name.name)))
-              .toList(),
-          rows: recordContentsModel.recordContentsPerCount
-              .map(
-                (perCount) => DataRow(
-                  cells: perCount
-                      .map(
-                        (recordContents) => DataCell(
-                          ChangeNotifierProvider.value(
-                            value: recordContents,
-                            child: Consumer<RecordContents>(
-                                builder: (context, recordContents, _) {
-                              return Text(recordContents.score.toString());
-                            }),
+        return Container(
+          height: 200,
+          child: DataTable(
+            columns: nameModel
+                .getRecordNameList(record)
+                .map((name) => DataColumn(label: Text(name.name)))
+                .toList(),
+            rows: recordContentsModel.recordContentsPerCount
+                .map(
+                  (perCount) => DataRow(
+                    cells: perCount
+                        .map(
+                          (recordContents) => DataCell(
+                            ChangeNotifierProvider.value(
+                              value: recordContents,
+                              child: Consumer<RecordContents>(
+                                  builder: (context, recordContents, _) {
+                                return Text(recordContents.score.toString());
+                              }),
+                            ),
                           ),
-                        ),
-                      )
-                      .toList(),
-                ),
-              )
-              .toList(),
+                        )
+                        .toList(),
+                  ),
+                )
+                .toList(),
+          ),
         );
       },
     );
