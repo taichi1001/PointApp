@@ -5,6 +5,7 @@ import 'package:todo_app/entity/record_contents.dart';
 import 'package:todo_app/model/record_contents_model.dart';
 import 'package:todo_app/ui/input_record_contents_screen.dart';
 import 'package:todo_app/ui/parts/participant_update_alert_dialog.dart';
+import 'package:todo_app/ui/parts/rank_rate_update_alert_dialog.dart';
 
 class RecordContentsScreen extends StatelessWidget {
   const RecordContentsScreen({
@@ -24,6 +25,27 @@ class RecordContentsScreen extends StatelessWidget {
             height: 800,
             child: Column(
               children: <Widget>[
+                Center(
+                  child: RaisedButton(
+                    child: const Text('レート変更'),
+                    color: Colors.amber[800],
+                    textColor: Colors.white,
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) => MultiProvider(
+                          providers: [
+                            ChangeNotifierProvider.value(value: record),
+                            ChangeNotifierProvider.value(
+                                value: recordContentsModel),
+                          ],
+                          child: const RankRateUpdateAlertDialog(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
                 Center(
                   child: RaisedButton(
                     child: const Text('名前変更'),

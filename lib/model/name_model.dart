@@ -52,7 +52,7 @@ class NameModel with ChangeNotifier {
           }
         }
       }
-      index += 1;
+      index ++;
     }
     await _fetchAll();
   }

@@ -102,14 +102,14 @@ class RecordContentsModel with ChangeNotifier {
   }
 
   void _getCount() {
-    int maxCount = 0;
+    int count = 0;
     if (_recordContentsList.isNotEmpty) {
-      maxCount = _recordContentsList
+      count = _recordContentsList
           .map((recordContents) => recordContents.count)
           .toList()
           .reduce(max);
     }
-    _count = maxCount;
+    _count = count;
   }
 
   Future _fetchAll() async {
