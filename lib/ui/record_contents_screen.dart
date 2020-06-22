@@ -31,6 +31,7 @@ class RecordContentsScreen extends StatelessWidget {
                     color: Colors.amber[800],
                     textColor: Colors.white,
                     onPressed: () {
+                      recordContentsModel.fetchAll();
                       showDialog(
                         context: context,
                         barrierDismissible: false,

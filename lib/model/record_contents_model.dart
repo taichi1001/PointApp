@@ -29,8 +29,7 @@ class RecordContentsModel with ChangeNotifier {
 
   RecordContentsModel({this.record}) {
     nameModel = NameModel(record: record);
-    _fetchAll();
-    _addRankRate();
+    fetchAll();
   }
 
   void addCount() {
@@ -50,7 +49,7 @@ class RecordContentsModel with ChangeNotifier {
       );
       index++;
     }
-    await _fetchAll();
+    await fetchAll();
   }
 
   Future updateRankRate(List<TextEditingController> textList) async {
@@ -62,10 +61,10 @@ class RecordContentsModel with ChangeNotifier {
       }
       index++;
     }
-    await _fetchAll();
+    await fetchAll();
   }
 
-  Future _addRankRate() async {
+  Future addRankRate() async {
     if (recordRankRateList.isEmpty) {
       for (int rank = 1; rank <= nameModel.recordNameList.length; rank++) {
         await rankRateRepo.insertRankRate(
@@ -112,8 +111,9 @@ class RecordContentsModel with ChangeNotifier {
     _count = count;
   }
 
-  Future _fetchAll() async {
+  Future fetchAll() async {
     _allRecordContentsList = await recordContentsRepo.getAllRecordsContents();
+//    _recordRankRateList = await rankRateRepo.getAllRankRate();
     _recordRankRateList = await rankRateRepo.getRankRateByID(record.id);
     _getRecordContentsList();
     _getCount();
@@ -123,16 +123,16 @@ class RecordContentsModel with ChangeNotifier {
 
   Future add(RecordContents recordContents) async {
     await recordContentsRepo.insertRecordContents(recordContents);
-    _fetchAll();
+    fetchAll();
   }
 
   Future update(RecordContents recordContents) async {
     await recordContentsRepo.updateRecordContents(recordContents);
-    _fetchAll();
+    fetchAll();
   }
 
   Future remove(RecordContents recordContents) async {
     await recordContentsRepo.deleteRecordContentsById(recordContents.id);
-    _fetchAll();
+    fetchAll();
   }
 }

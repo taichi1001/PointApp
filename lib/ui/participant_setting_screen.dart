@@ -43,6 +43,7 @@ class ParticipantSettingScreen extends StatelessWidget {
               child: const Text('OK'),
               onPressed: () async {
                 await recordContentsModel.nameModel.setNewName(_controllers);
+                await recordContentsModel.addRankRate();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => MultiProvider(

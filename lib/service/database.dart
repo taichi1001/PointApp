@@ -82,7 +82,7 @@ class DatabaseService {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         record_id INTEGER NOT NULL,
         rank INTEGER NOT NULL,
-        rate INTEGER NOT NULL,
+        rate INTEGER NOT NULL
       )
     ''');
   }
