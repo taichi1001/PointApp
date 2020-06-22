@@ -7,12 +7,13 @@ import 'package:todo_app/model/name_model.dart';
 import 'package:todo_app/repository/record_contents_repository.dart';
 
 class RecordContentsModel with ChangeNotifier {
-  Record record;
+  final Record record;
+  NameModel nameModel;
+
   List<RecordContents> _allRecordContentsList = [];
   List<RecordContents> _recordContentsList = [];
   List<List<RecordContents>> _recordContentsPerCount = [];
   int _count = 0;
-//  List<int> _countRange = [];
 
   List<RecordContents> get allRecordContentsList => _allRecordContentsList;
   List<RecordContents> get recordContentsList => _recordContentsList;
@@ -20,9 +21,9 @@ class RecordContentsModel with ChangeNotifier {
       _recordContentsPerCount;
 
   final RecordContentsRepository repo = RecordContentsRepository();
-  final NameModel nameModel = NameModel();
 
   RecordContentsModel({this.record}) {
+    nameModel = NameModel(record: record);
     _fetchAll();
   }
 

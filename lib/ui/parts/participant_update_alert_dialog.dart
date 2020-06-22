@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/entity/record.dart';
-import 'package:todo_app/model/name_model.dart';
+import 'package:todo_app/model/record_contents_model.dart';
 
 class ParticipantUpdateAlertDialog extends StatelessWidget {
-  final Record record;
   const ParticipantUpdateAlertDialog({
-    @required this.record,
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final nameModel = Provider.of<NameModel>(context, listen: false);
     final List<TextEditingController> _controllers = [];
     final List<TextEditingController> _controllersTmp = [];
-    for (final name in nameModel.getRecordNameList(record)) {
-      final _controller = TextEditingController(text: name.name);
-      final _controllerTmp = TextEditingController(text: name.name);
-      _controllers.add(_controller);
-      _controllersTmp.add(_controllerTmp);
-    }
 
-    return ChangeNotifierProvider.value(
-      value: record,
-      child: AlertDialog(
+    return Consumer2<Record, RecordContentsModel>(
+      builder: (context, record, recordContentsModel, _) {
+      for (final name in recordContentsModel.nameModel.recordNameList) {
+        final _controller = TextEditingController(text: name.name);
+        final _controllerTmp = TextEditingController(text: name.name);
+        _controllers.add(_controller);
+        _controllersTmp.add(_controllerTmp);
+      }
+      
+      return AlertDialog(
         title: const Text('名前変更'),
         content: SingleChildScrollView(
           child: Consumer<Record>(
@@ -51,12 +49,13 @@ class ParticipantUpdateAlertDialog extends StatelessWidget {
           FlatButton(
               child: const Text('OK'),
               onPressed: () {
-                nameModel.updateRecordName(_controllers, _controllersTmp);
+                recordContentsModel.nameModel.updateRecordName(_controllers, _controllersTmp);
                 Navigator.pop(context);
               },
             ),
         ],
-      ),
+      );
+      },
     );
   }
 }

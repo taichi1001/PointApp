@@ -2,63 +2,63 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/entity/util.dart';
+import 'package:todo_app/model/record_contents_model.dart';
 import 'package:todo_app/model/record_model.dart';
-import 'package:todo_app/model/name_model.dart';
 import 'package:todo_app/ui/record_contents_screen.dart';
 
 class ParticipantSettingScreen extends StatelessWidget {
-  final Record record;
   const ParticipantSettingScreen({
-    @required this.record,
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final List<TextEditingController> _controllers = [];
-    final nameModel = Provider.of<NameModel>(context, listen: false);
-    return ChangeNotifierProvider.value(
-      value: record,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Consumer<Record>(
-              builder: (context, record, _) => Text(record.title)),
-        ),
-        body: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                const Text('人数'),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: _SettingNumberPeople(),
-                )
-              ],
-            ),
-            SingleChildScrollView(
-              child: _InputName(controllers: _controllers),
-              ),
-            FlatButton(
-              child: const Text('Cancel'),
-              onPressed: () => Navigator.pop(context),
-            ),
-            Consumer<Record>(
-              builder: (context, record, child) => FlatButton(
-                child: const Text('OK'),
-                onPressed: () async {
-                  await nameModel.setNewName(_controllers, record);
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return RecordContentsScreen(record: record);
-                      },
+    return Scaffold(
+      appBar: AppBar(
+        title: Consumer<Record>(
+            builder: (context, record, _) => Text(record.title)),
+      ),
+      body: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              const Text('人数'),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: _SettingNumberPeople(),
+              )
+            ],
+          ),
+          SingleChildScrollView(
+            child: _InputName(controllers: _controllers),
+          ),
+          FlatButton(
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(context),
+          ),
+          Consumer2<Record, RecordContentsModel>(
+            builder: (context, record, recordContentsModel, child) =>
+                FlatButton(
+              child: const Text('OK'),
+              onPressed: () async {
+                await recordContentsModel.nameModel.setNewName(_controllers);
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => MultiProvider(
+                      providers: [
+                        ChangeNotifierProvider.value(value: record),
+                        ChangeNotifierProvider.value(
+                            value: recordContentsModel),
+                      ],
+                      child: const RecordContentsScreen(),
                     ),
-                  );
-                },
-              ),
-            )
-          ],
-        ),
+                  ),
+                );
+              },
+            ),
+          )
+        ],
       ),
     );
   }

@@ -4,7 +4,7 @@ import 'package:todo_app/repository/record_repository.dart';
 
 class RecordModel with ChangeNotifier {
   List<Record> _allRecordList = [];
-  List<Record> get allRecordContentsList => _allRecordList;
+  List<Record> get allRecordList => _allRecordList;
   List<Record> get incompletedTodoList =>
       _allRecordList.where((record) => record.isDone == false).toList();
   List<Record> get completedTodoList =>
