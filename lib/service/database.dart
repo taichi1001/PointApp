@@ -13,7 +13,9 @@ class DatabaseService {
   static const recordTableName = 'record';
   static const recordContentsTableName = 'record_contents';
   static const nameTableName = 'name';
-  static const correspondenceNameRecordTableName = 'correspondence_name_Record';
+  static const correspondenceNameRecordTableName = 'correspondence_name_record';
+  static const rankRateTableName = 'rank_rate';
+
 
   static final DatabaseService dbProvider = DatabaseService();
 
@@ -73,6 +75,14 @@ class DatabaseService {
         name_id INTEGER NOT NULL,
         record_id INTEGER NOT NULL,
         UNIQUE(name_id, record_id)
+      )
+    ''');
+    await database.execute('''
+      CREATE TABLE $rankRateTableName (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        record_id INTEGER NOT NULL,
+        rank INTEGER NOT NULL,
+        rate INTEGER NOT NULL,
       )
     ''');
   }
