@@ -64,7 +64,9 @@ class AddTodoDialog extends StatelessWidget {
         FlatButton(
             child: const Text('OK'),
             onPressed: () {
-              recordModel.add(Record(title: titleTextEditingController.text));
+              recordModel.add(Record(
+                  date: DateTime.now(),
+                  title: titleTextEditingController.text));
               Navigator.pop(context);
             }),
       ],

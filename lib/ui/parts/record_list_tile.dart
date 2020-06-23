@@ -18,6 +18,8 @@ class RecordListTile extends StatelessWidget {
         builder: (context, record, recordContentsModel, _) => ListTile(
           leading: const _CheckBoxButton(),
           title: Text(record.title),
+          subtitle: Text(
+              '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}'),
           trailing: const _RemoveButton(),
           onTap: () => {
             if (recordContentsModel.nameModel.recordNameList.isEmpty)

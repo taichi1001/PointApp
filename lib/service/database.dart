@@ -48,6 +48,7 @@ class DatabaseService {
     await database.execute('''
       CREATE TABLE $recordTableName (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        date TEXT NOT NULL,
         title TEXT NOT NULL,
         number_people INTEGER NOT NULL ,
         is_done INTEGER NOT NULL
