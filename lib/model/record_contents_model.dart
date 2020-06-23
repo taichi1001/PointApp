@@ -86,7 +86,7 @@ class RecordContentsModel with ChangeNotifier {
     }
   }
 
-  void _calkScore() {
+  void _calcScore() {
     for (final name in nameModel.recordNameList) {
       for (final contents in recordContentsList) {
         if (name.id == contents.id) {
@@ -94,7 +94,7 @@ class RecordContentsModel with ChangeNotifier {
             if (contents.score == rankRate.rank) {
               if (_scoreMap.containsKey(name.name)) {
                 _scoreMap[name.name] =
-                    _scoreMap[name.name] + contents.score * rankRate.rate;
+                    _scoreMap[name.name] + rankRate.rate;
               } else {
                 _scoreMap[name.name] = contents.score * rankRate.rate;
               }
@@ -155,7 +155,7 @@ class RecordContentsModel with ChangeNotifier {
     _getRecordContentsList();
     _getCount();
     _getRecordContentsPerCount();
-    _calkScore();
+    _calcScore();
     _sortScore();
     notifyListeners();
   }

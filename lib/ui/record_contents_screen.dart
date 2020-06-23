@@ -93,6 +93,7 @@ class RecordContentsScreen extends StatelessWidget {
                 Container(
                   height: 200,
                   child: ListView.builder(
+                    itemCount: recordContentsModel.scoreMap.length,
                     itemBuilder: (BuildContext context, int index){
                       return Row(
                         children: <Widget>[

@@ -21,7 +21,7 @@ class RecordListTile extends StatelessWidget {
           subtitle: Text(
               '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}'),
           trailing: const _RemoveButton(),
-          onTap: () => {
+          onTap: () async {
             if (recordContentsModel.nameModel.recordNameList.isEmpty)
               {
                 Navigator.of(context).push(
@@ -35,10 +35,11 @@ class RecordListTile extends StatelessWidget {
                       child: const ParticipantSettingScreen(),
                     ),
                   ),
-                ),
+                );
               }
             else
               {
+                await recordContentsModel.initRankRate();
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => MultiProvider(
@@ -51,7 +52,7 @@ class RecordListTile extends StatelessWidget {
                       child: const RecordContentsScreen(),
                     ),
                   ),
-                ),
+                );
               }
           },
         ),
