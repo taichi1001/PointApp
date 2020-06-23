@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/entity/record.dart';
-import 'package:todo_app/model/record_contents_model.dart';
+import 'package:todo_app/model/name_model.dart';
 
 class ParticipantUpdateAlertDialog extends StatelessWidget {
   const ParticipantUpdateAlertDialog({
@@ -13,9 +13,9 @@ class ParticipantUpdateAlertDialog extends StatelessWidget {
     final List<TextEditingController> _controllers = [];
     final List<TextEditingController> _controllersTmp = [];
 
-    return Consumer2<Record, RecordContentsModel>(
-      builder: (context, record, recordContentsModel, _) {
-        for (final name in recordContentsModel.nameModel.recordNameList) {
+    return Consumer2<Record, NameModel>(
+      builder: (context, record, nameModel, _) {
+        for (final name in nameModel.recordNameList) {
           final _controller = TextEditingController(text: name.name);
           final _controllerTmp = TextEditingController(text: name.name);
           _controllers.add(_controller);
@@ -49,8 +49,7 @@ class ParticipantUpdateAlertDialog extends StatelessWidget {
             FlatButton(
               child: const Text('OK'),
               onPressed: () {
-                recordContentsModel.nameModel
-                    .updateRecordName(_controllers, _controllersTmp);
+                nameModel.updateRecordName(_controllers, _controllersTmp);
                 Navigator.pop(context);
               },
             ),

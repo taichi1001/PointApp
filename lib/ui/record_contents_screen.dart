@@ -60,7 +60,7 @@ class RecordContentsScreen extends StatelessWidget {
                           providers: [
                             ChangeNotifierProvider.value(value: record),
                             ChangeNotifierProvider.value(
-                                value: recordContentsModel),
+                                value: recordContentsModel.nameModel),
                           ],
                           child: const ParticipantUpdateAlertDialog(),
                         ),
