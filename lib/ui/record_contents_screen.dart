@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/entity/record_contents.dart';
+import 'package:todo_app/model/name_model.dart';
 import 'package:todo_app/model/record_contents_model.dart';
 import 'package:todo_app/ui/input_record_contents_screen.dart';
 import 'package:todo_app/ui/parts/participant_update_alert_dialog.dart';
@@ -19,8 +20,8 @@ class RecordContentsScreen extends StatelessWidget {
         title: Consumer<Record>(
             builder: (context, record, _) => Text(record.title)),
       ),
-      body: Consumer2<Record, RecordContentsModel>(
-        builder: (context, record, recordContentsModel, _) {
+      body: Consumer3<Record, RecordContentsModel, NameModel>(
+        builder: (context, record, recordContentsModel, nameModel, _) {
           return Container(
             height: 800,
             child: Column(
@@ -118,12 +119,12 @@ class _DataTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<RecordContentsModel>(
-      builder: (context, recordContentsModel, _) {
+    return Consumer2<RecordContentsModel, NameModel>(
+      builder: (context, recordContentsModel, nameModel, _) {
         return Container(
           height: 200,
           child: DataTable(
-            columns: recordContentsModel.nameModel.recordNameList
+            columns: nameModel.recordNameList
                 .map((name) => DataColumn(label: Text(name.name)))
                 .toList(),
             rows: recordContentsModel.recordContentsPerCount

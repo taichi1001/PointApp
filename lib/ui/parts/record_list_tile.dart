@@ -46,6 +46,7 @@ class RecordListTile extends StatelessWidget {
                         ChangeNotifierProvider.value(value: record),
                         ChangeNotifierProvider.value(
                             value: recordContentsModel),
+                        ChangeNotifierProvider.value(value: recordContentsModel.nameModel),
                       ],
                       child: const RecordContentsScreen(),
                     ),
