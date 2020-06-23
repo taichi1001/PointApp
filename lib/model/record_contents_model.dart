@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:todo_app/entity/rank_rate.dart';
@@ -15,6 +16,7 @@ class RecordContentsModel with ChangeNotifier {
   List<RecordContents> _recordContentsList = [];
   List<List<RecordContents>> _recordContentsPerCount = [];
   List<RankRate> _recordRankRateList = [];
+  Map<String, int> _scoreMap = {};
   int _count = 0;
 
   List<RecordContents> get allRecordContentsList => _allRecordContentsList;
@@ -22,6 +24,7 @@ class RecordContentsModel with ChangeNotifier {
   List<List<RecordContents>> get recordContentsPerCount =>
       _recordContentsPerCount;
   List<RankRate> get recordRankRateList => _recordRankRateList;
+  Map<String, int> get scoreMap => _scoreMap;
 
   final RecordContentsRepository recordContentsRepo =
       RecordContentsRepository();
@@ -64,7 +67,7 @@ class RecordContentsModel with ChangeNotifier {
     await fetchAll();
   }
 
-  Future addRankRate() async {
+  Future initRankRate() async {
     if (recordRankRateList.isEmpty) {
       for (int rank = 1; rank <= nameModel.recordNameList.length; rank++) {
         await rankRateRepo.insertRankRate(
@@ -75,6 +78,41 @@ class RecordContentsModel with ChangeNotifier {
         );
       }
     }
+  }
+
+  void initScore() {
+    for (final name in nameModel.recordNameList) {
+      _scoreMap[name.name] = 0;
+    }
+  }
+
+  void _calkScore() {
+    for (final name in nameModel.recordNameList) {
+      for (final contents in recordContentsList) {
+        if (name.id == contents.id) {
+          for (final rankRate in recordRankRateList) {
+            if (contents.score == rankRate.rank) {
+              if (_scoreMap.containsKey(name.name)) {
+                _scoreMap[name.name] =
+                    _scoreMap[name.name] + contents.score * rankRate.rate;
+              } else {
+                _scoreMap[name.name] = contents.score * rankRate.rate;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  void _sortScore() {
+    final sortedKeys = _scoreMap.keys.toList(growable: false)
+      ..sort((k1, k2) => _scoreMap[k1].compareTo(_scoreMap[k2]));
+    final LinkedHashMap<String, int> sortedMap = LinkedHashMap.fromIterable(
+        sortedKeys,
+        key: (k) => k,
+        value: (k) => _scoreMap[k]);
+    _scoreMap = sortedMap;
   }
 
   void _getRecordContentsPerCount() {
@@ -113,11 +151,12 @@ class RecordContentsModel with ChangeNotifier {
 
   Future fetchAll() async {
     _allRecordContentsList = await recordContentsRepo.getAllRecordsContents();
-//    _recordRankRateList = await rankRateRepo.getAllRankRate();
     _recordRankRateList = await rankRateRepo.getRankRateByID(record.id);
     _getRecordContentsList();
     _getCount();
     _getRecordContentsPerCount();
+    _calkScore();
+    _sortScore();
     notifyListeners();
   }
 

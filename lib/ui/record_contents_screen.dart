@@ -88,9 +88,20 @@ class RecordContentsScreen extends StatelessWidget {
                     );
                   },
                 ),
-                const Card(
-                  child: Text('順位'),
-                ),
+                const Text('順位'),
+                Container(
+                  height: 200,
+                  child: ListView.builder(
+                    itemBuilder: (BuildContext context, int index){
+                      return Row(
+                        children: <Widget>[
+                          Text(recordContentsModel.scoreMap.keys.toList()[index]),
+                          Text(recordContentsModel.scoreMap.values.toList()[index].toString()),
+                        ],
+                      );
+                    },
+                  ),
+                )
               ],
             ),
           );
@@ -124,9 +135,9 @@ class _DataTable extends StatelessWidget {
                             ChangeNotifierProvider.value(
                               value: recordContents,
                               child: Consumer<RecordContents>(
-                                  builder: (context, recordContents, _) {
-                                return Text(recordContents.score.toString());
-                              }),
+                                  builder: (context, recordContents, _) =>
+                                  Text(recordContents.score.toString())
+                              ),
                             ),
                           ),
                         )

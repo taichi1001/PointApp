@@ -33,8 +33,13 @@ class RankRateUpdateAlertDialog extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: record.numberPeople,
                   itemBuilder: (BuildContext context, int index) {
-                    return TextField(
-                      controller: _controllers[index],
+                    return Row(
+                      children: <Widget>[
+                        Text(index.toString()),
+                        TextField(
+                          controller: _controllers[index],
+                        ),
+                      ],
                     );
                   },
                 ),
