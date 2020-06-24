@@ -96,9 +96,7 @@ class RecordContentsModel with ChangeNotifier {
               if (_scoreMap.containsKey(name.name)) {
                 _scoreMap[name.name] =
                     _scoreMap[name.name] + rankRate.rate;
-              } else {
-                _scoreMap[name.name] = contents.score * rankRate.rate;
-              }
+              } 
             }
           }
         }
