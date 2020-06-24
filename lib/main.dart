@@ -20,9 +20,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<RecordModel>(
           create: (context) => RecordModel(),
         ),
-        ChangeNotifierProvider<NameModel>(
-          create: (context) => NameModel(),
-        ),
         ChangeNotifierProvider<ManageDBModel>(
           create: (context) => ManageDBModel(),
         ),
