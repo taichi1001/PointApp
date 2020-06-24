@@ -1,17 +1,17 @@
 class CorrespondenceNameRecord {
-  int id;
+  int correspondenceId;
   int nameId;
   int recordId;
 
-  CorrespondenceNameRecord({this.id, this.nameId, this.recordId});
+  CorrespondenceNameRecord({this.correspondenceId, this.nameId, this.recordId});
 
   factory CorrespondenceNameRecord.fromDatabaseJson(
           Map<String, dynamic> data) =>
       CorrespondenceNameRecord(
-          id: data['id'], nameId: data['name_id'], recordId: data['record_id']);
+          correspondenceId: data['id'], nameId: data['name_id'], recordId: data['record_id']);
 
   Map<String, dynamic> toDatabaseJson() => {
-        'id': id,
+        'id': correspondenceId,
         'name_id': nameId,
         'record_id': recordId,
       };

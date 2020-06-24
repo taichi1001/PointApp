@@ -1,19 +1,19 @@
 class Name {
-  int id;
+  int nameId;
   String name;
 
   Name({
-    this.id,
+    this.nameId,
     this.name,
   });
 
   factory Name.fromDatabaseJson(Map<String, dynamic> data) => Name(
-        id: data['id'],
+        nameId: data['id'],
         name: data['name'],
       );
 
   Map<String, dynamic> toDatabaseJson() => {
-        'id': id,
+        'id': nameId,
         'name': name,
       };
 }

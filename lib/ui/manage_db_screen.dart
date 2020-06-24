@@ -42,7 +42,7 @@ class DBListView extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return Row(
                         children: <Widget>[
-                          Text(model.allRecordList[index].id.toString()),
+                          Text(model.allRecordList[index].recordId.toString()),
                           Text(model.allRecordList[index].title.toString()),
                           Text(model.allRecordList[index].numberPeople
                               .toString()),
@@ -71,7 +71,7 @@ class DBListView extends StatelessWidget {
                       return Row(
                         children: <Widget>[
                           Text(
-                              model.allRecordContentsList[index].id.toString()),
+                              model.allRecordContentsList[index].recordContentsId.toString()),
                           Text(model.allRecordContentsList[index].recordId
                               .toString()),
                           Text(model.allRecordContentsList[index].nameId
@@ -103,7 +103,7 @@ class DBListView extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return Row(
                         children: <Widget>[
-                          Text(model.allNameList[index].id.toString()),
+                          Text(model.allNameList[index].nameId.toString()),
                           Text(model.allNameList[index].name.toString()),
                         ],
                       );
@@ -129,7 +129,7 @@ class DBListView extends StatelessWidget {
                       return Row(
                         children: <Widget>[
                           Text(
-                              model.allCorrespondenceList[index].id.toString()),
+                              model.allCorrespondenceList[index].correspondenceId.toString()),
                           Text(model.allCorrespondenceList[index].nameId
                               .toString()),
                           Text(model.allCorrespondenceList[index].recordId

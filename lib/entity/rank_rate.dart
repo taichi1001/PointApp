@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
 class RankRate with ChangeNotifier {
-  int id;
+  int rankRateId;
   int recordId;
   int rank;
   int rate;
 
-  RankRate({this.id, this.recordId, this.rank, this.rate = 1});
+  RankRate({this.rankRateId, this.recordId, this.rank, this.rate = 1});
 
   factory RankRate.fromDatabaseJson(Map<String, dynamic> data) =>
       RankRate(
-        id: data['id'],
+        rankRateId: data['id'],
         recordId: data['record_id'],
         rank: data['rank'],
         rate: data['rate'],
       );
 
   Map<String, dynamic> toDatabaseJson() => {
-        'id': id,
+        'id': rankRateId,
         'record_id': recordId,
         'rank': rank,
         'rate': rate,

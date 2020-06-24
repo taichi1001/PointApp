@@ -67,7 +67,6 @@ class _OkButton extends StatelessWidget {
         color: Colors.amber[800],
         textColor: Colors.white,
         onPressed: () {
-          recordContentsModel.addCount();
           recordContentsModel.addNewRecordContents(controllers);
           Navigator.pop(context);
         },

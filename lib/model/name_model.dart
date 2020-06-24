@@ -24,7 +24,7 @@ class NameModel with ChangeNotifier {
   void getRecordCorrespondenceList(){
     _recordCorrespondenceList =
         _allCorrespondenceList
-            .where((correspondence) => correspondence.recordId == record.id)
+            .where((correspondence) => correspondence.recordId == record.recordId)
             .toList();
   }
 
@@ -32,7 +32,7 @@ class NameModel with ChangeNotifier {
     final List <Name> list = [];    
     for (final correspondence in _recordCorrespondenceList) {
       for (final name in _allNameList) {
-        if (correspondence.nameId == name.id) {
+        if (correspondence.nameId == name.nameId) {
           list.add(name);
         }
       }
@@ -72,7 +72,7 @@ class NameModel with ChangeNotifier {
       if(text.text.isNotEmpty) {
         final nameId = await nameRepo.insertName(Name(name: text.text));
         await correspondenceRepo.insertCorrespondence(
-            CorrespondenceNameRecord(nameId: nameId, recordId: record.id));
+            CorrespondenceNameRecord(nameId: nameId, recordId: record.recordId));
       }
     }
     await _fetchAll();
@@ -89,7 +89,7 @@ class NameModel with ChangeNotifier {
   }
 
   Future remove(Name name) async {
-    await nameRepo.deleteNameById(name.id);
+    await nameRepo.deleteNameById(name.nameId);
     _fetchAll();
   }
 }

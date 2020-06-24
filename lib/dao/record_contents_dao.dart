@@ -23,7 +23,7 @@ class RecordContentsDao {
   Future<int> update(RecordContents recordContents) async {
     final db = await dbProvider.database;
     final result = await db.update(tableName, recordContents.toDatabaseJson(),
-        where: 'id = ?', whereArgs: [recordContents.id]);
+        where: 'id = ?', whereArgs: [recordContents.recordContentsId]);
     return result;
   }
 

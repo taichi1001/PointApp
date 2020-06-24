@@ -24,7 +24,7 @@ class NameDao {
   Future<int> update(Name name) async {
     final db = await dbProvider.database;
     final result = await db.update(tableName, name.toDatabaseJson(),
-        where: 'id = ?', whereArgs: [name.id], conflictAlgorithm: ConflictAlgorithm.replace);
+        where: 'id = ?', whereArgs: [name.nameId], conflictAlgorithm: ConflictAlgorithm.replace);
     return result;
   }
 

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class Record with ChangeNotifier {
-  int id;
+  int recordId;
   DateTime date;
   String title;
   int numberPeople;
   bool isDone;
 
-  Record({this.id, this.date, this.title, this.numberPeople = 1, this.isDone = false});
+  Record({this.recordId, this.date, this.title, this.numberPeople = 1, this.isDone = false});
 
   factory Record.fromDatabaseJson(Map<String, dynamic> data) => Record(
-        id: data['id'],
+        recordId: data['id'],
         date: DateTime.parse(data['date']).toLocal(),
         title: data['title'],
         numberPeople: data['number_people'],
@@ -18,7 +18,7 @@ class Record with ChangeNotifier {
       );
 
   Map<String, dynamic> toDatabaseJson() => {
-        'id': id,
+        'id': recordId,
         'date': date.toUtc().toIso8601String(),
         'title': title,
         'number_people': numberPeople,

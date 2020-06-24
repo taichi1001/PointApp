@@ -33,7 +33,7 @@ class RankRateDao {
   Future<int> update(RankRate rankRate) async {
     final db = await dbProvider.database;
     final result = await db.update(tableName, rankRate.toDatabaseJson(),
-        where: 'id = ?', whereArgs: [rankRate.id]);
+        where: 'id = ?', whereArgs: [rankRate.rankRateId]);
     return result;
   }
 

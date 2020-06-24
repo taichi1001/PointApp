@@ -25,7 +25,7 @@ class CorrespondenceNameRecordDao {
   Future<int> update(CorrespondenceNameRecord correspondence) async {
     final db = await dbProvider.database;
     final result = await db.update(tableName, correspondence.toDatabaseJson(),
-        where: 'id = ?', whereArgs: [correspondence.id]);
+        where: 'id = ?', whereArgs: [correspondence.correspondenceId]);
     return result;
   }
 

@@ -35,17 +35,14 @@ class RecordContentsModel with ChangeNotifier {
     fetchAll();
   }
 
-  void addCount() {
-    _count++;
-  }
-
   Future addNewRecordContents(List<TextEditingController> textList) async {
+    _count++;
     var index = 0;
     for (final text in textList) {
       await recordContentsRepo.insertRecordContents(
         RecordContents(
-          recordId: record.id,
-          nameId: nameModel.recordNameList[index].id,
+          recordId: record.recordId,
+          nameId: nameModel.recordNameList[index].nameId,
           count: _count,
           score: int.parse(text.text),
         ),
@@ -72,7 +69,7 @@ class RecordContentsModel with ChangeNotifier {
       for (int rank = 1; rank <= nameModel.recordNameList.length; rank++) {
         await rankRateRepo.insertRankRate(
           RankRate(
-            recordId: record.id,
+            recordId: record.recordId,
             rank: rank,
           ),
         );
@@ -90,12 +87,13 @@ class RecordContentsModel with ChangeNotifier {
     _initScore();
     for (final name in nameModel.recordNameList) {
       for (final contents in recordContentsList) {
-        if (name.id == contents.id) {
+        if (name.nameId == contents.nameId) {
           for (final rankRate in recordRankRateList) {
             if (contents.score == rankRate.rank) {
               if (_scoreMap.containsKey(name.name)) {
                 _scoreMap[name.name] =
                     _scoreMap[name.name] + rankRate.rate;
+//                break
               } 
             }
           }
@@ -131,7 +129,7 @@ class RecordContentsModel with ChangeNotifier {
 
   void _getRecordContentsList() {
     _recordContentsList = _allRecordContentsList
-        .where((recordContents) => recordContents.recordId == record.id)
+        .where((recordContents) => recordContents.recordId == record.recordId)
         .toList();
   }
 
@@ -148,7 +146,7 @@ class RecordContentsModel with ChangeNotifier {
 
   Future fetchAll() async {
     _allRecordContentsList = await recordContentsRepo.getAllRecordsContents();
-    _recordRankRateList = await rankRateRepo.getRankRateByID(record.id);
+    _recordRankRateList = await rankRateRepo.getRankRateByID(record.recordId);
     _getRecordContentsList();
     _getCount();
     _getRecordContentsPerCount();
@@ -168,7 +166,7 @@ class RecordContentsModel with ChangeNotifier {
   }
 
   Future remove(RecordContents recordContents) async {
-    await recordContentsRepo.deleteRecordContentsById(recordContents.id);
+    await recordContentsRepo.deleteRecordContentsById(recordContents.recordContentsId);
     fetchAll();
   }
 }

@@ -42,7 +42,7 @@ class RecordModel with ChangeNotifier {
   }
 
   Future remove(Record record) async {
-    await repo.deleteRecordById(record.id);
+    await repo.deleteRecordById(record.recordId);
     _fetchAll();
   }
 }

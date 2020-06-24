@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class RecordContents with ChangeNotifier {
-  int id;
+  int recordContentsId;
   int recordId;
   int nameId;
   int count;
   int score;
 
-  RecordContents({this.id, this.recordId, this.nameId, this.count, this.score});
+  RecordContents({this.recordContentsId, this.recordId, this.nameId, this.count, this.score});
 
   factory RecordContents.fromDatabaseJson(Map<String, dynamic> data) =>
       RecordContents(
-        id: data['id'],
+        recordContentsId: data['id'],
         recordId: data['record_id'],
         nameId: data['name_id'],
         count: data['count'],
@@ -19,7 +19,7 @@ class RecordContents with ChangeNotifier {
       );
 
   Map<String, dynamic> toDatabaseJson() => {
-        'id': id,
+        'id': recordContentsId,
         'record_id': recordId,
         'name_id': nameId,
         'count': count,
