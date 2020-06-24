@@ -80,13 +80,14 @@ class RecordContentsModel with ChangeNotifier {
     }
   }
 
-  void initScore() {
+  void _initScore() {
     for (final name in nameModel.recordNameList) {
       _scoreMap[name.name] = 0;
     }
   }
 
-  void _calcScore() {
+  void calcScore() {
+    _initScore();
     for (final name in nameModel.recordNameList) {
       for (final contents in recordContentsList) {
         if (name.id == contents.id) {
@@ -131,11 +132,9 @@ class RecordContentsModel with ChangeNotifier {
   }
 
   void _getRecordContentsList() {
-    final List<RecordContents> tmp = _allRecordContentsList
+    _recordContentsList = _allRecordContentsList
         .where((recordContents) => recordContents.recordId == record.id)
         .toList();
-
-    _recordContentsList = tmp;
   }
 
   void _getCount() {
@@ -155,7 +154,7 @@ class RecordContentsModel with ChangeNotifier {
     _getRecordContentsList();
     _getCount();
     _getRecordContentsPerCount();
-    _calcScore();
+    calcScore();
     _sortScore();
     notifyListeners();
   }

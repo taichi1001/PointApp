@@ -44,7 +44,7 @@ class ParticipantSettingScreen extends StatelessWidget {
               onPressed: () async {
                 await recordContentsModel.nameModel.setNewName(_controllers);
                 await recordContentsModel.initRankRate();
-                recordContentsModel.initScore();
+                recordContentsModel.calcScore();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => MultiProvider(
