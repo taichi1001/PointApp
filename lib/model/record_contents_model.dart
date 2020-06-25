@@ -104,12 +104,11 @@ class RecordContentsModel with ChangeNotifier {
   void _duplicateCalcScore() {
     _initScore();
     for (final perCount in _recordContentsPerCount) {
+      final List<RecordContents> dupList = [];
       for (final recordContents1 in perCount) {
-        final dupScore = recordContents1.score;
         int dupCount = 0;
-        final List<RecordContents> dupList = [];
-        for (final recordContents2 in perCount) { 
-          if (recordContents2.score == dupScore) {
+        for (final recordContents2 in perCount) {
+          if (recordContents1.score == recordContents2.score) {
             dupCount++;
             if (dupCount == 2) {
               dupList.add(recordContents1);
@@ -119,31 +118,32 @@ class RecordContentsModel with ChangeNotifier {
             }
           }
         }
-        final List<RecordContents> noDupList = perCount.where((element) => !dupList.contains(element));
-        for(final name in nameModel.recordNameList){
-          for(final contents in noDupList){
-            if(name.nameId == contents.nameId){
-              for(final rankRate in recordRankRateList){
-                 _scoreMap[name.name] = _scoreMap[name.name] + rankRate.rate;
-              }
+      }
+      final List<RecordContents> noDupList =
+          perCount.where((element) => !dupList.contains(element));
+      for (final name in nameModel.recordNameList) {
+        for (final contents in noDupList) {
+          if (name.nameId == contents.nameId) {
+            for (final rankRate in recordRankRateList) {
+              _scoreMap[name.name] = _scoreMap[name.name] + rankRate.rate;
             }
           }
-        int totalScore = 0;
-        for(final score in _scoreMap.values){
-          totalScore = totalScore + score;
         }
-        final dupScore = (totalScore / dupList.length).round();
-        for(final name in nameModel.recordNameList){
-          for(final contents in dupList){
-            if(name.nameId == contents.nameId){
-                _scoreMap[name.name] = _scoreMap[name.name] + dupScore;
-            }
+      }
+      int totalScore = 0;
+      for (final score in _scoreMap.values) {
+        totalScore = totalScore + score;
+      }
+      final dupScore = (totalScore / dupList.length).round();
+      for (final name in nameModel.recordNameList) {
+        for (final contents in dupList) {
+          if (name.nameId == contents.nameId) {
+            _scoreMap[name.name] = _scoreMap[name.name] - dupScore;
           }
         }
       }
     }
   }
-}
 
   void _sortScore() {
     final sortedKeys = _scoreMap.keys.toList(growable: false)
