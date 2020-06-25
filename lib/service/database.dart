@@ -72,7 +72,7 @@ class DatabaseService {
     ''');
     await database.execute('''
       CREATE TABLE $correspondenceNameRecordTableName (
-        corresponence_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        correspondence_id INTEGER PRIMARY KEY AUTOINCREMENT,
         name_id INTEGER NOT NULL,
         record_id INTEGER NOT NULL,
         UNIQUE(name_id, record_id)

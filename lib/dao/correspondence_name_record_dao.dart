@@ -25,13 +25,13 @@ class CorrespondenceNameRecordDao {
   Future<int> update(CorrespondenceNameRecord correspondence) async {
     final db = await dbProvider.database;
     final result = await db.update(tableName, correspondence.toDatabaseJson(),
-        where: 'id = ?', whereArgs: [correspondence.correspondenceId]);
+        where: 'correspondence_id = ?', whereArgs: [correspondence.correspondenceId]);
     return result;
   }
 
   Future<int> delete(int id) async {
     final db = await dbProvider.database;
-    final result = await db.delete(tableName, where: 'id = ?', whereArgs: [id]);
+    final result = await db.delete(tableName, where: 'correspondence_id = ?', whereArgs: [id]);
     return result;
   }
 

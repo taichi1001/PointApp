@@ -33,13 +33,13 @@ class RankRateDao {
   Future<int> update(RankRate rankRate) async {
     final db = await dbProvider.database;
     final result = await db.update(tableName, rankRate.toDatabaseJson(),
-        where: 'id = ?', whereArgs: [rankRate.rankRateId]);
+        where: 'rank_rate_id = ?', whereArgs: [rankRate.rankRateId]);
     return result;
   }
 
   Future<int> delete(int id) async {
     final db = await dbProvider.database;
-    final result = await db.delete(tableName, where: 'id = ?', whereArgs: [id]);
+    final result = await db.delete(tableName, where: 'rank_rate_id = ?', whereArgs: [id]);
     return result;
   }
 

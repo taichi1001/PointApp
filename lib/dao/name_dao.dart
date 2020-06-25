@@ -24,13 +24,13 @@ class NameDao {
   Future<int> update(Name name) async {
     final db = await dbProvider.database;
     final result = await db.update(tableName, name.toDatabaseJson(),
-        where: 'id = ?', whereArgs: [name.nameId], conflictAlgorithm: ConflictAlgorithm.replace);
+        where: 'name_id = ?', whereArgs: [name.nameId], conflictAlgorithm: ConflictAlgorithm.replace);
     return result;
   }
 
   Future<int> delete(int id) async {
     final db = await dbProvider.database;
-    final result = await db.delete(tableName, where: 'id = ?', whereArgs: [id]);
+    final result = await db.delete(tableName, where: 'name_id = ?', whereArgs: [id]);
     return result;
   }
 

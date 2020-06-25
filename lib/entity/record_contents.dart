@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/model/record_contents_model.dart';
+import 'package:todo_app/repository/record_contents_repository.dart';
 
 class RecordContents with ChangeNotifier {
   int recordContentsId;
@@ -31,7 +31,7 @@ class RecordContents with ChangeNotifier {
   void changeScore(String newScore) {
     score = int.parse(newScore);
     notifyListeners();
-    final recordContentsModel = RecordContentsModel();
-    recordContentsModel.update(this);
+    final repo = RecordContentsRepository();
+    repo.updateRecordContents(this);
   }
 }
