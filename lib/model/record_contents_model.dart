@@ -120,7 +120,7 @@ class RecordContentsModel with ChangeNotifier {
         }
       }
       final List<RecordContents> noDupList =
-          perCount.where((element) => !dupList.contains(element));
+          perCount.where((element) => !dupList.contains(element)).toList();
       for (final name in nameModel.recordNameList) {
         for (final contents in noDupList) {
           if (name.nameId == contents.nameId) {
