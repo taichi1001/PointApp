@@ -94,11 +94,14 @@ class RecordContentsScreen extends StatelessWidget {
                   height: 200,
                   child: ListView.builder(
                     itemCount: recordContentsModel.scoreMap.length,
-                    itemBuilder: (BuildContext context, int index){
+                    itemBuilder: (BuildContext context, int index) {
                       return Row(
                         children: <Widget>[
-                          Text(recordContentsModel.scoreMap.keys.toList()[index]),
-                          Text(recordContentsModel.scoreMap.values.toList()[index].toString()),
+                          Text(recordContentsModel.scoreMap.keys
+                              .toList()[index]),
+                          Text(recordContentsModel.scoreMap.values
+                              .toList()[index]
+                              .toString()),
                         ],
                       );
                     },
@@ -120,8 +123,27 @@ class _DataTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<RecordContentsModel, NameModel>(
-      builder: (context, recordContentsModel, nameModel, _) {
+    return Consumer<Record>(
+      builder: (context, record, _) {
+        if (record.isEdit) {
+          return const _NormalDataTable();
+        } else {
+          return const _EditDataTable();
+        }
+      },
+    );
+  }
+}
+
+class _NormalDataTable extends StatelessWidget {
+  const _NormalDataTable({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer3<Record, RecordContentsModel, NameModel>(
+      builder: (context, record, recordContentsModel, nameModel, _) {
         return Container(
           height: 200,
           child: DataTable(
@@ -137,8 +159,53 @@ class _DataTable extends StatelessWidget {
                             ChangeNotifierProvider.value(
                               value: recordContents,
                               child: Consumer<RecordContents>(
-                                  builder: (context, recordContents, _) =>
-                                  Text(recordContents.score.toString())
+                                builder: (context, recordContents, _) =>
+                                    Text(recordContents.score.toString()),
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                )
+                .toList(),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _EditDataTable extends StatelessWidget {
+  const _EditDataTable({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer3<Record, RecordContentsModel, NameModel>(
+      builder: (context, record, recordContentsModel, nameModel, _) {
+        return Container(
+          height: 200,
+          child: DataTable(
+            columns: nameModel.recordNameList
+                .map((name) => DataColumn(label: Text(name.name)))
+                .toList(),
+            rows: recordContentsModel.recordContentsPerCount
+                .map(
+                  (perCount) => DataRow(
+                    cells: perCount
+                        .map(
+                          (recordContents) => DataCell(
+                            ChangeNotifierProvider.value(
+                              value: recordContents,
+                              child: Consumer<RecordContents>(
+                                builder: (context, recordContents, _) =>
+                                    TextField(
+                                  controller: TextEditingController(
+                                      text: recordContents.score.toString()),
+                                  onSubmitted: recordContents.changeScore,
+                                ),
                               ),
                             ),
                           ),
