@@ -11,7 +11,7 @@ class RecordContents with ChangeNotifier {
 
   factory RecordContents.fromDatabaseJson(Map<String, dynamic> data) =>
       RecordContents(
-        recordContentsId: data['id'],
+        recordContentsId: data['record_contents_id'],
         recordId: data['record_id'],
         nameId: data['name_id'],
         count: data['count'],
@@ -19,7 +19,7 @@ class RecordContents with ChangeNotifier {
       );
 
   Map<String, dynamic> toDatabaseJson() => {
-        'id': recordContentsId,
+        'record_contents_id': recordContentsId,
         'record_id': recordId,
         'name_id': nameId,
         'count': count,

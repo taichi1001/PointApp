@@ -6,9 +6,9 @@ class RecordModel with ChangeNotifier {
   List<Record> _allRecordList = [];
   List<Record> get allRecordList => _allRecordList;
   List<Record> get incompletedTodoList =>
-      _allRecordList.where((record) => record.isDone == false).toList();
+      _allRecordList.where((record) => record.isEdit == false).toList();
   List<Record> get completedTodoList =>
-      _allRecordList.where((record) => record.isDone == true).toList();
+      _allRecordList.where((record) => record.isEdit == true).toList();
 
   final RecordRepository repo = RecordRepository();
 
@@ -32,7 +32,7 @@ class RecordModel with ChangeNotifier {
   }
 
   Future toggleIsDone(Record record) async {
-    record.isDone = !record.isDone;
+    record.isEdit = !record.isEdit;
     update(record);
   }
 

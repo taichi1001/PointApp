@@ -46,7 +46,7 @@ class DBListView extends StatelessWidget {
                           Text(model.allRecordList[index].title.toString()),
                           Text(model.allRecordList[index].numberPeople
                               .toString()),
-                          Text(model.allRecordList[index].isDone.toString()),
+                          Text(model.allRecordList[index].isEdit.toString()),
                         ],
                       );
                     },

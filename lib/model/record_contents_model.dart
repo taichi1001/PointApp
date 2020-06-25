@@ -91,10 +91,9 @@ class RecordContentsModel with ChangeNotifier {
           for (final rankRate in recordRankRateList) {
             if (contents.score == rankRate.rank) {
               if (_scoreMap.containsKey(name.name)) {
-                _scoreMap[name.name] =
-                    _scoreMap[name.name] + rankRate.rate;
-//                break
-              } 
+                _scoreMap[name.name] = _scoreMap[name.name] + rankRate.rate;
+                break;
+              }
             }
           }
         }
@@ -166,7 +165,8 @@ class RecordContentsModel with ChangeNotifier {
   }
 
   Future remove(RecordContents recordContents) async {
-    await recordContentsRepo.deleteRecordContentsById(recordContents.recordContentsId);
+    await recordContentsRepo
+        .deleteRecordContentsById(recordContents.recordContentsId);
     fetchAll();
   }
 }

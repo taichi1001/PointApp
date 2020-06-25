@@ -71,7 +71,7 @@ class _CheckBoxButton extends StatelessWidget {
     final model = Provider.of<RecordModel>(context, listen: false);
     return Consumer<Record>(
       builder: (context, record, _) => FlatButton(
-        child: record.isDone
+        child: record.isEdit
             ? const Icon(Icons.check_box)
             : const Icon(Icons.check_box_outline_blank),
         onPressed: () {

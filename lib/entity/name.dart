@@ -8,12 +8,12 @@ class Name {
   });
 
   factory Name.fromDatabaseJson(Map<String, dynamic> data) => Name(
-        nameId: data['id'],
+        nameId: data['name_id'],
         name: data['name'],
       );
 
   Map<String, dynamic> toDatabaseJson() => {
-        'id': nameId,
+        'name_id': nameId,
         'name': name,
       };
 }

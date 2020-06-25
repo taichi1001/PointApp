@@ -47,16 +47,16 @@ class DatabaseService {
   Future initDB(Database database, int version) async {
     await database.execute('''
       CREATE TABLE $recordTableName (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        record_id INTEGER PRIMARY KEY AUTOINCREMENT,
         date TEXT NOT NULL,
         title TEXT NOT NULL,
         number_people INTEGER NOT NULL ,
-        is_done INTEGER NOT NULL
+        is_edit INTEGER NOT NULL
       )
     ''');
     await database.execute('''
       CREATE TABLE $recordContentsTableName (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        record_contents_id INTEGER PRIMARY KEY AUTOINCREMENT,
         record_id INTEGER NOT NULL,
         name_id INTEGER NOT NULL,
         count INTEGER NOT NULL,
@@ -65,14 +65,14 @@ class DatabaseService {
     ''');
     await database.execute('''
       CREATE TABLE $nameTableName (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name_id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         UNIQUE(name)
       )
     ''');
     await database.execute('''
       CREATE TABLE $correspondenceNameRecordTableName (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        corresponence_id INTEGER PRIMARY KEY AUTOINCREMENT,
         name_id INTEGER NOT NULL,
         record_id INTEGER NOT NULL,
         UNIQUE(name_id, record_id)
@@ -80,7 +80,7 @@ class DatabaseService {
     ''');
     await database.execute('''
       CREATE TABLE $rankRateTableName (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        rank_rate_id INTEGER PRIMARY KEY AUTOINCREMENT,
         record_id INTEGER NOT NULL,
         rank INTEGER NOT NULL,
         rate INTEGER NOT NULL

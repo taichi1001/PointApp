@@ -5,24 +5,24 @@ class Record with ChangeNotifier {
   DateTime date;
   String title;
   int numberPeople;
-  bool isDone;
+  bool isEdit;
 
-  Record({this.recordId, this.date, this.title, this.numberPeople = 1, this.isDone = false});
+  Record({this.recordId, this.date, this.title, this.numberPeople = 1, this.isEdit = false});
 
   factory Record.fromDatabaseJson(Map<String, dynamic> data) => Record(
-        recordId: data['id'],
+        recordId: data['record_id'],
         date: DateTime.parse(data['date']).toLocal(),
         title: data['title'],
         numberPeople: data['number_people'],
-        isDone: data['is_done'] == 1 ? true : false,
+        isEdit: data['is_edit'] == 1 ? true : false,
       );
 
   Map<String, dynamic> toDatabaseJson() => {
-        'id': recordId,
+        'record_id': recordId,
         'date': date.toUtc().toIso8601String(),
         'title': title,
         'number_people': numberPeople,
-        'is_done': isDone ? 1 : 0,
+        'is_edit': isEdit ? 1 : 0,
       };
 
   Future changeNumberPeople(int newCount) async {
