@@ -50,7 +50,6 @@ class ParticipantUpdateAlertDialog extends StatelessWidget {
               child: const Text('OK'),
               onPressed: () {
                 nameModel.updateRecordName(_controllers, _controllersTmp);
-                
                 Navigator.pop(context);
               },
             ),

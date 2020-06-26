@@ -9,10 +9,12 @@ class NameModel with ChangeNotifier {
   Record record;
   List<Name> _allNameList;
   List<Name> _recordNameList;
+  bool _isUpdate = true;
   List<CorrespondenceNameRecord> _allCorrespondenceList;
   List<CorrespondenceNameRecord> _recordCorrespondenceList;
   List<Name> get allNameList => _allNameList;
   List<Name> get recordNameList => _recordNameList;
+  bool get isUpdate => _isUpdate;
 
   final nameRepo = NameRepository();
   final correspondenceRepo = CorrespondenceNameRecordRepository();
@@ -21,15 +23,14 @@ class NameModel with ChangeNotifier {
     _fetchAll();
   }
 
-  void getRecordCorrespondenceList(){
-    _recordCorrespondenceList =
-        _allCorrespondenceList
-            .where((correspondence) => correspondence.recordId == record.recordId)
-            .toList();
+  void getRecordCorrespondenceList() {
+    _recordCorrespondenceList = _allCorrespondenceList
+        .where((correspondence) => correspondence.recordId == record.recordId)
+        .toList();
   }
 
   void getRecordNameList() {
-    final List <Name> list = [];    
+    final List<Name> list = [];
     for (final correspondence in _recordCorrespondenceList) {
       for (final name in _allNameList) {
         if (correspondence.nameId == name.nameId) {
@@ -39,20 +40,26 @@ class NameModel with ChangeNotifier {
     }
     _recordNameList = list;
   }
-  
+
   // レコードに対応する名前を更新するときに使う
-  Future updateRecordName(List<TextEditingController> newTextList, List<TextEditingController> oldTextList) async {
+  Future updateRecordName(List<TextEditingController> newTextList,
+      List<TextEditingController> oldTextList) async {
     var index = 0;
-    for(final text in newTextList){
-      if(text.text != oldTextList[index].text){
-        for(final name in _allNameList) {
+    _isUpdate = true; 
+    loop1: for (final text in newTextList) {
+      if (text.text != oldTextList[index].text) {
+        for (final name in _allNameList) {
           if (oldTextList[index].text == name.name) {
             name.name = text.text;
-            await nameRepo.updateName(name);
+            final judge = await nameRepo.updateName(name);
+            if(judge == 0){
+              _isUpdate = false;
+              break loop1;
+            }
           }
         }
       }
-      index ++;
+      index++;
     }
     await _fetchAll();
   }
@@ -66,13 +73,12 @@ class NameModel with ChangeNotifier {
   }
 
   // 名前と、レコードと名前の対応をそれぞれDBに記録
-  Future setNewName(
-      List<TextEditingController> textList) async {
+  Future setNewName(List<TextEditingController> textList) async {
     for (final text in textList) {
-      if(text.text.isNotEmpty) {
+      if (text.text.isNotEmpty) {
         final nameId = await nameRepo.insertName(Name(name: text.text));
-        await correspondenceRepo.insertCorrespondence(
-            CorrespondenceNameRecord(nameId: nameId, recordId: record.recordId));
+        await correspondenceRepo.insertCorrespondence(CorrespondenceNameRecord(
+            nameId: nameId, recordId: record.recordId));
       }
     }
     await _fetchAll();
