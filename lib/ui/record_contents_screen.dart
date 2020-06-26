@@ -27,11 +27,19 @@ class RecordContentsScreen extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Switch(
-                    value: record.isEdit,
-                    onChanged: (bool value) {
-                      record.isEdit = value;
-                      recordContentsModel.fetchAll();
-                    }),
+                  value: record.isEdit,
+                  onChanged: (bool value) {
+                    record.isEdit = value;
+                    recordContentsModel.fetchAll();
+                  },
+                ),
+                Switch(
+                  value: record.isDuplicate,
+                  onChanged: (bool value) {
+                    record.isEdit = value;
+                    recordContentsModel.fetchAll();
+                  },
+                ),
                 Center(
                   child: RaisedButton(
                     child: const Text('レート変更'),
@@ -66,7 +74,8 @@ class RecordContentsScreen extends StatelessWidget {
                         builder: (BuildContext context) => MultiProvider(
                           providers: [
                             ChangeNotifierProvider.value(value: record),
-                            ChangeNotifierProvider.value(value: recordContentsModel),
+                            ChangeNotifierProvider.value(
+                                value: recordContentsModel),
                             ChangeNotifierProvider.value(
                                 value: recordContentsModel.nameModel),
                           ],

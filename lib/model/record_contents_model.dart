@@ -77,14 +77,22 @@ class RecordContentsModel with ChangeNotifier {
     }
   }
 
+  void calcScore() {
+    _initScore();
+    if (!record.isDuplicate) {
+      _normalCalcScore();
+    } else {
+      _duplicateCalcScore();
+    }
+  }
+
   void _initScore() {
     for (final name in nameModel.recordNameList) {
       _scoreMap[name.name] = 0;
     }
   }
 
-  void calcScore() {
-    _initScore();
+  void _normalCalcScore() {
     for (final name in nameModel.recordNameList) {
       for (final contents in recordContentsList) {
         if (name.nameId == contents.nameId) {

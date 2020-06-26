@@ -6,8 +6,9 @@ class Record with ChangeNotifier {
   String title;
   int numberPeople;
   bool isEdit;
+  bool isDuplicate;
 
-  Record({this.recordId, this.date, this.title, this.numberPeople = 1, this.isEdit = false});
+  Record({this.recordId, this.date, this.title, this.numberPeople = 1, this.isEdit = false, this.isDuplicate = false});
 
   factory Record.fromDatabaseJson(Map<String, dynamic> data) => Record(
         recordId: data['record_id'],
