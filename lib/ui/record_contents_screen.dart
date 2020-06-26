@@ -26,6 +26,12 @@ class RecordContentsScreen extends StatelessWidget {
             height: 800,
             child: Column(
               children: <Widget>[
+                Switch(
+                    value: record.isEdit,
+                    onChanged: (bool value) {
+                      record.isEdit = value;
+                      recordContentsModel.fetchAll();
+                    }),
                 Center(
                   child: RaisedButton(
                     child: const Text('レート変更'),
@@ -60,6 +66,7 @@ class RecordContentsScreen extends StatelessWidget {
                         builder: (BuildContext context) => MultiProvider(
                           providers: [
                             ChangeNotifierProvider.value(value: record),
+                            ChangeNotifierProvider.value(value: recordContentsModel),
                             ChangeNotifierProvider.value(
                                 value: recordContentsModel.nameModel),
                           ],
@@ -93,7 +100,7 @@ class RecordContentsScreen extends StatelessWidget {
                 Container(
                   height: 200,
                   child: ListView.builder(
-                    itemCount: recordContentsModel.scoreMap.length,
+                    itemCount: nameModel.recordNameList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Row(
                         children: <Widget>[
@@ -204,7 +211,11 @@ class _EditDataTable extends StatelessWidget {
                                     TextField(
                                   controller: TextEditingController(
                                       text: recordContents.score.toString()),
-                                  onSubmitted: recordContents.changeScore,
+                                  onSubmitted: (String newText) {
+                                    recordContents.updateScore(newText);
+                                    recordContentsModel.recordContentsRepo
+                                        .updateRecordContents(recordContents);
+                                  },
                                 ),
                               ),
                             ),

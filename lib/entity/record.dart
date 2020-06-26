@@ -28,6 +28,11 @@ class Record with ChangeNotifier {
   Future changeNumberPeople(int newCount) async {
     numberPeople = newCount;
     notifyListeners();
-
   }
+
+  Future changeIsEdit() async {
+    isEdit = !isEdit;
+    notifyListeners();
+  }
+
 }

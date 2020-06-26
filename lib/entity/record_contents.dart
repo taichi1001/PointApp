@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/repository/record_contents_repository.dart';
 
 class RecordContents with ChangeNotifier {
   int recordContentsId;
@@ -26,12 +25,9 @@ class RecordContents with ChangeNotifier {
         'count': count,
         'score': score,
       };
-  
-  /// TextFieldから呼び出す用に仕方なくここに実装している
-  void changeScore(String newScore) {
+
+  void updateScore(String newScore) {
     score = int.parse(newScore);
     notifyListeners();
-    final repo = RecordContentsRepository();
-    repo.updateRecordContents(this);
   }
 }
