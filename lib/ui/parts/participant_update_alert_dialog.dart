@@ -50,7 +50,15 @@ class ParticipantUpdateAlertDialog extends StatelessWidget {
               child: const Text('OK'),
               onPressed: () {
                 nameModel.updateRecordName(_controllers, _controllersTmp);
-                Navigator.pop(context);
+                if (!nameModel.isUpdate) {
+                  showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (BuildContext context) =>
+                          const Text('既に登録されている名前には変更できません'));
+                } else {
+                  Navigator.pop(context);
+                }
               },
             ),
           ],
