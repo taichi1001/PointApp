@@ -1,14 +1,16 @@
-# Flutter Todo App Sample
+# pointapp
 
-1．データベースに「Rcord.id == RcordContents.記録ID」データがあるか？
-    ある
-        1-1 「RecordContents.人名(重複なし).length」を列数に設定
-        1-2 「RecordContents.何回目(重複無し).length」を行数に設定
-        1-3 1-1で設定した列数、1行のグリッドを表示（名前入力・表示用）
-        1-4 1-1、1-2で設定した列数、行数のグリッドを表示（スコア入力・表示用）
-        1-5 1列1行のグリッドを右側に表示（名前入力・表示用）
-        1-6 1列、1-2で設定した行数のグリッドを右側に表示（スコア入力・表示用）（名前が入力されるまで薄い色で表示され触れない）
-        1-7 1-1で設定した値+1の列数、1行のグリッドを最下部に表示（薄い色で表示される）
-    ない
-        1列1行のグリッドを表示（名前入力・表示用）
-        1列1行のグリッドを表示（スコア入力・表示用）（名前が入力されるまで薄い色で表示され触れない）
+A new Flutter application.
+
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
