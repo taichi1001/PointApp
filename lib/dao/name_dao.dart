@@ -15,6 +15,7 @@ class NameDao {
 
       // 追加した名前が既にDBにあった場合の処理
     } catch (e) {
+      print(e);
       final List<Map<String, dynamic>> result = await db
           .query(tableName, where: 'name_id = ?', whereArgs: [name.nameId]);
       final List<Name> names = result.isNotEmpty

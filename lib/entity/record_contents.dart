@@ -30,4 +30,5 @@ class RecordContents with ChangeNotifier {
     score = int.parse(newScore);
     notifyListeners();
   }
+
 }

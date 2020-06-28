@@ -29,14 +29,13 @@ class RecordContentsScreen extends StatelessWidget {
                 Switch(
                   value: record.isEdit,
                   onChanged: (bool value) {
-                    record.isEdit = value;
-                    recordContentsModel.fetchAll();
+                    record.changeIsEdit();
                   },
                 ),
                 Switch(
                   value: record.isDuplicate,
                   onChanged: (bool value) {
-                    record.isEdit = value;
+                    record.isDuplicate = value;
                     recordContentsModel.fetchAll();
                   },
                 ),
