@@ -26,18 +26,28 @@ class RecordContentsScreen extends StatelessWidget {
             height: 800,
             child: Column(
               children: <Widget>[
-                Switch(
-                  value: record.isEdit,
-                  onChanged: (bool value) {
-                    record.changeIsEdit();
-                  },
+                Row(
+                  children: [
+                    const Text('編集モード'),
+                    Switch(
+                      value: record.isEdit,
+                      onChanged: (bool value) {
+                        record.changeIsEdit();
+                      },
+                    ),
+                  ],
                 ),
-                Switch(
-                  value: record.isDuplicate,
-                  onChanged: (bool value) {
-                    record.isDuplicate = value;
-                    recordContentsModel.fetchAll();
-                  },
+                Row(
+                  children: <Widget>[
+                    const Text('順位重複モード'),
+                    Switch(
+                      value: record.isDuplicate,
+                      onChanged: (bool value) {
+                        record.isDuplicate = value;
+                        recordContentsModel.fetchAll();
+                      },
+                    ),
+                  ],
                 ),
                 Center(
                   child: RaisedButton(
