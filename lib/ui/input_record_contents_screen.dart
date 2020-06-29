@@ -52,9 +52,6 @@ class InputRecordContentsScreen extends StatelessWidget {
                                   return null;
                                 }
                               },
-                              onSaved: (value) => {
-                                Navigator.pop(context),
-                              },
                             ),
                           ),
                         ],
@@ -96,6 +93,7 @@ class _OkButton extends StatelessWidget {
           if (formKey.currentState.validate()) {
             recordContentsModel.addNewRecordContents(controllers);
             formKey.currentState.save();
+            Navigator.pop(context);
           }
         },
       ),
