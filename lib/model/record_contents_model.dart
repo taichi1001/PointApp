@@ -138,15 +138,18 @@ class RecordContentsModel with ChangeNotifier {
           }
         }
       }
+      
       int totalScore = 0;
       for (final score in _scoreMap.values) {
         totalScore = totalScore + score;
       }
-      final dupScore = (totalScore / dupList.length).round();
-      for (final name in nameModel.recordNameList) {
-        for (final contents in dupList) {
-          if (name.nameId == contents.nameId) {
-            _scoreMap[name.name] = _scoreMap[name.name] - dupScore;
+      if (dupList.isNotEmpty) {
+        final dupScore = (totalScore / dupList.length).round();
+        for (final name in nameModel.recordNameList) {
+          for (final contents in dupList) {
+            if (name.nameId == contents.nameId) {
+              _scoreMap[name.name] = _scoreMap[name.name] - dupScore;
+            }
           }
         }
       }
