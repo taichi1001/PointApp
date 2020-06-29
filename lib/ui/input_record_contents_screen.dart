@@ -11,38 +11,62 @@ class InputRecordContentsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<TextEditingController> _controllers = [];
+    final _formKey = GlobalKey<FormState>();
+
     return Consumer2<Record, RecordContentsModel>(
       builder: (context, record, recordContentsModel, _) {
         return Scaffold(
           appBar: AppBar(
             title: const Text('New Record'),
           ),
-          body: Container(
-            height: 400,
-            width: 300,
-            child: Column(
-              children: <Widget>[
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: record.numberPeople,
-                  itemBuilder: (BuildContext context, int index) {
-                    _controllers.add(TextEditingController());
-                    return Row(
-                      children: <Widget>[
-                        Text(recordContentsModel
-                            .nameModel.recordNameList[index].name),
-                        Container(
-                          width: 200,
-                          child: TextField(
-                            controller: _controllers[index],
+          body: Form(
+            key: _formKey,
+            child: Container(
+              height: 400,
+              width: 300,
+              child: Column(
+                children: <Widget>[
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: record.numberPeople,
+                    itemBuilder: (BuildContext context, int index) {
+                      _controllers.add(TextEditingController());
+                      return Row(
+                        children: <Widget>[
+                          Text(recordContentsModel
+                              .nameModel.recordNameList[index].name),
+                          Container(
+                            width: 200,
+                            child: TextFormField(
+                              controller: _controllers[index],
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return '値を入力してください';
+                                } else if (int.tryParse(value) is! int) {
+                                  return '数字を入力してください';
+                                } else if (int.tryParse(value) >
+                                        record.numberPeople &&
+                                    int.tryParse(value) < 1) {
+                                  return '範囲内の値を入力してください';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              onSaved: (value) => {
+                                Navigator.pop(context),
+                              },
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                _OkButton(controllers: _controllers),
-              ],
+                        ],
+                      );
+                    },
+                  ),
+                  _OkButton(
+                    controllers: _controllers,
+                    formKey: _formKey,
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -53,9 +77,11 @@ class InputRecordContentsScreen extends StatelessWidget {
 
 class _OkButton extends StatelessWidget {
   final List<TextEditingController> controllers;
+  final GlobalKey<FormState> formKey;
 
   const _OkButton({
     @required this.controllers,
+    @required this.formKey,
     Key key,
   }) : super(key: key);
 
@@ -67,8 +93,10 @@ class _OkButton extends StatelessWidget {
         color: Colors.amber[800],
         textColor: Colors.white,
         onPressed: () {
-          recordContentsModel.addNewRecordContents(controllers);
-          Navigator.pop(context);
+          if (formKey.currentState.validate()) {
+            recordContentsModel.addNewRecordContents(controllers);
+            formKey.currentState.save();
+          }
         },
       ),
     );
