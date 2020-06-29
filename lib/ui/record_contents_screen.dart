@@ -171,29 +171,35 @@ class _NormalDataTable extends StatelessWidget {
       builder: (context, record, recordContentsModel, nameModel, _) {
         return Container(
           height: 200,
-          child: DataTable(
-            columns: nameModel.recordNameList
-                .map((name) => DataColumn(label: Text(name.name)))
-                .toList(),
-            rows: recordContentsModel.recordContentsPerCount
-                .map(
-                  (perCount) => DataRow(
-                    cells: perCount
-                        .map(
-                          (recordContents) => DataCell(
-                            ChangeNotifierProvider.value(
-                              value: recordContents,
-                              child: Consumer<RecordContents>(
-                                builder: (context, recordContents, _) =>
-                                    Text(recordContents.score.toString()),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                columns: nameModel.recordNameList
+                    .map((name) => DataColumn(label: Text(name.name)))
+                    .toList(),
+                rows: recordContentsModel.recordContentsPerCount
+                    .map(
+                      (perCount) => DataRow(
+                        cells: perCount
+                            .map(
+                              (recordContents) => DataCell(
+                                ChangeNotifierProvider.value(
+                                  value: recordContents,
+                                  child: Consumer<RecordContents>(
+                                    builder: (context, recordContents, _) =>
+                                        Text(recordContents.score.toString()),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                )
-                .toList(),
+                            )
+                            .toList(),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
           ),
         );
       },
