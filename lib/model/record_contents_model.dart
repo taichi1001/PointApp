@@ -79,16 +79,31 @@ class RecordContentsModel with ChangeNotifier {
 
   void calcScore() {
     _initScore();
-    if (!record.isDuplicate) {
-      _normalCalcScore();
+    if(record.mode == '順位モード'){
+      if (!record.isDuplicate) {
+        _normalCalcScore();
+      } else {
+        _duplicateCalcScore();
+      }
     } else {
-      _duplicateCalcScore();
+      _calcScore();
     }
   }
 
   void _initScore() {
     for (final name in nameModel.recordNameList) {
       _scoreMap[name.name] = 0;
+    }
+  }
+
+  void _calcScore(){
+    for (final name in nameModel.recordNameList){
+      for(final contents in recordContentsList){
+        if(name.nameId == contents.nameId){
+          _scoreMap[name.name] = _scoreMap[name.name] + contents.score;
+          break;
+        }
+      }
     }
   }
 

@@ -42,11 +42,6 @@ class RecordModel with ChangeNotifier {
     update(record);
   }
 
-  Future changeNumberPeople(Record record, int newCount) async {
-    record.numberPeople = newCount;
-    update(record);
-  }
-
   Future remove(Record record) async {
     await recordRepo.deleteRecordById(record.recordId);
     _fetchAll();

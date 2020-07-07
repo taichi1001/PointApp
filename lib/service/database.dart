@@ -51,6 +51,7 @@ class DatabaseService {
         date TEXT NOT NULL,
         title TEXT NOT NULL,
         number_people INTEGER NOT NULL ,
+        mode TEXT NOT NULL,
         is_edit INTEGER NOT NULL
       )
     ''');
