@@ -33,10 +33,12 @@ class RecordContentsScreen extends StatelessWidget {
                       value: record.isEdit,
                       onChanged: (bool value) {
                         record.changeIsEdit();
+                        recordContentsModel.fetchAll();
                       },
                     ),
                   ],
                 ),
+                /* 順位重複時の処理が完成するまでコメントアウトする
                 Row(
                   children: <Widget>[
                     const Text('順位重複モード'),
@@ -49,6 +51,7 @@ class RecordContentsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                */
                 Center(
                   child: RaisedButton(
                     child: const Text('レート変更'),
@@ -218,37 +221,45 @@ class _EditDataTable extends StatelessWidget {
       builder: (context, record, recordContentsModel, nameModel, _) {
         return Container(
           height: 200,
-          child: DataTable(
-            columns: nameModel.recordNameList
-                .map((name) => DataColumn(label: Text(name.name)))
-                .toList(),
-            rows: recordContentsModel.recordContentsPerCount
-                .map(
-                  (perCount) => DataRow(
-                    cells: perCount
-                        .map(
-                          (recordContents) => DataCell(
-                            ChangeNotifierProvider.value(
-                              value: recordContents,
-                              child: Consumer<RecordContents>(
-                                builder: (context, recordContents, _) =>
-                                    TextField(
-                                  controller: TextEditingController(
-                                      text: recordContents.score.toString()),
-                                  onSubmitted: (String newText) {
-                                    recordContents.updateScore(newText);
-                                    recordContentsModel.recordContentsRepo
-                                        .updateRecordContents(recordContents);
-                                  },
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                columns: nameModel.recordNameList
+                    .map((name) => DataColumn(label: Text(name.name)))
+                    .toList(),
+                rows: recordContentsModel.recordContentsPerCount
+                    .map(
+                      (perCount) => DataRow(
+                        cells: perCount
+                            .map(
+                              (recordContents) => DataCell(
+                                ChangeNotifierProvider.value(
+                                  value: recordContents,
+                                  child: Consumer<RecordContents>(
+                                    builder: (context, recordContents, _) =>
+                                        TextField(
+                                      controller: TextEditingController(
+                                          text:
+                                              recordContents.score.toString()),
+                                      onSubmitted: (String newText) {
+                                        recordContents.updateScore(newText);
+                                        recordContentsModel.recordContentsRepo
+                                            .updateRecordContents(
+                                                recordContents);
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                )
-                .toList(),
+                            )
+                            .toList(),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
           ),
         );
       },
