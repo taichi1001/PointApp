@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/entity/record.dart';
+import 'package:todo_app/repository/correspondence_name_record_repository.dart';
+import 'package:todo_app/repository/rank_rate_repository.dart';
+import 'package:todo_app/repository/record_contents_repository.dart';
 import 'package:todo_app/repository/record_repository.dart';
 
 class RecordModel with ChangeNotifier {
@@ -10,24 +13,27 @@ class RecordModel with ChangeNotifier {
   List<Record> get completedTodoList =>
       _allRecordList.where((record) => record.isEdit == true).toList();
 
-  final RecordRepository repo = RecordRepository();
+  final RecordRepository recordRepo = RecordRepository();
+  final RecordContentsRepository recordContentsRepo = RecordContentsRepository();
+  final CorrespondenceNameRecordRepository coresspondenceRepo = CorrespondenceNameRecordRepository();
+  final RankRateRepository rankRateRepo = RankRateRepository();
 
   RecordModel() {
     _fetchAll();
   }
 
   Future _fetchAll() async {
-    _allRecordList = await repo.getAllRecords();
+    _allRecordList = await recordRepo.getAllRecords();
     notifyListeners();
   }
 
   Future add(Record record) async {
-    await repo.insertRecord(record);
+    await recordRepo.insertRecord(record);
     _fetchAll();
   }
 
   Future update(Record record) async {
-    await repo.updateRecord(record);
+    await recordRepo.updateRecord(record);
     _fetchAll();
   }
 
@@ -42,7 +48,15 @@ class RecordModel with ChangeNotifier {
   }
 
   Future remove(Record record) async {
-    await repo.deleteRecordById(record.recordId);
+    await recordRepo.deleteRecordById(record.recordId);
+    _fetchAll();
+  }
+
+  Future removRelatedData(Record record) async {
+    await recordRepo.deleteRecordById(record.recordId);
+    await recordContentsRepo.deleteRecordContentsByRecordId(record.recordId);
+    await rankRateRepo.deleteRankRateByRecordId(record.recordId);
+    await coresspondenceRepo.deleteCorrespondenceByRecordId(record.recordId);
     _fetchAll();
   }
 }

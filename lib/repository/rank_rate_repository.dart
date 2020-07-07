@@ -14,6 +14,8 @@ class RankRateRepository {
 
   Future deleteRankRateById(int id) => rankRateDao.delete(id);
 
+  Future deleteRankRateByRecordId(int id) => rankRateDao.deleteByRecordId(id);
+
   //not use this
   Future deleteAllRankRate() => rankRateDao.deleteAll();
 }

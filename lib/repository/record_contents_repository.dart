@@ -15,6 +15,8 @@ class RecordContentsRepository {
 
   Future deleteRecordContentsById(int id) => recordContentsDao.delete(id);
 
+  Future deleteRecordContentsByRecordId(int id) => recordContentsDao.deleteByRecordId(id);
+
   //not use this sample
   Future deleteAllRecordsContents() => recordContentsDao.deleteAll();
 }
