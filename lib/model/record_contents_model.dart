@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:math';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/entity/rank_rate.dart';
 import 'package:todo_app/entity/record_contents.dart';
@@ -158,7 +159,7 @@ class RecordContentsModel with ChangeNotifier {
 
   void _sortScore() {
     final sortedKeys = _scoreMap.keys.toList(growable: false)
-      ..sort((k1, k2) => _scoreMap[k1].compareTo(_scoreMap[k2]));
+      ..sort((k1, k2) => _scoreMap[k2].compareTo(_scoreMap[k1]));
     final LinkedHashMap<String, int> sortedMap = LinkedHashMap.fromIterable(
         sortedKeys,
         key: (k) => k,
