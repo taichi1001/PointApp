@@ -1,6 +1,5 @@
 import 'dart:collection';
 import 'dart:math';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/entity/rank_rate.dart';
 import 'package:todo_app/entity/record_contents.dart';
@@ -139,7 +138,7 @@ class RecordContentsModel with ChangeNotifier {
           }
         }
       }
-      
+
       int totalScore = 0;
       for (final score in _scoreMap.values) {
         totalScore = totalScore + score;

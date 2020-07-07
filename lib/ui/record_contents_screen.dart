@@ -123,14 +123,17 @@ class RecordContentsScreen extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: nameModel.recordNameList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Row(
-                        children: <Widget>[
-                          Text(recordContentsModel.scoreMap.keys
-                              .toList()[index]),
-                          Text(recordContentsModel.scoreMap.values
-                              .toList()[index]
-                              .toString()),
-                        ],
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Text(recordContentsModel.scoreMap.keys
+                                .toList()[index]),
+                            Text(recordContentsModel.scoreMap.values
+                                .toList()[index]
+                                .toString()),
+                          ],
+                        ),
                       );
                     },
                   ),
