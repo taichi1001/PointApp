@@ -18,14 +18,6 @@ class MainBottomNavigation extends StatelessWidget {
             title: Text('Record'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.check_box_outline_blank),
-            title: Text('Incompleted'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.check_box),
-            title: Text('Completed'),
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.data_usage),
             title: Text('DB'),
           ),

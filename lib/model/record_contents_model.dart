@@ -79,16 +79,31 @@ class RecordContentsModel with ChangeNotifier {
 
   void calcScore() {
     _initScore();
-    if (!record.isDuplicate) {
-      _normalCalcScore();
+    if(record.mode == '順位モード'){
+      if (!record.isDuplicate) {
+        _normalCalcScore();
+      } else {
+        _duplicateCalcScore();
+      }
     } else {
-      _duplicateCalcScore();
+      _calcScore();
     }
   }
 
   void _initScore() {
     for (final name in nameModel.recordNameList) {
       _scoreMap[name.name] = 0;
+    }
+  }
+
+  void _calcScore(){
+    for (final name in nameModel.recordNameList){
+      for(final contents in recordContentsList){
+        if(name.nameId == contents.nameId){
+          _scoreMap[name.name] = _scoreMap[name.name] + contents.score;
+          break;
+        }
+      }
     }
   }
 
@@ -138,7 +153,7 @@ class RecordContentsModel with ChangeNotifier {
           }
         }
       }
-      
+
       int totalScore = 0;
       for (final score in _scoreMap.values) {
         totalScore = totalScore + score;
@@ -158,7 +173,7 @@ class RecordContentsModel with ChangeNotifier {
 
   void _sortScore() {
     final sortedKeys = _scoreMap.keys.toList(growable: false)
-      ..sort((k1, k2) => _scoreMap[k1].compareTo(_scoreMap[k2]));
+      ..sort((k1, k2) => _scoreMap[k2].compareTo(_scoreMap[k1]));
     final LinkedHashMap<String, int> sortedMap = LinkedHashMap.fromIterable(
         sortedKeys,
         key: (k) => k,

@@ -23,6 +23,15 @@ class ParticipantSettingScreen extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
+              const Text('モード'),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: _SettingMode(),
+              )              
+            ],
+          ),
+          Row(
+            children: <Widget>[
               const Text('人数'),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -114,9 +123,39 @@ class _SettingNumberPeople extends StatelessWidget {
         ),
         onChanged: (String newValue) {
           record.changeNumberPeople(int.parse(newValue));
-          model.changeNumberPeople(record, int.parse(newValue));
+          model.update(record);
         },
         items: rangeNumberCount.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+class _SettingMode extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final model = Provider.of<RecordModel>(context, listen: false);
+    return Consumer<Record>(
+      builder: (context, record, _) => DropdownButton<String>(
+        value: record.mode,
+        icon: const Icon(Icons.arrow_downward),
+        iconSize: 18,
+        elevation: 16,
+        style: const TextStyle(color: Colors.deepPurple),
+        underline: Container(
+          height: 2,
+          color: Colors.deepPurpleAccent,
+        ),
+        onChanged: (String newValue) {
+          record.changeMode(newValue);
+          model.update(record);
+        },
+        items: modeList.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),

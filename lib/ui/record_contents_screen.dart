@@ -170,7 +170,7 @@ class _NormalDataTable extends StatelessWidget {
     return Consumer3<Record, RecordContentsModel, NameModel>(
       builder: (context, record, recordContentsModel, nameModel, _) {
         return Container(
-          height: 300,
+          height: 200,
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: SingleChildScrollView(
@@ -189,9 +189,7 @@ class _NormalDataTable extends StatelessWidget {
                                   value: recordContents,
                                   child: Consumer<RecordContents>(
                                     builder: (context, recordContents, _) =>
-                                        Center(
-                                            child: Text(recordContents.score
-                                                .toString())),
+                                        Text(recordContents.score.toString()),
                                   ),
                                 ),
                               ),
@@ -219,47 +217,38 @@ class _EditDataTable extends StatelessWidget {
     return Consumer3<Record, RecordContentsModel, NameModel>(
       builder: (context, record, recordContentsModel, nameModel, _) {
         return Container(
-          height: 300,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columnSpacing: 20,
-                columns: nameModel.recordNameList
-                    .map((name) => DataColumn(label: Text(name.name)))
-                    .toList(),
-                rows: recordContentsModel.recordContentsPerCount
-                    .map(
-                      (perCount) => DataRow(
-                        cells: perCount
-                            .map(
-                              (recordContents) => DataCell(
-                                ChangeNotifierProvider.value(
-                                  value: recordContents,
-                                  child: Consumer<RecordContents>(
-                                    builder: (context, recordContents, _) =>
-                                        TextField(
-                                      controller: TextEditingController(
-                                          text:
-                                              recordContents.score.toString()),
-                                      onSubmitted: (String newText) {
-                                        recordContents.updateScore(newText);
-                                        recordContentsModel.recordContentsRepo
-                                            .updateRecordContents(
-                                                recordContents);
-                                      },
-                                    ),
-                                  ),
+          height: 200,
+          child: DataTable(
+            columns: nameModel.recordNameList
+                .map((name) => DataColumn(label: Text(name.name)))
+                .toList(),
+            rows: recordContentsModel.recordContentsPerCount
+                .map(
+                  (perCount) => DataRow(
+                    cells: perCount
+                        .map(
+                          (recordContents) => DataCell(
+                            ChangeNotifierProvider.value(
+                              value: recordContents,
+                              child: Consumer<RecordContents>(
+                                builder: (context, recordContents, _) =>
+                                    TextField(
+                                  controller: TextEditingController(
+                                      text: recordContents.score.toString()),
+                                  onSubmitted: (String newText) {
+                                    recordContents.updateScore(newText);
+                                    recordContentsModel.recordContentsRepo
+                                        .updateRecordContents(recordContents);
+                                  },
                                 ),
                               ),
-                            )
-                            .toList(),
-                      ),
-                    )
-                    .toList(),
-              ),
-            ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                )
+                .toList(),
           ),
         );
       },

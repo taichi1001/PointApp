@@ -15,6 +15,8 @@ class CorrespondenceNameRecordRepository {
   Future deleteCorrespondenceById(int id) =>
       correspondenceNameRecordDao.delete(id);
 
+  Future deleteCorrespondenceByRecordId(int id) =>
+      correspondenceNameRecordDao.deleteByRecordId(id);
   //not use this
   Future deleteAllCorrespondence() => correspondenceNameRecordDao.deleteAll();
 }
