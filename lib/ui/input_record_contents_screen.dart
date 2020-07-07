@@ -45,7 +45,7 @@ class InputRecordContentsScreen extends StatelessWidget {
                                 } else if (int.tryParse(value) is! int) {
                                   return '数字を入力してください';
                                 } else if (int.tryParse(value) >
-                                        record.numberPeople &&
+                                        record.numberPeople ||
                                     int.tryParse(value) < 1) {
                                   return '範囲内の値を入力してください';
                                 } else {

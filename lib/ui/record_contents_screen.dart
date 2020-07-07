@@ -37,6 +37,7 @@ class RecordContentsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                /*
                 Row(
                   children: <Widget>[
                     const Text('順位重複モード'),
@@ -49,28 +50,8 @@ class RecordContentsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                Center(
-                  child: RaisedButton(
-                    child: const Text('レート変更'),
-                    color: Colors.amber[800],
-                    textColor: Colors.white,
-                    onPressed: () {
-                      recordContentsModel.fetchAll();
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) => MultiProvider(
-                          providers: [
-                            ChangeNotifierProvider.value(value: record),
-                            ChangeNotifierProvider.value(
-                                value: recordContentsModel),
-                          ],
-                          child: const RankRateUpdateAlertDialog(),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                 */
+                const _ChangeRateButton(),
                 Center(
                   child: RaisedButton(
                     child: const Text('名前変更'),
@@ -141,6 +122,47 @@ class RecordContentsScreen extends StatelessWidget {
   }
 }
 
+class _ChangeRateButton extends StatelessWidget {
+  const _ChangeRateButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Consumer2<Record, RecordContentsModel>(
+        builder: (context, record, recordContentsModel, _) {
+          if (record.mode == '順位モード') {
+            return RaisedButton(
+              child: const Text('レート変更'),
+              color: Colors.amber[800],
+              textColor: Colors.white,
+              onPressed: () {
+                recordContentsModel.fetchAll();
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) =>
+                      MultiProvider(
+                        providers: [
+                          ChangeNotifierProvider.value(value: record),
+                          ChangeNotifierProvider.value(
+                              value: recordContentsModel),
+                        ],
+                        child: const RankRateUpdateAlertDialog(),
+                      ),
+                );
+              },
+            );
+          } else {
+            return Container();
+          }
+        },
+      ),
+    );
+  }
+}
+
 class _DataTable extends StatelessWidget {
   const _DataTable({
     Key key,
@@ -150,7 +172,7 @@ class _DataTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<Record>(
       builder: (context, record, _) {
-        if (record.isEdit) {
+        if (!record.isEdit) {
           return const _NormalDataTable();
         } else {
           return const _EditDataTable();
