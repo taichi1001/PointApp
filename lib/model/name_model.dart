@@ -42,19 +42,26 @@ class NameModel with ChangeNotifier {
   }
 
   // レコードに対応する名前を更新するときに使う
+  // 既に登録されている名前に変更しようとした場合にisUpdateをfalseにする
   Future updateRecordName(List<TextEditingController> newTextList,
       List<TextEditingController> oldTextList) async {
     var index = 0;
-    _isUpdate = true; 
-    loop1: for (final text in newTextList) {
+    _isUpdate = true;
+    for (final text in newTextList) {
       if (text.text != oldTextList[index].text) {
-        for (final name in _allNameList) {
-          if (oldTextList[index].text == name.name) {
-            name.name = text.text;
-            final judge = await nameRepo.updateName(name);
-            if(judge == 0){
-              _isUpdate = false;
-              break loop1;
+        if (_allNameList
+            .map((name) => name.name)
+            .toList()
+            .contains(text.text)) {
+          _isUpdate = false;
+          index++;
+          break;
+        } else {
+          for (final name in _allNameList) {
+            if (name.name == oldTextList[index].text) {
+              name.name = text.text;
+              await nameRepo.updateName(name);
+              break;
             }
           }
         }
@@ -75,13 +82,29 @@ class NameModel with ChangeNotifier {
   // 名前と、レコードと名前の対応をそれぞれDBに記録
   Future setNewName(List<TextEditingController> textList) async {
     for (final text in textList) {
-      if (text.text.isNotEmpty) {
+      if (recordNameList
+          .map((name) => name.name)
+          .toList()
+          .contains(text.text)) {
+        _registerdName(text.text);
+      } else if (text.text.isNotEmpty) {
         final nameId = await nameRepo.insertName(Name(name: text.text));
         await correspondenceRepo.insertCorrespondence(CorrespondenceNameRecord(
             nameId: nameId, recordId: record.recordId));
       }
     }
     await _fetchAll();
+  }
+
+  /// 既に登録されている名前の場合の処理
+  Future _registerdName(String inName) async {
+    for (final name in recordNameList) {
+      if (inName == name.name) {
+        final nameId = name.nameId;
+        await correspondenceRepo.insertCorrespondence(CorrespondenceNameRecord(
+            nameId: nameId, recordId: record.recordId));
+      }
+    }
   }
 
   Future add(Name name) async {
