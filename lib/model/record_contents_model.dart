@@ -126,50 +126,73 @@ class RecordContentsModel with ChangeNotifier {
 
   void _duplicateCalcScore() {
     _initScore();
-    for (final perCount in _recordContentsPerCount) {
-      List<RecordContents> dupList = [];
+    for (final perCount in recordContentsPerCount) {
+      final List<List<RecordContents>> dupLists = [];
       for (final recordContents1 in perCount) {
         int dupCount = 0;
+        final List<RecordContents> dupList = [];
         for (final recordContents2 in perCount) {
           if (recordContents1.score == recordContents2.score) {
             dupCount++;
             if (dupCount == 2) {
               dupList.add(recordContents1);
               dupList.add(recordContents2);
+              dupLists.add(dupList);
             } else if (dupCount > 2) {
               dupList.add(recordContents2);
+              dupLists.add(dupList);
             }
           }
         }
       }
-      dupList = dupList.toSet().toList();
+      var rankTmp = 0;
+      final List<List<RecordContents>> dupListsB = [];
+      for (final dupList in dupLists) {
+        if (rankTmp != dupList[0].score) {
+          dupListsB.add(dupList);
+          rankTmp = dupList[0].score;
+        }
+      }
+      final List<RecordContents> flatDupList =
+          dupListsB.expand((pair) => pair).toList();
       final List<RecordContents> noDupList =
-          perCount.where((element) => !dupList.contains(element)).toList();
+          perCount.where((element) => !flatDupList.contains(element)).toList();
       for (final name in nameModel.recordNameList) {
         for (final contents in noDupList) {
           if (name.nameId == contents.nameId) {
             for (final rankRate in recordRankRateList) {
-              if (contents.score == rankRate.rank){
-                _scoreMap[name.name] = _scoreMap[name.name] + rankRate.rate;
+              if (contents.score == rankRate.rank) {
+                scoreMap[name.name] = scoreMap[name.name] + rankRate.rate;
               }
             }
           }
         }
       }
 
-      int totalScore = 0;
-      for (final score in _scoreMap.values) {
-        totalScore = totalScore + score;
-      }
-      if (dupList.isNotEmpty) {
-        final dupScore = (totalScore / dupList.length).round();
-        for (final name in nameModel.recordNameList) {
+      if (dupListsB.isNotEmpty) {
+        for (final dupList in dupListsB) {
+          int dupRate = 0;
           for (final contents in dupList) {
-            if (name.nameId == contents.nameId) {
-              _scoreMap[name.name] = _scoreMap[name.name] - dupScore;
+            for (int i = 0; i < dupList.length; i++) {
+              print(contents.nameId);
+              for (final rankRate in recordRankRateList) {
+                if (contents.score + i == rankRate.rank) {
+                  dupRate += rankRate.rate;
+                }
+              }
+            }
+            break;
+          }
+          dupRate = (dupRate / dupList.length).round();
+          for (final name in nameModel.recordNameList) {
+            for (final contents in dupList) {
+              if (name.nameId == contents.nameId) {
+                scoreMap[name.name] = scoreMap[name.name] + dupRate;
+              }
             }
           }
         }
+        print(scoreMap);
       }
     }
   }

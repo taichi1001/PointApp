@@ -82,11 +82,11 @@ class NameModel with ChangeNotifier {
   // 名前と、レコードと名前の対応をそれぞれDBに記録
   Future setNewName(List<TextEditingController> textList) async {
     for (final text in textList) {
-      if (recordNameList
+      if (_allNameList
           .map((name) => name.name)
           .toList()
           .contains(text.text)) {
-        _registerdName(text.text);
+        _registeredName(text.text);
       } else if (text.text.isNotEmpty) {
         final nameId = await nameRepo.insertName(Name(name: text.text));
         await correspondenceRepo.insertCorrespondence(CorrespondenceNameRecord(
@@ -97,8 +97,8 @@ class NameModel with ChangeNotifier {
   }
 
   /// 既に登録されている名前の場合の処理
-  Future _registerdName(String inName) async {
-    for (final name in recordNameList) {
+  Future _registeredName(String inName) async {
+    for (final name in _allNameList) {
       if (inName == name.name) {
         final nameId = name.nameId;
         await correspondenceRepo.insertCorrespondence(CorrespondenceNameRecord(

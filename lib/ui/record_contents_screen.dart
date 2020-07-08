@@ -116,22 +116,28 @@ class _DuplicateModeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        const Text('順位重複モード'),
-        Consumer2<Record, RecordContentsModel>(
-          builder: (context, record, recordContentsModel, _) {
-            return Switch(
-              value: record.isDuplicate,
-              onChanged: (bool value) {
-                record.isDuplicate = value;
-                recordContentsModel.fetchAll();
-              },
-            );
-          },
-        ),
-      ],
-    );
+    return Consumer2<Record, RecordContentsModel>(
+        builder: (context, record, recordContentsModel, _) {
+      if (record.mode == '順位モード') {
+        return Row(
+          children: <Widget>[
+            const Text('順位重複モード'),
+            Consumer2<Record, RecordContentsModel>(
+                builder: (context, record, recordContentsModel, _) {
+              return Switch(
+                value: record.isDuplicate,
+                onChanged: (bool value) {
+                  record.isDuplicate = value;
+                  recordContentsModel.fetchAll();
+                },
+              );
+            }),
+          ],
+        );
+      } else {
+        return Container();
+      }
+    });
   }
 }
 
@@ -251,37 +257,45 @@ class _EditDataTable extends StatelessWidget {
       builder: (context, record, recordContentsModel, nameModel, _) {
         return Container(
           height: 200,
-          child: DataTable(
-            columns: nameModel.recordNameList
-                .map((name) => DataColumn(label: Text(name.name)))
-                .toList(),
-            rows: recordContentsModel.recordContentsPerCount
-                .map(
-                  (perCount) => DataRow(
-                    cells: perCount
-                        .map(
-                          (recordContents) => DataCell(
-                            ChangeNotifierProvider.value(
-                              value: recordContents,
-                              child: Consumer<RecordContents>(
-                                builder: (context, recordContents, _) =>
-                                    TextField(
-                                  controller: TextEditingController(
-                                      text: recordContents.score.toString()),
-                                  onSubmitted: (String newText) {
-                                    recordContents.updateScore(newText);
-                                    recordContentsModel.recordContentsRepo
-                                        .updateRecordContents(recordContents);
-                                  },
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                columns: nameModel.recordNameList
+                    .map((name) => DataColumn(label: Text(name.name)))
+                    .toList(),
+                rows: recordContentsModel.recordContentsPerCount
+                    .map(
+                      (perCount) => DataRow(
+                        cells: perCount
+                            .map(
+                              (recordContents) => DataCell(
+                                ChangeNotifierProvider.value(
+                                  value: recordContents,
+                                  child: Consumer<RecordContents>(
+                                    builder: (context, recordContents, _) =>
+                                        TextField(
+                                      controller: TextEditingController(
+                                          text:
+                                              recordContents.score.toString()),
+                                      onSubmitted: (String newText) {
+                                        recordContents.updateScore(newText);
+                                        recordContentsModel.recordContentsRepo
+                                            .updateRecordContents(
+                                                recordContents);
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                )
-                .toList(),
+                            )
+                            .toList(),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
           ),
         );
       },
