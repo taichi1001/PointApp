@@ -37,20 +37,7 @@ class RecordContentsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                /*
-                Row(
-                  children: <Widget>[
-                    const Text('順位重複モード'),
-                    Switch(
-                      value: record.isDuplicate,
-                      onChanged: (bool value) {
-                        record.isDuplicate = value;
-                        recordContentsModel.fetchAll();
-                      },
-                    ),
-                  ],
-                ),
-                 */
+                const _DuplicateModeButton(),
                 const _ChangeRateButton(),
                 Center(
                   child: RaisedButton(
@@ -122,6 +109,32 @@ class RecordContentsScreen extends StatelessWidget {
   }
 }
 
+class _DuplicateModeButton extends StatelessWidget {
+  const _DuplicateModeButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        const Text('順位重複モード'),
+        Consumer2<Record, RecordContentsModel>(
+          builder: (context, record, recordContentsModel, _) {
+            return Switch(
+              value: record.isDuplicate,
+              onChanged: (bool value) {
+                record.isDuplicate = value;
+                recordContentsModel.fetchAll();
+              },
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
 class _ChangeRateButton extends StatelessWidget {
   const _ChangeRateButton({
     Key key,
@@ -142,15 +155,13 @@ class _ChangeRateButton extends StatelessWidget {
                 showDialog(
                   context: context,
                   barrierDismissible: false,
-                  builder: (BuildContext context) =>
-                      MultiProvider(
-                        providers: [
-                          ChangeNotifierProvider.value(value: record),
-                          ChangeNotifierProvider.value(
-                              value: recordContentsModel),
-                        ],
-                        child: const RankRateUpdateAlertDialog(),
-                      ),
+                  builder: (BuildContext context) => MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider.value(value: record),
+                      ChangeNotifierProvider.value(value: recordContentsModel),
+                    ],
+                    child: const RankRateUpdateAlertDialog(),
+                  ),
                 );
               },
             );

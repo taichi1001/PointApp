@@ -79,7 +79,7 @@ class RecordContentsModel with ChangeNotifier {
 
   void calcScore() {
     _initScore();
-    if(record.mode == '順位モード'){
+    if (record.mode == '順位モード') {
       if (!record.isDuplicate) {
         _normalCalcScore();
       } else {
@@ -96,10 +96,10 @@ class RecordContentsModel with ChangeNotifier {
     }
   }
 
-  void _calcScore(){
-    for (final name in nameModel.recordNameList){
-      for(final contents in recordContentsList){
-        if(name.nameId == contents.nameId){
+  void _calcScore() {
+    for (final name in nameModel.recordNameList) {
+      for (final contents in recordContentsList) {
+        if (name.nameId == contents.nameId) {
           _scoreMap[name.name] = _scoreMap[name.name] + contents.score;
           break;
         }
@@ -127,7 +127,7 @@ class RecordContentsModel with ChangeNotifier {
   void _duplicateCalcScore() {
     _initScore();
     for (final perCount in _recordContentsPerCount) {
-      final List<RecordContents> dupList = [];
+      List<RecordContents> dupList = [];
       for (final recordContents1 in perCount) {
         int dupCount = 0;
         for (final recordContents2 in perCount) {
@@ -142,13 +142,16 @@ class RecordContentsModel with ChangeNotifier {
           }
         }
       }
+      dupList = dupList.toSet().toList();
       final List<RecordContents> noDupList =
           perCount.where((element) => !dupList.contains(element)).toList();
       for (final name in nameModel.recordNameList) {
         for (final contents in noDupList) {
           if (name.nameId == contents.nameId) {
             for (final rankRate in recordRankRateList) {
-              _scoreMap[name.name] = _scoreMap[name.name] + rankRate.rate;
+              if (contents.score == rankRate.rank){
+                _scoreMap[name.name] = _scoreMap[name.name] + rankRate.rate;
+              }
             }
           }
         }
