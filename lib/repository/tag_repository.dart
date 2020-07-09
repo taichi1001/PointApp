@@ -4,14 +4,14 @@ import 'package:todo_app/entity/tag.dart';
 class TagRepository {
   final tagDao = TagDao();
 
-  Future getAllName() => tagDao.getAll();
+  Future getAllTag() => tagDao.getAll();
 
-  Future insertName(Tag tag) => tagDao.create(tag);
+  Future insertTag(Tag tag) => tagDao.create(tag);
 
-  Future updateName(Tag tag) => tagDao.update(tag);
+  Future updateTag(Tag tag) => tagDao.update(tag);
 
-  Future deleteNameById(int id) => tagDao.delete(id);
+  Future deleteTagById(int id) => tagDao.delete(id);
 
   //not use this
-  Future deleteAllName() => tagDao.deleteAll();
+  Future deleteAllTag() => tagDao.deleteAll();
 }
