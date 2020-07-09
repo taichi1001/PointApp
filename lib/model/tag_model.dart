@@ -26,8 +26,7 @@ class TagModel with ChangeNotifier {
       return;
     }
     _isUpdate = true;
-    await tagRepo.insertTag(Tag(tag: newTag.text));
-    await _fetchAll();
+    await add(Tag(tag: newTag.text));
   }
 
   Future _fetchAll() async {
@@ -35,13 +34,13 @@ class TagModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future add(Tag name) async {
-    tagRepo.insertTag(name);
+  Future add(Tag tag) async {
+    tagRepo.insertTag(tag);
     _fetchAll();
   }
 
-  Future update(Tag name) async {
-    await tagRepo.updateTag(name);
+  Future update(Tag tag) async {
+    await tagRepo.updateTag(tag);
     _fetchAll();
   }
 
