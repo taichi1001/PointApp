@@ -6,12 +6,11 @@ import 'package:todo_app/repository/record_contents_repository.dart';
 import 'package:todo_app/repository/record_repository.dart';
 
 class RecordModel with ChangeNotifier {
+  int _selectedTagId = 0;
   List<Record> _allRecordList = [];
+  List<Record> _toDisplayRecord = [];
   List<Record> get allRecordList => _allRecordList;
-  List<Record> get incompletedTodoList =>
-      _allRecordList.where((record) => record.isEdit == false).toList();
-  List<Record> get completedTodoList =>
-      _allRecordList.where((record) => record.isEdit == true).toList();
+  List<Record> get toRecordDisplay => _toDisplayRecord;
 
   final RecordRepository recordRepo = RecordRepository();
   final RecordContentsRepository recordContentsRepo =
@@ -24,8 +23,25 @@ class RecordModel with ChangeNotifier {
     _fetchAll();
   }
 
+  void changeSelectedTag(int tagId) {
+    _selectedTagId = tagId;
+    _fetchAll();
+  }
+
+  void _selectToRecordDisplay() {
+    if (_selectedTagId == 0) {
+      _toDisplayRecord = _allRecordList;
+    } else {
+      _toDisplayRecord = _allRecordList
+          .where((record) => record.tagId == _selectedTagId)
+          .toList();
+    }
+    notifyListeners();
+  }
+
   Future _fetchAll() async {
     _allRecordList = await recordRepo.getAllRecords();
+    _selectToRecordDisplay();
     notifyListeners();
   }
 

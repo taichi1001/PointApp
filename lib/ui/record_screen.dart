@@ -4,16 +4,32 @@ import 'package:todo_app/model/record_model.dart';
 import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/ui/parts/record_list_view.dart';
 
-class AllRecordsScreen extends StatelessWidget {
-  const AllRecordsScreen({Key key}) : super(key: key);
+class RecordScreen extends StatelessWidget {
+  const RecordScreen({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('All Records'),
+        actions: const <Widget>[SettingButton()],
       ),
       body: const RecordListView(),
       floatingActionButton: const AddTodoButton(),
+    );
+  }
+}
+
+class SettingButton extends StatelessWidget {
+  const SettingButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.settings),
+      onPressed: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const Text('a')));
+      },
     );
   }
 }

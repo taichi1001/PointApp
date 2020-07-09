@@ -12,18 +12,18 @@ class RecordListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<RecordModel>(context, listen: true);
-    if (model.allRecordList.isEmpty) {
+    if (model.toRecordDisplay.isEmpty) {
       return const Center(child: Text('No Items'));
     }
 
     return ListView.builder(
-      itemCount: model.allRecordList.length,
+      itemCount: model.toRecordDisplay.length,
       itemBuilder: (BuildContext context, int index) {
         final recordContentsModel =
-            RecordContentsModel(record: model.allRecordList[index]);
+            RecordContentsModel(record: model.toRecordDisplay[index]);
         return MultiProvider(
           providers: [
-            ChangeNotifierProvider.value(value: model.allRecordList[index]),
+            ChangeNotifierProvider.value(value: model.toRecordDisplay[index]),
             ChangeNotifierProvider.value(
               value: recordContentsModel,
             ),
