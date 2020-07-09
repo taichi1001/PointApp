@@ -81,12 +81,12 @@ class RecordContentsModel with ChangeNotifier {
     _initScore();
     if (record.mode == '順位モード') {
       if (!record.isDuplicate) {
-        _normalCalcScore();
+        _calcByRankMode();
       } else {
-        _duplicateCalcScore();
+        _calculateByRankDuplicateMode();
       }
     } else {
-      _calcScore();
+      _calcByScoreMode();
     }
   }
 
@@ -96,7 +96,7 @@ class RecordContentsModel with ChangeNotifier {
     }
   }
 
-  void _calcScore() {
+  void _calcByScoreMode() {
     for (final name in nameModel.recordNameList) {
       for (final contents in recordContentsList) {
         if (name.nameId == contents.nameId) {
@@ -107,16 +107,14 @@ class RecordContentsModel with ChangeNotifier {
     }
   }
 
-  void _normalCalcScore() {
+  void _calcByRankMode() {
     for (final name in nameModel.recordNameList) {
       for (final contents in recordContentsList) {
         if (name.nameId == contents.nameId) {
           for (final rankRate in recordRankRateList) {
             if (contents.score == rankRate.rank) {
-              if (_scoreMap.containsKey(name.name)) {
-                _scoreMap[name.name] = _scoreMap[name.name] + rankRate.rate;
-                break;
-              }
+              _scoreMap[name.name] = _scoreMap[name.name] + rankRate.rate;
+              break;
             }
           }
         }
@@ -124,77 +122,100 @@ class RecordContentsModel with ChangeNotifier {
     }
   }
 
-  void _duplicateCalcScore() {
+  void _calculateByRankDuplicateMode() {
     _initScore();
     for (final perCount in recordContentsPerCount) {
-      final List<List<RecordContents>> dupLists = [];
-      for (final recordContents1 in perCount) {
-        int dupCount = 0;
-        final List<RecordContents> dupList = [];
-        for (final recordContents2 in perCount) {
-          if (recordContents1.score == recordContents2.score) {
-            dupCount++;
-            if (dupCount == 2) {
-              dupList.add(recordContents1);
-              dupList.add(recordContents2);
-              dupLists.add(dupList);
-            } else if (dupCount > 2) {
-              dupList.add(recordContents2);
-              dupLists.add(dupList);
-            }
-          }
-        }
-      }
-      var rankTmp = 0;
-      final List<List<RecordContents>> dupListsB = [];
-      for (final dupList in dupLists) {
-        if (rankTmp != dupList[0].score) {
-          dupListsB.add(dupList);
-          rankTmp = dupList[0].score;
-        }
-      }
+      final List<List<RecordContents>> dupLists = _makeDuplists(perCount);
+      final List<List<RecordContents>> dupListsB =
+          _removeDuplicateFromDuplists(dupLists);
       final List<RecordContents> flatDupList =
           dupListsB.expand((pair) => pair).toList();
       final List<RecordContents> noDupList =
           perCount.where((element) => !flatDupList.contains(element)).toList();
-      for (final name in nameModel.recordNameList) {
-        for (final contents in noDupList) {
-          if (name.nameId == contents.nameId) {
-            for (final rankRate in recordRankRateList) {
-              if (contents.score == rankRate.rank) {
-                scoreMap[name.name] = scoreMap[name.name] + rankRate.rate;
-              }
-            }
-          }
-        }
-      }
-
-      if (dupListsB.isNotEmpty) {
+      _calcContentsScoreNoDupList(noDupList);
+      if (dupListsB.isEmpty) {
+        return;
+      } else {
         for (final dupList in dupListsB) {
-          int dupRate = 0;
-          for (final contents in dupList) {
-            for (int i = 0; i < dupList.length; i++) {
-              print(contents.nameId);
-              for (final rankRate in recordRankRateList) {
-                if (contents.score + i == rankRate.rank) {
-                  dupRate += rankRate.rate;
-                }
-              }
-            }
-            break;
-          }
-          dupRate = (dupRate / dupList.length).round();
-          for (final name in nameModel.recordNameList) {
-            for (final contents in dupList) {
-              if (name.nameId == contents.nameId) {
-                scoreMap[name.name] = scoreMap[name.name] + dupRate;
-              }
-            }
-          }
+          final dupRate = _calcRateDuplicatedScore(dupList);
+          _calcDuplicatedScore(dupList, dupRate);
         }
-        print(scoreMap);
       }
     }
+  }
+
+  void _calcDuplicatedScore(List<RecordContents> dupList, int dupRate) {
+    for (final name in nameModel.recordNameList) {
+      for (final contents in dupList) {
+        if (name.nameId == contents.nameId) {
+          scoreMap[name.name] = scoreMap[name.name] + dupRate;
+        }
+      }
+    }
+  }
+
+  int _calcRateDuplicatedScore(List<RecordContents> dupList) {
+    var dupRate = 0;
+    for (int i = 0; i < dupList.length; i++) {
+      for (final rankRate in recordRankRateList) {
+        if (dupList[0].score + i == rankRate.rank) {
+          dupRate += rankRate.rate;
+        }
+      }
+    }
+    dupRate = (dupRate / dupList.length).round();
+    return dupRate;
+  }
+
+  void _calcContentsScoreNoDupList(List<RecordContents> noDupList) {
+    for (final name in nameModel.recordNameList) {
+      for (final contents in noDupList) {
+        if (name.nameId == contents.nameId) {
+          for (final rankRate in recordRankRateList) {
+            if (contents.score == rankRate.rank) {
+              _scoreMap[name.name] = _scoreMap[name.name] + rankRate.rate;
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // _makeDuplistsで生じる同じ組み合わせのうちの1つを削除する
+  List<List<RecordContents>> _removeDuplicateFromDuplists(
+      List<List<RecordContents>> dupLists) {
+    var rank = 0;
+    final List<List<RecordContents>> dupListsB = [];
+    for (final dupList in dupLists) {
+      if (rank != dupList[0].score) {
+        dupListsB.add(dupList);
+        rank = dupList[0].score;
+      }
+    }
+    return dupListsB;
+  }
+
+  List<List<RecordContents>> _makeDuplists(List<RecordContents> perCount) {
+    final List<List<RecordContents>> dupLists = [];
+    for (final recordContents1 in perCount) {
+      int dupCount = 0;
+      final List<RecordContents> dupList = [];
+      for (final recordContents2 in perCount) {
+        if (recordContents1.score == recordContents2.score) {
+          dupCount++;
+          if (dupCount == 2) {
+            dupList.add(recordContents1);
+            dupList.add(recordContents2);
+            dupLists.add(dupList);
+          } else if (dupCount > 2) {
+            dupList.add(recordContents2);
+            dupLists.add(dupList);
+          }
+        }
+      }
+    }
+    return dupLists;
   }
 
   void _sortScore() {
