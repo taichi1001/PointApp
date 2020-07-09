@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/entity/record.dart';
+import 'package:todo_app/model/tag_model.dart';
 import 'package:todo_app/repository/correspondence_name_record_repository.dart';
 import 'package:todo_app/repository/rank_rate_repository.dart';
 import 'package:todo_app/repository/record_contents_repository.dart';
@@ -7,15 +8,17 @@ import 'package:todo_app/repository/record_repository.dart';
 
 class RecordModel with ChangeNotifier {
   int _selectedTagId = 0;
+  String _selectedTag;
   List<Record> _allRecordList = [];
   List<Record> _toDisplayRecord = [];
+  String get selectedTag => _selectedTag;
   List<Record> get allRecordList => _allRecordList;
-  List<Record> get toRecordDisplay => _toDisplayRecord;
+  List<Record> get toDisplayRecord => _toDisplayRecord;
 
   final RecordRepository recordRepo = RecordRepository();
   final RecordContentsRepository recordContentsRepo =
       RecordContentsRepository();
-  final CorrespondenceNameRecordRepository coresspondenceRepo =
+  final CorrespondenceNameRecordRepository correspondenceRepo =
       CorrespondenceNameRecordRepository();
   final RankRateRepository rankRateRepo = RankRateRepository();
 
@@ -23,8 +26,13 @@ class RecordModel with ChangeNotifier {
     _fetchAll();
   }
 
-  void changeSelectedTag(int tagId) {
-    _selectedTagId = tagId;
+  void changeSelectedTag(String newTag, TagModel tagModel) {
+    for(final tag in tagModel.allTagList){
+      if(tag.tag == newTag){
+        _selectedTagId = tag.tagId;
+        _selectedTag = tag.tag;
+      }
+    }
     _fetchAll();
   }
 
@@ -65,11 +73,11 @@ class RecordModel with ChangeNotifier {
     _fetchAll();
   }
 
-  Future removRelatedData(Record record) async {
+  Future removeRelatedData(Record record) async {
     await recordRepo.deleteRecordById(record.recordId);
     await recordContentsRepo.deleteRecordContentsByRecordId(record.recordId);
     await rankRateRepo.deleteRankRateByRecordId(record.recordId);
-    await coresspondenceRepo.deleteCorrespondenceByRecordId(record.recordId);
+    await correspondenceRepo.deleteCorrespondenceByRecordId(record.recordId);
     _fetchAll();
   }
 }

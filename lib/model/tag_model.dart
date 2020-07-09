@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/entity/tag.dart';
 import 'package:todo_app/repository/tag_repository.dart';
 
 class TagModel with ChangeNotifier {
-  Record record;
   List<Tag> _allTagList;
   bool _isUpdate;
   List<Tag> get allTagList => _allTagList;

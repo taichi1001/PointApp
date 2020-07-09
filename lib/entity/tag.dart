@@ -8,8 +8,8 @@ class Tag {
   });
 
   factory Tag.fromDatabaseJson(Map<String, dynamic> data) => Tag(
-        tagId: data['name_id'],
-        tag: data['name'],
+        tagId: data['tag_id'],
+        tag: data['tag'],
       );
 
   Map<String, dynamic> toDatabaseJson() => {

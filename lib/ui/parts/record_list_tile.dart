@@ -90,7 +90,7 @@ class _RemoveButton extends StatelessWidget {
       builder: (context, record, child) => FlatButton(
         child: const Icon(Icons.delete_forever),
         onPressed: () {
-          model.removRelatedData(record);
+          model.removeRelatedData(record);
         },
       ),
     );

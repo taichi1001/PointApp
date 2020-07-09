@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/model/record_model.dart';
 import 'package:todo_app/entity/record.dart';
+import 'package:todo_app/entity/tag.dart';
+import 'package:todo_app/model/tag_model.dart';
 import 'package:todo_app/ui/parts/record_list_view.dart';
 
 class RecordScreen extends StatelessWidget {
@@ -13,7 +15,14 @@ class RecordScreen extends StatelessWidget {
         title: const Text('All Records'),
         actions: const <Widget>[SettingButton()],
       ),
-      body: const RecordListView(),
+      body: Column(
+        children: <Widget>[
+          const SelectTag(),
+           Container(
+               height: 300,
+               child: RecordListView()),
+        ],
+      ),
       floatingActionButton: const AddTodoButton(),
     );
   }
@@ -30,6 +39,37 @@ class SettingButton extends StatelessWidget {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => const Text('a')));
       },
+    );
+  }
+}
+
+class SelectTag extends StatelessWidget {
+  const SelectTag({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final recordModel = Provider.of<RecordModel>(context, listen: true);
+    final tagModel = Provider.of<TagModel>(context, listen: true);
+
+    return DropdownButton<String>(
+      value: recordModel.selectedTag,
+      icon: const Icon(Icons.arrow_downward),
+      iconSize: 18,
+      elevation: 16,
+      style: const TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: (String value) {
+        recordModel.changeSelectedTag(value, tagModel);
+      },
+      items: tagModel.allTagList.map<DropdownMenuItem<String>>((Tag tag) {
+        return DropdownMenuItem<String>(
+          value: tag.tag,
+          child: Text(tag.tag),
+        );
+      }).toList(),
     );
   }
 }
