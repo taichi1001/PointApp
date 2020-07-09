@@ -22,38 +22,34 @@ class RecordListTile extends StatelessWidget {
               '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}'),
           trailing: const _RemoveButton(),
           onTap: () async {
-            if (recordContentsModel.nameModel.recordNameList.isEmpty)
-              {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => MultiProvider(
-                      providers: [
-                        ChangeNotifierProvider.value(value: record),
-                        ChangeNotifierProvider.value(
-                            value: recordContentsModel),
-                      ],
-                      child: const ParticipantSettingScreen(),
-                    ),
+            if (recordContentsModel.nameModel.recordNameList.isEmpty) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider.value(value: record),
+                      ChangeNotifierProvider.value(value: recordContentsModel),
+                    ],
+                    child: const ParticipantSettingScreen(),
                   ),
-                );
-              }
-            else
-              {
-                await recordContentsModel.initRankRate();
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => MultiProvider(
-                      providers: [
-                        ChangeNotifierProvider.value(value: record),
-                        ChangeNotifierProvider.value(
-                            value: recordContentsModel),
-                        ChangeNotifierProvider.value(value: recordContentsModel.nameModel),
-                      ],
-                      child: const RecordContentsScreen(),
-                    ),
+                ),
+              );
+            } else {
+              await recordContentsModel.initRankRate();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider.value(value: record),
+                      ChangeNotifierProvider.value(value: recordContentsModel),
+                      ChangeNotifierProvider.value(
+                          value: recordContentsModel.nameModel),
+                    ],
+                    child: const RecordContentsScreen(),
                   ),
-                );
-              }
+                ),
+              );
+            }
           },
         ),
       ),

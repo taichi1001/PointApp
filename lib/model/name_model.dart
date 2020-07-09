@@ -82,10 +82,7 @@ class NameModel with ChangeNotifier {
   // 名前と、レコードと名前の対応をそれぞれDBに記録
   Future setNewName(List<TextEditingController> textList) async {
     for (final text in textList) {
-      if (_allNameList
-          .map((name) => name.name)
-          .toList()
-          .contains(text.text)) {
+      if (_allNameList.map((name) => name.name).toList().contains(text.text)) {
         _registeredName(text.text);
       } else if (text.text.isNotEmpty) {
         final nameId = await nameRepo.insertName(Name(name: text.text));

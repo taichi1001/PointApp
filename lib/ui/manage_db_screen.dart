@@ -70,8 +70,9 @@ class DBListView extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return Row(
                         children: <Widget>[
-                          Text(
-                              model.allRecordContentsList[index].recordContentsId.toString()),
+                          Text(model
+                              .allRecordContentsList[index].recordContentsId
+                              .toString()),
                           Text(model.allRecordContentsList[index].recordId
                               .toString()),
                           Text(model.allRecordContentsList[index].nameId
@@ -128,8 +129,9 @@ class DBListView extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return Row(
                         children: <Widget>[
-                          Text(
-                              model.allCorrespondenceList[index].correspondenceId.toString()),
+                          Text(model
+                              .allCorrespondenceList[index].correspondenceId
+                              .toString()),
                           Text(model.allCorrespondenceList[index].nameId
                               .toString()),
                           Text(model.allCorrespondenceList[index].recordId

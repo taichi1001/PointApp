@@ -10,7 +10,15 @@ class Record with ChangeNotifier {
   bool isEdit;
   bool isDuplicate;
 
-  Record({this.recordId, this.date, this.title, this.numberPeople = 1, this.mode = '順位モード', this.tagId = 1, this.isEdit = false, this.isDuplicate = false});
+  Record(
+      {this.recordId,
+      this.date,
+      this.title,
+      this.numberPeople = 1,
+      this.mode = '順位モード',
+      this.tagId = 1,
+      this.isEdit = false,
+      this.isDuplicate = false});
 
   factory Record.fromDatabaseJson(Map<String, dynamic> data) => Record(
         recordId: data['record_id'],
@@ -37,14 +45,13 @@ class Record with ChangeNotifier {
     notifyListeners();
   }
 
-  Future changeMode(String newMode) async{
+  Future changeMode(String newMode) async {
     mode = newMode;
-    notifyListeners();    
+    notifyListeners();
   }
 
   Future changeIsEdit() async {
     isEdit = !isEdit;
     notifyListeners();
   }
-
 }

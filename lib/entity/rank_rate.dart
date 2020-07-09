@@ -8,8 +8,7 @@ class RankRate with ChangeNotifier {
 
   RankRate({this.rankRateId, this.recordId, this.rank, this.rate = 1});
 
-  factory RankRate.fromDatabaseJson(Map<String, dynamic> data) =>
-      RankRate(
+  factory RankRate.fromDatabaseJson(Map<String, dynamic> data) => RankRate(
         rankRateId: data['rank_rate_id'],
         recordId: data['record_id'],
         rank: data['rank'],

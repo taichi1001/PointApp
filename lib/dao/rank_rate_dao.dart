@@ -39,13 +39,15 @@ class RankRateDao {
 
   Future<int> delete(int id) async {
     final db = await dbProvider.database;
-    final result = await db.delete(tableName, where: 'rank_rate_id = ?', whereArgs: [id]);
+    final result =
+        await db.delete(tableName, where: 'rank_rate_id = ?', whereArgs: [id]);
     return result;
   }
 
   Future<int> deleteByRecordId(int id) async {
     final db = await dbProvider.database;
-    final result = await db.delete(tableName, where: 'record_id = ?', whereArgs: [id]);
+    final result =
+        await db.delete(tableName, where: 'record_id = ?', whereArgs: [id]);
     return result;
   }
 

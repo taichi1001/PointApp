@@ -7,7 +7,12 @@ class RecordContents with ChangeNotifier {
   int count;
   int score;
 
-  RecordContents({this.recordContentsId, this.recordId, this.nameId, this.count, this.score});
+  RecordContents(
+      {this.recordContentsId,
+      this.recordId,
+      this.nameId,
+      this.count,
+      this.score});
 
   factory RecordContents.fromDatabaseJson(Map<String, dynamic> data) =>
       RecordContents(
@@ -30,5 +35,4 @@ class RecordContents with ChangeNotifier {
     score = int.parse(newScore);
     notifyListeners();
   }
-
 }

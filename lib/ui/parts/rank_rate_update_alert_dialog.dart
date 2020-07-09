@@ -14,7 +14,8 @@ class RankRateUpdateAlertDialog extends StatelessWidget {
     return Consumer2<Record, RecordContentsModel>(
       builder: (context, record, recordContentsModel, _) {
         for (final rankRate in recordContentsModel.recordRankRateList) {
-          final _controller = TextEditingController(text: rankRate.rate.toString());
+          final _controller =
+              TextEditingController(text: rankRate.rate.toString());
           _controllers.add(_controller);
         }
 

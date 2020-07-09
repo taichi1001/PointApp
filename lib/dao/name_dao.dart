@@ -22,10 +22,9 @@ class NameDao {
 
   Future<int> update(Name name) async {
     final db = await dbProvider.database;
-      final result = await db.update(tableName, name.toDatabaseJson(),
-          where: 'name_id = ?',
-          whereArgs: [name.nameId]);
-      return result;
+    final result = await db.update(tableName, name.toDatabaseJson(),
+        where: 'name_id = ?', whereArgs: [name.nameId]);
+    return result;
   }
 
   Future<int> delete(int id) async {

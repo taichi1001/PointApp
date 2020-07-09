@@ -14,8 +14,10 @@ class RecordModel with ChangeNotifier {
       _allRecordList.where((record) => record.isEdit == true).toList();
 
   final RecordRepository recordRepo = RecordRepository();
-  final RecordContentsRepository recordContentsRepo = RecordContentsRepository();
-  final CorrespondenceNameRecordRepository coresspondenceRepo = CorrespondenceNameRecordRepository();
+  final RecordContentsRepository recordContentsRepo =
+      RecordContentsRepository();
+  final CorrespondenceNameRecordRepository coresspondenceRepo =
+      CorrespondenceNameRecordRepository();
   final RankRateRepository rankRateRepo = RankRateRepository();
 
   RecordModel() {

@@ -17,7 +17,6 @@ class DatabaseService {
   static const correspondenceNameRecordTableName = 'correspondence_name_record';
   static const rankRateTableName = 'rank_rate';
 
-
   static final DatabaseService dbProvider = DatabaseService();
 
   Database _database;

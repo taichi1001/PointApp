@@ -27,7 +27,7 @@ class ParticipantSettingScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: _SettingMode(),
-              )              
+              )
             ],
           ),
           Row(
@@ -61,7 +61,8 @@ class ParticipantSettingScreen extends StatelessWidget {
                         ChangeNotifierProvider.value(value: record),
                         ChangeNotifierProvider.value(
                             value: recordContentsModel),
-                        ChangeNotifierProvider.value(value: recordContentsModel.nameModel),
+                        ChangeNotifierProvider.value(
+                            value: recordContentsModel.nameModel),
                       ],
                       child: const RecordContentsScreen(),
                     ),

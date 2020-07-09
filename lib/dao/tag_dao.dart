@@ -22,10 +22,9 @@ class TagDao {
 
   Future<int> update(Tag tag) async {
     final db = await dbProvider.database;
-      final result = await db.update(tableName, tag.toDatabaseJson(),
-          where: 'tag_id = ?',
-          whereArgs: [tag.tagId]);
-      return result;
+    final result = await db.update(tableName, tag.toDatabaseJson(),
+        where: 'tag_id = ?', whereArgs: [tag.tagId]);
+    return result;
   }
 
   Future<int> delete(int id) async {

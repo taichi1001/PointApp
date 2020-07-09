@@ -8,7 +8,8 @@ class RecordDao {
 
   Future<int> create(Record record) async {
     final db = await dbProvider.database;
-    final result = db.insert(tableName, record.toDatabaseJson(),conflictAlgorithm: ConflictAlgorithm.replace);
+    final result = db.insert(tableName, record.toDatabaseJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
     return result;
   }
 
@@ -30,7 +31,8 @@ class RecordDao {
 
   Future<int> delete(int id) async {
     final db = await dbProvider.database;
-    final result = await db.delete(tableName, where: 'record_id = ?', whereArgs: [id]);
+    final result =
+        await db.delete(tableName, where: 'record_id = ?', whereArgs: [id]);
     return result;
   }
 
