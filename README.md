@@ -2,19 +2,6 @@
 
 A new Flutter application.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
 ## DBテーブル
 
 - レコード情報
@@ -26,6 +13,7 @@ samples, guidance on mobile development, and a full API reference.
 | title           | TEXT      |             | no   | なし         | タイトル |  　　|
 | number_people   | INTEGER   |             | no   | なし         | 人数 　　|  　　|
 | mode            | TEXT      |             | no   | なし         | モード 　|  　　|
+| tag_id          | INTEGER   |             | no   | なし         | タグ情報のID|  　　|
 | is_edit         | INTEGER   |             | no   | なし         | 編集モードかどうか | 必要ないかも|
 
 - コンテンツ情報
@@ -44,6 +32,13 @@ samples, guidance on mobile development, and a full API reference.
 |---------|-----------|-------------|------|------------|---------|--------|
 | name_Id | INTEGER   | PRIMARY KEY | no   | なし        | ID      | AUTO_INCREMENT |
 | name    | TEXT      | UNIQUE      | no   | なし        | 名前    |  　　|
+
+- タグ情報
+
+| 名前    | データ型   |  属性       | NULL | デフォルト値 | コメント | その他 |
+|--------|-----------|-------------|------|------------|---------|--------|
+| tag_Id | INTEGER   | PRIMARY KEY | no   | なし        | ID      | AUTO_INCREMENT |
+| tag    | TEXT      | UNIQUE      | no   | なし        | タグ名  |  　　|
 
 - レコードと名前の紐づけ情報
 
@@ -65,5 +60,5 @@ samples, guidance on mobile development, and a full API reference.
 ## 追加予定機能
 
 - レコードのタグ付け
-- タグごとの成績ランキング
+- タグごとの成績一覧
 - 個人成績グラフ

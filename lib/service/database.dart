@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:todo_app/entity/tag.dart';
 
 class DatabaseService {
   static const _databaseVersion = 1;
@@ -13,6 +13,7 @@ class DatabaseService {
   static const recordTableName = 'record';
   static const recordContentsTableName = 'record_contents';
   static const nameTableName = 'name';
+  static const tagTableName = 'tag';
   static const correspondenceNameRecordTableName = 'correspondence_name_record';
   static const rankRateTableName = 'rank_rate';
 
@@ -52,6 +53,7 @@ class DatabaseService {
         title TEXT NOT NULL,
         number_people INTEGER NOT NULL ,
         mode TEXT NOT NULL,
+        tag_id INTEGER NOT NULL,
         is_edit INTEGER NOT NULL
       )
     ''');
@@ -72,6 +74,13 @@ class DatabaseService {
       )
     ''');
     await database.execute('''
+      CREATE TABLE $tagTableName (
+        tag_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        tag TEXT NOT NULL,
+        UNIQUE(tag)
+      )
+    ''');
+    await database.execute('''
       CREATE TABLE $correspondenceNameRecordTableName (
         correspondence_id INTEGER PRIMARY KEY AUTOINCREMENT,
         name_id INTEGER NOT NULL,
@@ -87,5 +96,6 @@ class DatabaseService {
         rate INTEGER NOT NULL
       )
     ''');
+    await database.insert(tagTableName, Tag(tag: 'default').toDatabaseJson());
   }
 }

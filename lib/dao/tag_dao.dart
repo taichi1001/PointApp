@@ -1,37 +1,37 @@
 import 'package:todo_app/service/database.dart';
-import 'package:todo_app/entity/name.dart';
+import 'package:todo_app/entity/tag.dart';
 
-class NameDao {
+class TagDao {
   final dbProvider = DatabaseService.dbProvider;
-  final tableName = DatabaseService.nameTableName;
+  final tableName = DatabaseService.tagTableName;
 
-  Future<int> create(Name name) async {
+  Future<int> create(Tag tag) async {
     final db = await dbProvider.database;
-    final result = db.insert(tableName, name.toDatabaseJson());
+    final result = db.insert(tableName, tag.toDatabaseJson());
     return result;
   }
 
-  Future<List<Name>> getAll() async {
+  Future<List<Tag>> getAll() async {
     final db = await dbProvider.database;
     final List<Map<String, dynamic>> result = await db.query(tableName);
-    final List<Name> names = result.isNotEmpty
-        ? result.map((item) => Name.fromDatabaseJson(item)).toList()
+    final List<Tag> tags = result.isNotEmpty
+        ? result.map((item) => Tag.fromDatabaseJson(item)).toList()
         : [];
-    return names;
+    return tags;
   }
 
-  Future<int> update(Name name) async {
+  Future<int> update(Tag tag) async {
     final db = await dbProvider.database;
-      final result = await db.update(tableName, name.toDatabaseJson(),
-          where: 'name_id = ?',
-          whereArgs: [name.nameId]);
+      final result = await db.update(tableName, tag.toDatabaseJson(),
+          where: 'tag_id = ?',
+          whereArgs: [tag.tagId]);
       return result;
   }
 
   Future<int> delete(int id) async {
     final db = await dbProvider.database;
     final result =
-        await db.delete(tableName, where: 'name_id = ?', whereArgs: [id]);
+        await db.delete(tableName, where: 'tag_id = ?', whereArgs: [id]);
     return result;
   }
 
