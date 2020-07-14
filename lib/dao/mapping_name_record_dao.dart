@@ -1,5 +1,5 @@
 import 'package:todo_app/service/database.dart';
-import 'package:todo_app/entity/correspondence_name_record.dart';
+import 'package:todo_app/entity/mapping_name_record.dart';
 
 class CorrespondenceNameRecordDao {
   final dbProvider = DatabaseService.dbProvider;

@@ -1,5 +1,5 @@
-import 'package:todo_app/dao/correspondence_name_record_dao.dart';
-import 'package:todo_app/entity/correspondence_name_record.dart';
+import 'package:todo_app/dao/mapping_name_record_dao.dart';
+import 'package:todo_app/entity/mapping_name_record.dart';
 
 class MappingNameRecordRepository {
   final mappingNameRecordDao = CorrespondenceNameRecordDao();

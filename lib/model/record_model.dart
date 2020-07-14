@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/model/tag_model.dart';
-import 'package:todo_app/repository/correspondence_name_record_repository.dart';
+import 'package:todo_app/repository/mapping_name_record_repository.dart';
 import 'package:todo_app/repository/rank_rate_repository.dart';
 import 'package:todo_app/repository/record_contents_repository.dart';
 import 'package:todo_app/repository/record_repository.dart';

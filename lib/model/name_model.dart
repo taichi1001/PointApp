@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/entity/record.dart';
 import 'package:todo_app/entity/name.dart';
-import 'package:todo_app/entity/correspondence_name_record.dart';
-import 'package:todo_app/repository/correspondence_name_record_repository.dart';
+import 'package:todo_app/entity/mapping_name_record.dart';
+import 'package:todo_app/repository/mapping_name_record_repository.dart';
 import 'package:todo_app/repository/name_repository.dart';
 
 class NameModel with ChangeNotifier {
