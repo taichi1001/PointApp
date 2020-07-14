@@ -6,7 +6,7 @@ class TagModel with ChangeNotifier {
   List<Tag> allTagList;
   bool isUpdate;
 
-  final tagRepo = TagRepository();
+  final tagRepo = TagRepo();
 
   TagModel() {
     _fetchAll();

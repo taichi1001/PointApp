@@ -1,7 +1,7 @@
 import 'package:todo_app/dao/name_dao.dart';
 import 'package:todo_app/entity/name.dart';
 
-class NameRepository {
+class NameRepo {
   final nameDao = NameDao();
 
   Future getAllName() => nameDao.getAll();

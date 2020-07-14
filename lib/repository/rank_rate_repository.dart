@@ -1,7 +1,7 @@
 import 'package:todo_app/entity/rank_rate.dart';
 import 'package:todo_app/dao/rank_rate_dao.dart';
 
-class RankRateRepository {
+class RankRateRepo {
   final rankRateDao = RankRateDao();
 
   Future getAllRankRate() => rankRateDao.getAll();

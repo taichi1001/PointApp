@@ -12,11 +12,10 @@ class RecordModel with ChangeNotifier {
   List<Record> allRecordList = [];
   List<Record> toDisplayRecord = [];
 
-  final RecordRepository recordRepo = RecordRepository();
-  final RecordContentsRepository recordContentsRepo =
-      RecordContentsRepository();
-  final MappingNameRecordRepository mappingRepo = MappingNameRecordRepository();
-  final RankRateRepository rankRateRepo = RankRateRepository();
+  final RecordRepo recordRepo = RecordRepo();
+  final RecordContentsRepo recordContentsRepo = RecordContentsRepo();
+  final MappingNameRecordRepo mappingRepo = MappingNameRecordRepo();
+  final RankRateRepo rankRateRepo = RankRateRepo();
 
   RecordModel() {
     _fetchAll();

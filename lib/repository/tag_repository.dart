@@ -1,7 +1,7 @@
 import 'package:todo_app/dao/tag_dao.dart';
 import 'package:todo_app/entity/tag.dart';
 
-class TagRepository {
+class TagRepo {
   final tagDao = TagDao();
 
   Future getAllTag() => tagDao.getAll();

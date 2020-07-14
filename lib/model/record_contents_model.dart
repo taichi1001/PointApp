@@ -19,9 +19,8 @@ class RecordContentsModel with ChangeNotifier {
   Map<String, int> scoreMap = {};
   int count = 0;
 
-  final RecordContentsRepository recordContentsRepo =
-      RecordContentsRepository();
-  final RankRateRepository rankRateRepo = RankRateRepository();
+  final RecordContentsRepo recordContentsRepo = RecordContentsRepo();
+  final RankRateRepo rankRateRepo = RankRateRepo();
 
   RecordContentsModel({this.record}) {
     nameModel = NameModel(record: record);

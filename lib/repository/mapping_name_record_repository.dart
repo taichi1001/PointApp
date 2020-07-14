@@ -1,7 +1,7 @@
 import 'package:todo_app/dao/mapping_name_record_dao.dart';
 import 'package:todo_app/entity/mapping_name_record.dart';
 
-class MappingNameRecordRepository {
+class MappingNameRecordRepo {
   final mappingNameRecordDao = CorrespondenceNameRecordDao();
 
   Future getAllMapping() => mappingNameRecordDao.getAll();

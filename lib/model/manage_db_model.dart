@@ -14,10 +14,10 @@ class ManageDBModel with ChangeNotifier {
   List<Name> allNameList = [];
   List<MappingNameRecord> allCorrespondenceList = [];
 
-  final nameRepo = NameRepository();
-  final correspondenceRepo = MappingNameRecordRepository();
-  final recordRepo = RecordRepository();
-  final recordContentsRepo = RecordContentsRepository();
+  final nameRepo = NameRepo();
+  final correspondenceRepo = MappingNameRecordRepo();
+  final recordRepo = RecordRepo();
+  final recordContentsRepo = RecordContentsRepo();
 
   ManageDBModel() {
     fetchAll();

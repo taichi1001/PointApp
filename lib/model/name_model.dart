@@ -13,9 +13,8 @@ class NameModel with ChangeNotifier {
   List<MappingNameRecord> _allCorrespondenceList;
   List<MappingNameRecord> _recordCorrespondenceList;
 
-
-  final nameRepo = NameRepository();
-  final mappingRepo = MappingNameRecordRepository();
+  final nameRepo = NameRepo();
+  final mappingRepo = MappingNameRecordRepo();
 
   NameModel({this.record}) {
     _fetchAll();
@@ -47,10 +46,7 @@ class NameModel with ChangeNotifier {
     isUpdate = true;
     for (final text in newTextList) {
       if (text.text != oldTextList[index].text) {
-        if (allNameList
-            .map((name) => name.name)
-            .toList()
-            .contains(text.text)) {
+        if (allNameList.map((name) => name.name).toList().contains(text.text)) {
           isUpdate = false;
           index++;
           break;

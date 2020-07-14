@@ -1,7 +1,7 @@
 import 'package:todo_app/dao/record_contents_dao.dart';
 import 'package:todo_app/entity/record_contents.dart';
 
-class RecordContentsRepository {
+class RecordContentsRepo {
   final recordContentsDao = RecordContentsDao();
 
   Future<List<RecordContents>> getAllRecordsContents() =>
