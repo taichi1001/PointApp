@@ -1,22 +1,22 @@
 import 'package:todo_app/dao/correspondence_name_record_dao.dart';
 import 'package:todo_app/entity/correspondence_name_record.dart';
 
-class CorrespondenceNameRecordRepository {
-  final correspondenceNameRecordDao = CorrespondenceNameRecordDao();
+class MappingNameRecordRepository {
+  final mappingNameRecordDao = CorrespondenceNameRecordDao();
 
-  Future getAllCorrespondence() => correspondenceNameRecordDao.getAll();
+  Future getAllMapping() => mappingNameRecordDao.getAll();
 
-  Future insertCorrespondence(CorrespondenceNameRecord correspondence) =>
-      correspondenceNameRecordDao.create(correspondence);
+  Future insertMapping(MappingNameRecord correspondence) =>
+      mappingNameRecordDao.create(correspondence);
 
-  Future updateCorrespondence(CorrespondenceNameRecord correspondence) =>
-      correspondenceNameRecordDao.update(correspondence);
+  Future updateMapping(MappingNameRecord correspondence) =>
+      mappingNameRecordDao.update(correspondence);
 
-  Future deleteCorrespondenceById(int id) =>
-      correspondenceNameRecordDao.delete(id);
+  Future deleteMappingById(int id) =>
+      mappingNameRecordDao.delete(id);
 
-  Future deleteCorrespondenceByRecordId(int id) =>
-      correspondenceNameRecordDao.deleteByRecordId(id);
+  Future deleteMappingByRecordId(int id) =>
+      mappingNameRecordDao.deleteByRecordId(id);
   //not use this
-  Future deleteAllCorrespondence() => correspondenceNameRecordDao.deleteAll();
+  Future deleteAllMapping() => mappingNameRecordDao.deleteAll();
 }

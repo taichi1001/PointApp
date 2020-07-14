@@ -14,7 +14,7 @@ class DatabaseService {
   static const recordContentsTableName = 'record_contents';
   static const nameTableName = 'name';
   static const tagTableName = 'tag';
-  static const correspondenceNameRecordTableName = 'correspondence_name_record';
+  static const mappingNameRecordTableName = 'mapping_name_record';
   static const rankRateTableName = 'rank_rate';
 
   static final DatabaseService dbProvider = DatabaseService();
@@ -80,8 +80,8 @@ class DatabaseService {
       )
     ''');
     await database.execute('''
-      CREATE TABLE $correspondenceNameRecordTableName (
-        correspondence_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      CREATE TABLE $mappingNameRecordTableName (
+        mapping_id INTEGER PRIMARY KEY AUTOINCREMENT,
         name_id INTEGER NOT NULL,
         record_id INTEGER NOT NULL,
         UNIQUE(name_id, record_id)

@@ -1,19 +1,18 @@
-class CorrespondenceNameRecord {
-  int correspondenceId;
+class MappingNameRecord {
+  int mappingId;
   int nameId;
   int recordId;
 
-  CorrespondenceNameRecord({this.correspondenceId, this.nameId, this.recordId});
+  MappingNameRecord({this.mappingId, this.nameId, this.recordId});
 
-  factory CorrespondenceNameRecord.fromDatabaseJson(
-          Map<String, dynamic> data) =>
-      CorrespondenceNameRecord(
-          correspondenceId: data['correspondence_id'],
+  factory MappingNameRecord.fromDatabaseJson(Map<String, dynamic> data) =>
+      MappingNameRecord(
+          mappingId: data['mapping_id'],
           nameId: data['name_id'],
           recordId: data['record_id']);
 
   Map<String, dynamic> toDatabaseJson() => {
-        'correspondence_id': correspondenceId,
+        'mapping_id': mappingId,
         'name_id': nameId,
         'record_id': recordId,
       };

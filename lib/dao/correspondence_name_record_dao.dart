@@ -3,30 +3,29 @@ import 'package:todo_app/entity/correspondence_name_record.dart';
 
 class CorrespondenceNameRecordDao {
   final dbProvider = DatabaseService.dbProvider;
-  final tableName = DatabaseService.correspondenceNameRecordTableName;
+  final tableName = DatabaseService.mappingNameRecordTableName;
 
-  Future<int> create(CorrespondenceNameRecord correspondence) async {
+  Future<int> create(MappingNameRecord mapping) async {
     final db = await dbProvider.database;
-    final result = db.insert(tableName, correspondence.toDatabaseJson());
+    final result = db.insert(tableName, mapping.toDatabaseJson());
     return result;
   }
 
-  Future<List<CorrespondenceNameRecord>> getAll() async {
+  Future<List<MappingNameRecord>> getAll() async {
     final db = await dbProvider.database;
     final List<Map<String, dynamic>> result = await db.query(tableName);
-    final List<CorrespondenceNameRecord> correspondence = result.isNotEmpty
+    final List<MappingNameRecord> mapping = result.isNotEmpty
         ? result
-            .map((item) => CorrespondenceNameRecord.fromDatabaseJson(item))
+            .map((item) => MappingNameRecord.fromDatabaseJson(item))
             .toList()
         : [];
-    return correspondence;
+    return mapping;
   }
 
-  Future<int> update(CorrespondenceNameRecord correspondence) async {
+  Future<int> update(MappingNameRecord mapping) async {
     final db = await dbProvider.database;
-    final result = await db.update(tableName, correspondence.toDatabaseJson(),
-        where: 'correspondence_id = ?',
-        whereArgs: [correspondence.correspondenceId]);
+    final result = await db.update(tableName, mapping.toDatabaseJson(),
+        where: 'correspondence_id = ?', whereArgs: [mapping.mappingId]);
     return result;
   }
 

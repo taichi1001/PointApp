@@ -10,14 +10,14 @@ class NameModel with ChangeNotifier {
   List<Name> _allNameList;
   List<Name> _recordNameList;
   bool _isUpdate = true;
-  List<CorrespondenceNameRecord> _allCorrespondenceList;
-  List<CorrespondenceNameRecord> _recordCorrespondenceList;
+  List<MappingNameRecord> _allCorrespondenceList;
+  List<MappingNameRecord> _recordCorrespondenceList;
   List<Name> get allNameList => _allNameList;
   List<Name> get recordNameList => _recordNameList;
   bool get isUpdate => _isUpdate;
 
   final nameRepo = NameRepository();
-  final correspondenceRepo = CorrespondenceNameRecordRepository();
+  final mappingRepo = MappingNameRecordRepository();
 
   NameModel({this.record}) {
     _fetchAll();
@@ -73,7 +73,7 @@ class NameModel with ChangeNotifier {
 
   Future _fetchAll() async {
     _allNameList = await nameRepo.getAllName();
-    _allCorrespondenceList = await correspondenceRepo.getAllCorrespondence();
+    _allCorrespondenceList = await mappingRepo.getAllMapping();
     getRecordCorrespondenceList();
     getRecordNameList();
     notifyListeners();
@@ -86,8 +86,8 @@ class NameModel with ChangeNotifier {
         _registeredName(text.text);
       } else if (text.text.isNotEmpty) {
         final nameId = await nameRepo.insertName(Name(name: text.text));
-        await correspondenceRepo.insertCorrespondence(CorrespondenceNameRecord(
-            nameId: nameId, recordId: record.recordId));
+        await mappingRepo.insertMapping(
+            MappingNameRecord(nameId: nameId, recordId: record.recordId));
       }
     }
     await _fetchAll();
@@ -98,8 +98,8 @@ class NameModel with ChangeNotifier {
     for (final name in _allNameList) {
       if (inName == name.name) {
         final nameId = name.nameId;
-        await correspondenceRepo.insertCorrespondence(CorrespondenceNameRecord(
-            nameId: nameId, recordId: record.recordId));
+        await mappingRepo.insertMapping(
+            MappingNameRecord(nameId: nameId, recordId: record.recordId));
       }
     }
   }

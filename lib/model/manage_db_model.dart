@@ -12,15 +12,14 @@ class ManageDBModel with ChangeNotifier {
   List<Record> _allRecordList = [];
   List<RecordContents> _allRecordContentsList = [];
   List<Name> _allNameList = [];
-  List<CorrespondenceNameRecord> _allCorrespondenceList = [];
+  List<MappingNameRecord> _allCorrespondenceList = [];
   List<Record> get allRecordList => _allRecordList;
   List<RecordContents> get allRecordContentsList => _allRecordContentsList;
   List<Name> get allNameList => _allNameList;
-  List<CorrespondenceNameRecord> get allCorrespondenceList =>
-      _allCorrespondenceList;
+  List<MappingNameRecord> get allCorrespondenceList => _allCorrespondenceList;
 
   final nameRepo = NameRepository();
-  final correspondenceRepo = CorrespondenceNameRecordRepository();
+  final correspondenceRepo = MappingNameRecordRepository();
   final recordRepo = RecordRepository();
   final recordContentsRepo = RecordContentsRepository();
 
@@ -32,7 +31,7 @@ class ManageDBModel with ChangeNotifier {
     _allRecordList = await recordRepo.getAllRecords();
     _allRecordContentsList = await recordContentsRepo.getAllRecordsContents();
     _allNameList = await nameRepo.getAllName();
-    _allCorrespondenceList = await correspondenceRepo.getAllCorrespondence();
+    _allCorrespondenceList = await correspondenceRepo.getAllMapping();
     notifyListeners();
   }
 }

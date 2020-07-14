@@ -129,8 +129,7 @@ class DBListView extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return Row(
                         children: <Widget>[
-                          Text(model
-                              .allCorrespondenceList[index].correspondenceId
+                          Text(model.allCorrespondenceList[index].mappingId
                               .toString()),
                           Text(model.allCorrespondenceList[index].nameId
                               .toString()),

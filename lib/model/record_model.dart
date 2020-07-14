@@ -18,8 +18,7 @@ class RecordModel with ChangeNotifier {
   final RecordRepository recordRepo = RecordRepository();
   final RecordContentsRepository recordContentsRepo =
       RecordContentsRepository();
-  final CorrespondenceNameRecordRepository correspondenceRepo =
-      CorrespondenceNameRecordRepository();
+  final MappingNameRecordRepository mappingRepo = MappingNameRecordRepository();
   final RankRateRepository rankRateRepo = RankRateRepository();
 
   RecordModel() {
@@ -27,8 +26,8 @@ class RecordModel with ChangeNotifier {
   }
 
   void changeSelectedTag(String newTag, TagModel tagModel) {
-    for(final tag in tagModel.allTagList){
-      if(tag.tag == newTag){
+    for (final tag in tagModel.allTagList) {
+      if (tag.tag == newTag) {
         _selectedTagId = tag.tagId;
         _selectedTag = tag.tag;
       }
@@ -77,7 +76,7 @@ class RecordModel with ChangeNotifier {
     await recordRepo.deleteRecordById(record.recordId);
     await recordContentsRepo.deleteRecordContentsByRecordId(record.recordId);
     await rankRateRepo.deleteRankRateByRecordId(record.recordId);
-    await correspondenceRepo.deleteCorrespondenceByRecordId(record.recordId);
+    await mappingRepo.deleteMappingByRecordId(record.recordId);
     _fetchAll();
   }
 }
