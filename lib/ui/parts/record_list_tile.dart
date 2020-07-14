@@ -5,6 +5,7 @@ import 'package:todo_app/model/record_contents_model.dart';
 import 'package:todo_app/model/record_model.dart';
 import 'package:todo_app/ui/participant_setting_screen.dart';
 import 'package:todo_app/ui/record_contents_screen.dart';
+import 'package:todo_app/ui/setting_tag_screen.dart';
 
 class RecordListTile extends StatelessWidget {
   const RecordListTile({
@@ -20,7 +21,12 @@ class RecordListTile extends StatelessWidget {
           title: Text(record.title),
           subtitle: Text(
               '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}'),
-          trailing: const _RemoveButton(),
+          trailing: Row(
+            children: const <Widget>[
+              _TagButton(),
+              _RemoveButton(),
+            ],
+          ),
           onTap: () async {
             if (recordContentsModel.nameModel.recordNameList.isEmpty) {
               Navigator.of(context).push(
@@ -72,6 +78,33 @@ class _CheckBoxButton extends StatelessWidget {
             : const Icon(Icons.check_box_outline_blank),
         onPressed: () {
           model.toggleIsDone(record);
+        },
+      ),
+    );
+  }
+}
+
+class _TagButton extends StatelessWidget {
+  const _TagButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<Record>(
+      builder: (context, record, child) => FlatButton(
+        child: const Icon(Icons.bookmark_border),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => MultiProvider(
+                providers: [
+                  ChangeNotifierProvider.value(value: record),
+                ],
+                child: const SettingTagScreen(),
+              ),
+            ),
+          );
         },
       ),
     );
