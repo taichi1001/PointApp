@@ -33,6 +33,7 @@ class RecordModel with ChangeNotifier {
 
   void _selectToRecordDisplay() {
     if (selectedTagId == 0) {
+      selectedTag = 'all';
       toDisplayRecord = allRecordList;
     } else {
       toDisplayRecord = allRecordList
