@@ -20,7 +20,7 @@ class RecordScreen extends StatelessWidget {
           const SelectTag(),
            Container(
                height: 300,
-               child: RecordListView()),
+               child: const RecordListView()),
         ],
       ),
       floatingActionButton: const AddTodoButton(),
