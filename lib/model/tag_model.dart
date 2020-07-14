@@ -33,6 +33,10 @@ class TagModel with ChangeNotifier {
     return allTagList.where((tag) => tag.tag == tagName).toList()[0];
   }
 
+  void notify(){
+    notifyListeners();
+  }
+
   Future _fetchAll() async {
     allTagList = await tagRepo.getAllTag();
     allTagList.insert(0, Tag(tagId: 0, tag: 'all'));

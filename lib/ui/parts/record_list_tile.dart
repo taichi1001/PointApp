@@ -21,11 +21,14 @@ class RecordListTile extends StatelessWidget {
           title: Text(record.title),
           subtitle: Text(
               '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}'),
-          trailing: Row(
-            children: const <Widget>[
-              _TagButton(),
-              _RemoveButton(),
-            ],
+          trailing: Container(
+            width: 180,
+            child: Row(
+              children: const <Widget>[
+                _TagButton(),
+                _RemoveButton(),
+              ],
+            ),
           ),
           onTap: () async {
             if (recordContentsModel.nameModel.recordNameList.isEmpty) {

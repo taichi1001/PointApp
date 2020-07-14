@@ -48,6 +48,7 @@ class _SelectTag extends StatelessWidget {
       onChanged: (String value) {
         record.tagId = tagModel.getIdInTagName(value).tagId;
         recordModel.update(record);
+        tagModel.notify();
       },
       items: tagModel.allTagList.map<DropdownMenuItem<String>>((Tag tag) {
         return DropdownMenuItem<String>(
@@ -66,17 +67,21 @@ class _NewTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController controller;
+    final controller = TextEditingController();
     return Consumer<TagModel>(
       builder: (context, tagModel, _) => Row(
         children: <Widget>[
-          TextField(
-            controller: controller,
+          Container(
+            width: 200,
+            child: TextField(
+              controller: controller,
+            ),
           ),
           FlatButton(
             child: const Text('New'),
             onPressed: () {
               tagModel.setNewTag(controller);
+              tagModel.notify();
             },
           )
         ],
