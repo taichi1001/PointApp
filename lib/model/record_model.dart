@@ -7,7 +7,7 @@ import 'package:todo_app/repository/record_contents_repository.dart';
 import 'package:todo_app/repository/record_repository.dart';
 
 class RecordModel with ChangeNotifier {
-  int _selectedTagId = 0;
+  int selectedTagId = 0;
   String selectedTag;
   List<Record> allRecordList = [];
   List<Record> toDisplayRecord = [];
@@ -24,7 +24,7 @@ class RecordModel with ChangeNotifier {
   void changeSelectedTag(String newTag, TagModel tagModel) {
     for (final tag in tagModel.allTagList) {
       if (tag.tag == newTag) {
-        _selectedTagId = tag.tagId;
+        selectedTagId = tag.tagId;
         selectedTag = tag.tag;
       }
     }
@@ -32,11 +32,11 @@ class RecordModel with ChangeNotifier {
   }
 
   void _selectToRecordDisplay() {
-    if (_selectedTagId == 0) {
+    if (selectedTagId == 0) {
       toDisplayRecord = allRecordList;
     } else {
       toDisplayRecord = allRecordList
-          .where((record) => record.tagId == _selectedTagId)
+          .where((record) => record.tagId == selectedTagId)
           .toList();
     }
     notifyListeners();

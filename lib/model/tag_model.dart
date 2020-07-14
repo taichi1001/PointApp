@@ -27,6 +27,7 @@ class TagModel with ChangeNotifier {
 
   Future _fetchAll() async {
     allTagList = await tagRepo.getAllTag();
+    allTagList.insert(0, Tag(tagId: 0, tag: 'all'));
     notifyListeners();
   }
 
