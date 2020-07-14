@@ -12,19 +12,12 @@ class RecordContentsModel with ChangeNotifier {
   final Record record;
   NameModel nameModel;
 
-  List<RecordContents> _allRecordContentsList = [];
-  List<RecordContents> _recordContentsList = [];
-  List<List<RecordContents>> _recordContentsPerCount = [];
-  List<RankRate> _recordRankRateList = [];
-  Map<String, int> _scoreMap = {};
-  int _count = 0;
-
-  List<RecordContents> get allRecordContentsList => _allRecordContentsList;
-  List<RecordContents> get recordContentsList => _recordContentsList;
-  List<List<RecordContents>> get recordContentsPerCount =>
-      _recordContentsPerCount;
-  List<RankRate> get recordRankRateList => _recordRankRateList;
-  Map<String, int> get scoreMap => _scoreMap;
+  List<RecordContents> allRecordContentsList = [];
+  List<RecordContents> recordContentsList = [];
+  List<List<RecordContents>> recordContentsPerCount = [];
+  List<RankRate> recordRankRateList = [];
+  Map<String, int> scoreMap = {};
+  int count = 0;
 
   final RecordContentsRepository recordContentsRepo =
       RecordContentsRepository();
@@ -36,14 +29,14 @@ class RecordContentsModel with ChangeNotifier {
   }
 
   Future addNewRecordContents(List<TextEditingController> textList) async {
-    _count++;
+    count++;
     var index = 0;
     for (final text in textList) {
       await recordContentsRepo.insertRecordContents(
         RecordContents(
           recordId: record.recordId,
           nameId: nameModel.recordNameList[index].nameId,
-          count: _count,
+          count: count,
           score: int.parse(text.text),
         ),
       );
@@ -92,7 +85,7 @@ class RecordContentsModel with ChangeNotifier {
 
   void _initScore() {
     for (final name in nameModel.recordNameList) {
-      _scoreMap[name.name] = 0;
+      scoreMap[name.name] = 0;
     }
   }
 
@@ -100,7 +93,7 @@ class RecordContentsModel with ChangeNotifier {
     for (final name in nameModel.recordNameList) {
       for (final contents in recordContentsList) {
         if (name.nameId == contents.nameId) {
-          _scoreMap[name.name] = _scoreMap[name.name] + contents.score;
+          scoreMap[name.name] = scoreMap[name.name] + contents.score;
           break;
         }
       }
@@ -113,7 +106,7 @@ class RecordContentsModel with ChangeNotifier {
         if (name.nameId == contents.nameId) {
           for (final rankRate in recordRankRateList) {
             if (contents.score == rankRate.rank) {
-              _scoreMap[name.name] = _scoreMap[name.name] + rankRate.rate;
+              scoreMap[name.name] = scoreMap[name.name] + rankRate.rate;
               break;
             }
           }
@@ -173,7 +166,7 @@ class RecordContentsModel with ChangeNotifier {
         if (name.nameId == contents.nameId) {
           for (final rankRate in recordRankRateList) {
             if (contents.score == rankRate.rank) {
-              _scoreMap[name.name] = _scoreMap[name.name] + rankRate.rate;
+              scoreMap[name.name] = scoreMap[name.name] + rankRate.rate;
               break;
             }
           }
@@ -219,50 +212,50 @@ class RecordContentsModel with ChangeNotifier {
   }
 
   void _sortScore() {
-    final sortedKeys = _scoreMap.keys.toList(growable: false)
-      ..sort((k1, k2) => _scoreMap[k2].compareTo(_scoreMap[k1]));
+    final sortedKeys = scoreMap.keys.toList(growable: false)
+      ..sort((k1, k2) => scoreMap[k2].compareTo(scoreMap[k1]));
     final LinkedHashMap<String, int> sortedMap = LinkedHashMap.fromIterable(
         sortedKeys,
         key: (k) => k,
-        value: (k) => _scoreMap[k]);
-    _scoreMap = sortedMap;
+        value: (k) => scoreMap[k]);
+    scoreMap = sortedMap;
   }
 
   void _getRecordContentsPerCount() {
     final List<List<RecordContents>> __recordContentsPerCount = [];
 
-    for (int count = 1; count <= _count; count++) {
+    for (int count = 1; count <= this.count; count++) {
       final List<RecordContents> perCount = [];
-      for (final recordContents in _recordContentsList) {
+      for (final recordContents in recordContentsList) {
         if (recordContents.count == count) {
           perCount.add(recordContents);
         }
       }
       __recordContentsPerCount.add(perCount);
     }
-    _recordContentsPerCount = __recordContentsPerCount;
+    recordContentsPerCount = __recordContentsPerCount;
   }
 
   void _getRecordContentsList() {
-    _recordContentsList = _allRecordContentsList
+    recordContentsList = allRecordContentsList
         .where((recordContents) => recordContents.recordId == record.recordId)
         .toList();
   }
 
   void _getCount() {
     int count = 0;
-    if (_recordContentsList.isNotEmpty) {
-      count = _recordContentsList
+    if (recordContentsList.isNotEmpty) {
+      count = recordContentsList
           .map((recordContents) => recordContents.count)
           .toList()
           .reduce(max);
     }
-    _count = count;
+    this.count = count;
   }
 
   Future fetchAll() async {
-    _allRecordContentsList = await recordContentsRepo.getAllRecordsContents();
-    _recordRankRateList = await rankRateRepo.getRankRateByID(record.recordId);
+    allRecordContentsList = await recordContentsRepo.getAllRecordsContents();
+    recordRankRateList = await rankRateRepo.getRankRateByID(record.recordId);
     _getRecordContentsList();
     _getCount();
     _getRecordContentsPerCount();

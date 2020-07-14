@@ -8,11 +8,10 @@ class BottomNavigationModel with ChangeNotifier {
     const ManageDBScreen(),
   ];
 
-  int _selectedIndex = 0;
-  int get selectedIndex => _selectedIndex;
+  int selectedIndex = 0;
 
   void change(int index) {
-    _selectedIndex = index;
+    selectedIndex = index;
     notifyListeners();
   }
 

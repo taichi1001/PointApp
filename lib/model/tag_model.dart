@@ -3,10 +3,8 @@ import 'package:todo_app/entity/tag.dart';
 import 'package:todo_app/repository/tag_repository.dart';
 
 class TagModel with ChangeNotifier {
-  List<Tag> _allTagList;
-  bool _isUpdate;
-  List<Tag> get allTagList => _allTagList;
-  bool get isUpdate => _isUpdate;
+  List<Tag> allTagList;
+  bool isUpdate;
 
   final tagRepo = TagRepository();
 
@@ -16,19 +14,19 @@ class TagModel with ChangeNotifier {
 
   Future setNewTag(TextEditingController newTag) async {
     if (newTag.text.isEmpty) {
-      _isUpdate = false;
+      isUpdate = false;
       return;
     }
-    if (_allTagList.map((tag) => tag.tag).toList().contains(newTag.text)) {
-      _isUpdate = false;
+    if (allTagList.map((tag) => tag.tag).toList().contains(newTag.text)) {
+      isUpdate = false;
       return;
     }
-    _isUpdate = true;
+    isUpdate = true;
     await add(Tag(tag: newTag.text));
   }
 
   Future _fetchAll() async {
-    _allTagList = await tagRepo.getAllTag();
+    allTagList = await tagRepo.getAllTag();
     notifyListeners();
   }
 

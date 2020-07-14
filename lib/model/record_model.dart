@@ -8,12 +8,9 @@ import 'package:todo_app/repository/record_repository.dart';
 
 class RecordModel with ChangeNotifier {
   int _selectedTagId = 0;
-  String _selectedTag;
-  List<Record> _allRecordList = [];
-  List<Record> _toDisplayRecord = [];
-  String get selectedTag => _selectedTag;
-  List<Record> get allRecordList => _allRecordList;
-  List<Record> get toDisplayRecord => _toDisplayRecord;
+  String selectedTag;
+  List<Record> allRecordList = [];
+  List<Record> toDisplayRecord = [];
 
   final RecordRepository recordRepo = RecordRepository();
   final RecordContentsRepository recordContentsRepo =
@@ -29,7 +26,7 @@ class RecordModel with ChangeNotifier {
     for (final tag in tagModel.allTagList) {
       if (tag.tag == newTag) {
         _selectedTagId = tag.tagId;
-        _selectedTag = tag.tag;
+        selectedTag = tag.tag;
       }
     }
     _fetchAll();
@@ -37,9 +34,9 @@ class RecordModel with ChangeNotifier {
 
   void _selectToRecordDisplay() {
     if (_selectedTagId == 0) {
-      _toDisplayRecord = _allRecordList;
+      toDisplayRecord = allRecordList;
     } else {
-      _toDisplayRecord = _allRecordList
+      toDisplayRecord = allRecordList
           .where((record) => record.tagId == _selectedTagId)
           .toList();
     }
@@ -47,7 +44,7 @@ class RecordModel with ChangeNotifier {
   }
 
   Future _fetchAll() async {
-    _allRecordList = await recordRepo.getAllRecords();
+    allRecordList = await recordRepo.getAllRecords();
     _selectToRecordDisplay();
     notifyListeners();
   }

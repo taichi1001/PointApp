@@ -7,14 +7,12 @@ import 'package:todo_app/repository/name_repository.dart';
 
 class NameModel with ChangeNotifier {
   Record record;
-  List<Name> _allNameList;
-  List<Name> _recordNameList;
-  bool _isUpdate = true;
+  List<Name> allNameList;
+  List<Name> recordNameList;
+  bool isUpdate = true;
   List<MappingNameRecord> _allCorrespondenceList;
   List<MappingNameRecord> _recordCorrespondenceList;
-  List<Name> get allNameList => _allNameList;
-  List<Name> get recordNameList => _recordNameList;
-  bool get isUpdate => _isUpdate;
+
 
   final nameRepo = NameRepository();
   final mappingRepo = MappingNameRecordRepository();
@@ -32,13 +30,13 @@ class NameModel with ChangeNotifier {
   void getRecordNameList() {
     final List<Name> list = [];
     for (final correspondence in _recordCorrespondenceList) {
-      for (final name in _allNameList) {
+      for (final name in allNameList) {
         if (correspondence.nameId == name.nameId) {
           list.add(name);
         }
       }
     }
-    _recordNameList = list;
+    recordNameList = list;
   }
 
   // レコードに対応する名前を更新するときに使う
@@ -46,18 +44,18 @@ class NameModel with ChangeNotifier {
   Future updateRecordName(List<TextEditingController> newTextList,
       List<TextEditingController> oldTextList) async {
     var index = 0;
-    _isUpdate = true;
+    isUpdate = true;
     for (final text in newTextList) {
       if (text.text != oldTextList[index].text) {
-        if (_allNameList
+        if (allNameList
             .map((name) => name.name)
             .toList()
             .contains(text.text)) {
-          _isUpdate = false;
+          isUpdate = false;
           index++;
           break;
         } else {
-          for (final name in _allNameList) {
+          for (final name in allNameList) {
             if (name.name == oldTextList[index].text) {
               name.name = text.text;
               await nameRepo.updateName(name);
@@ -72,7 +70,7 @@ class NameModel with ChangeNotifier {
   }
 
   Future _fetchAll() async {
-    _allNameList = await nameRepo.getAllName();
+    allNameList = await nameRepo.getAllName();
     _allCorrespondenceList = await mappingRepo.getAllMapping();
     getRecordCorrespondenceList();
     getRecordNameList();
@@ -82,7 +80,7 @@ class NameModel with ChangeNotifier {
   // 名前と、レコードと名前の対応をそれぞれDBに記録
   Future setNewName(List<TextEditingController> textList) async {
     for (final text in textList) {
-      if (_allNameList.map((name) => name.name).toList().contains(text.text)) {
+      if (allNameList.map((name) => name.name).toList().contains(text.text)) {
         _registeredName(text.text);
       } else if (text.text.isNotEmpty) {
         final nameId = await nameRepo.insertName(Name(name: text.text));
@@ -95,7 +93,7 @@ class NameModel with ChangeNotifier {
 
   /// 既に登録されている名前の場合の処理
   Future _registeredName(String inName) async {
-    for (final name in _allNameList) {
+    for (final name in allNameList) {
       if (inName == name.name) {
         final nameId = name.nameId;
         await mappingRepo.insertMapping(

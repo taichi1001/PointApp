@@ -9,14 +9,10 @@ import 'package:todo_app/repository/record_contents_repository.dart';
 import 'package:todo_app/repository/record_repository.dart';
 
 class ManageDBModel with ChangeNotifier {
-  List<Record> _allRecordList = [];
-  List<RecordContents> _allRecordContentsList = [];
-  List<Name> _allNameList = [];
-  List<MappingNameRecord> _allCorrespondenceList = [];
-  List<Record> get allRecordList => _allRecordList;
-  List<RecordContents> get allRecordContentsList => _allRecordContentsList;
-  List<Name> get allNameList => _allNameList;
-  List<MappingNameRecord> get allCorrespondenceList => _allCorrespondenceList;
+  List<Record> allRecordList = [];
+  List<RecordContents> allRecordContentsList = [];
+  List<Name> allNameList = [];
+  List<MappingNameRecord> allCorrespondenceList = [];
 
   final nameRepo = NameRepository();
   final correspondenceRepo = MappingNameRecordRepository();
@@ -28,10 +24,10 @@ class ManageDBModel with ChangeNotifier {
   }
 
   Future fetchAll() async {
-    _allRecordList = await recordRepo.getAllRecords();
-    _allRecordContentsList = await recordContentsRepo.getAllRecordsContents();
-    _allNameList = await nameRepo.getAllName();
-    _allCorrespondenceList = await correspondenceRepo.getAllMapping();
+    allRecordList = await recordRepo.getAllRecords();
+    allRecordContentsList = await recordContentsRepo.getAllRecordsContents();
+    allNameList = await nameRepo.getAllName();
+    allCorrespondenceList = await correspondenceRepo.getAllMapping();
     notifyListeners();
   }
 }
