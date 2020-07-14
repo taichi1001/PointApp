@@ -25,6 +25,14 @@ class TagModel with ChangeNotifier {
     await add(Tag(tag: newTag.text));
   }
 
+  Tag getTagNameInId(int id){
+    return allTagList.where((tag) => tag.tagId == id).toList()[0];
+  }
+
+  Tag getIdInTagName(String tagName){
+    return allTagList.where((tag) => tag.tag == tagName).toList()[0];
+  }
+
   Future _fetchAll() async {
     allTagList = await tagRepo.getAllTag();
     allTagList.insert(0, Tag(tagId: 0, tag: 'all'));
