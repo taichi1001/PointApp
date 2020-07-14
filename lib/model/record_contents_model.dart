@@ -117,18 +117,17 @@ class RecordContentsModel with ChangeNotifier {
   void _calculateByRankDuplicateMode() {
     _initScore();
     for (final perCount in recordContentsPerCount) {
-      final List<List<RecordContents>> dupLists = _makeDuplists(perCount);
-      final List<List<RecordContents>> dupListsB =
-          _removeDuplicateFromDuplists(dupLists);
+      final List<List<RecordContents>> interimDupLists =
+          _makeDuplists(perCount);
+      final List<List<RecordContents>> dupLists =
+          _removeDuplicateFromDuplists(interimDupLists);
       final List<RecordContents> flatDupList =
-          dupListsB.expand((pair) => pair).toList();
+          dupLists.expand((pair) => pair).toList();
       final List<RecordContents> noDupList =
           perCount.where((element) => !flatDupList.contains(element)).toList();
       _calcContentsScoreNoDupList(noDupList);
-      if (dupListsB.isEmpty) {
-        return;
-      } else {
-        for (final dupList in dupListsB) {
+      if (dupLists.isNotEmpty){
+        for (final dupList in dupLists) {
           final dupRate = _calcRateDuplicatedScore(dupList);
           _calcDuplicatedScore(dupList, dupRate);
         }
@@ -147,16 +146,15 @@ class RecordContentsModel with ChangeNotifier {
   }
 
   int _calcRateDuplicatedScore(List<RecordContents> dupList) {
-    var dupRate = 0;
+    var sumDupRate = 0;
     for (int i = 0; i < dupList.length; i++) {
       for (final rankRate in recordRankRateList) {
         if (dupList[0].score + i == rankRate.rank) {
-          dupRate += rankRate.rate;
+          sumDupRate += rankRate.rate;
         }
       }
     }
-    dupRate = (dupRate / dupList.length).round();
-    return dupRate;
+    return (sumDupRate / dupList.length).round();
   }
 
   void _calcContentsScoreNoDupList(List<RecordContents> noDupList) {
