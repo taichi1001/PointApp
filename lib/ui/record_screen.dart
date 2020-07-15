@@ -64,7 +64,7 @@ class SelectTag extends StatelessWidget {
       onChanged: (String value) {
         recordModel.changeSelectedTag(value, tagModel);
       },
-      items: tagModel.allTagList.map<DropdownMenuItem<String>>((Tag tag) {
+      items: tagModel.recordScreenTagList.map<DropdownMenuItem<String>>((Tag tag) {
         return DropdownMenuItem<String>(
           value: tag.tag,
           child: Text(tag.tag),

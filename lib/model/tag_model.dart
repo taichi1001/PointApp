@@ -4,6 +4,7 @@ import 'package:todo_app/repository/tag_repository.dart';
 
 class TagModel with ChangeNotifier {
   List<Tag> allTagList;
+  List<Tag> recordScreenTagList;
   bool isUpdate;
 
   final tagRepo = TagRepo();
@@ -39,7 +40,8 @@ class TagModel with ChangeNotifier {
 
   Future _fetchAll() async {
     allTagList = await tagRepo.getAllTag();
-    allTagList.insert(0, Tag(tagId: 0, tag: 'all'));
+    recordScreenTagList = [...allTagList];
+    recordScreenTagList.insert(0, Tag(tagId: 0, tag: 'all'));
     notifyListeners();
   }
 
