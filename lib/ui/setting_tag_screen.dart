@@ -82,6 +82,7 @@ class _NewTag extends StatelessWidget {
             onPressed: () {
               tagModel.setNewTag(controller);
               tagModel.notify();
+              controller.text = '';
             },
           )
         ],
