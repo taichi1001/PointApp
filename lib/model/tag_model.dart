@@ -13,6 +13,9 @@ class TagModel with ChangeNotifier {
     _fetchAll();
   }
 
+  /// 新しいタグを登録する
+  /// 
+  /// 入力が空の場合、入力された名前のタグが既に登録されている場合は何もせずreturnする
   Future setNewTag(TextEditingController newTag) async {
     if (newTag.text.isEmpty) {
       isUpdate = false;
@@ -26,10 +29,12 @@ class TagModel with ChangeNotifier {
     await add(Tag(tag: newTag.text));
   }
 
+  /// タグのリストの中から入力idとtagIdが一致するTagを取得する
   Tag getTagNameInId(int id){
     return allTagList.where((tag) => tag.tagId == id).toList()[0];
   }
 
+  /// タグのリストの中から入力タグ名とtag.tagが一致するTagを取得する
   Tag getIdInTagName(String tagName){
     return allTagList.where((tag) => tag.tag == tagName).toList()[0];
   }
