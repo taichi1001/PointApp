@@ -22,6 +22,10 @@ class RecordModel with ChangeNotifier {
   }
 
   void changeSelectedTag(String newTag, TagModel tagModel) {
+    if(newTag == 'all') {
+      selectedTagId = 0;
+      selectedTag = 'all';
+      }
     for (final tag in tagModel.allTagList) {
       if (tag.tag == newTag) {
         selectedTagId = tag.tagId;
@@ -35,7 +39,6 @@ class RecordModel with ChangeNotifier {
     if (selectedTagId == 0) {
       selectedTag = 'all';
       toDisplayRecord = allRecordList;
-      notifyListeners();
     } else {
       toDisplayRecord = allRecordList
           .where((record) => record.tagId == selectedTagId)
