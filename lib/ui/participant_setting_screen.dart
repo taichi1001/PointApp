@@ -14,6 +14,8 @@ class ParticipantSettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<TextEditingController> _controllers = [];
+    final recordModel = Provider.of<RecordModel>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: Consumer<Record>(
@@ -54,6 +56,7 @@ class ParticipantSettingScreen extends StatelessWidget {
                 await recordContentsModel.nameModel.setNewName(_controllers);
                 await recordContentsModel.initRankRate();
                 recordContentsModel.calcScore();
+                recordModel.notify();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => MultiProvider(

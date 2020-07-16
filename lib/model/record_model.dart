@@ -46,6 +46,9 @@ class RecordModel with ChangeNotifier {
     }
     notifyListeners();
   }
+  void notify(){
+    notifyListeners();
+  }
 
   Future _fetchAll() async {
     allRecordList = await recordRepo.getAllRecords();
