@@ -93,7 +93,6 @@ class RecordContentsModel with ChangeNotifier {
       for (final contents in recordContentsList) {
         if (name.nameId == contents.nameId) {
           scoreMap[name.name] = scoreMap[name.name] + contents.score;
-          break;
         }
       }
     }
