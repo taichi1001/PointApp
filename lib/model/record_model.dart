@@ -35,6 +35,7 @@ class RecordModel with ChangeNotifier {
     if (selectedTagId == 0) {
       selectedTag = 'all';
       toDisplayRecord = allRecordList;
+      notifyListeners();
     } else {
       toDisplayRecord = allRecordList
           .where((record) => record.tagId == selectedTagId)
