@@ -26,6 +26,7 @@ class NameModel with ChangeNotifier {
         .toList();
   }
 
+  /// レコードに対応する名前一覧を取得する
   void getRecordNameList() {
     final List<Name> list = [];
     for (final correspondence in _recordCorrespondenceList) {
@@ -38,8 +39,9 @@ class NameModel with ChangeNotifier {
     recordNameList = list;
   }
 
-  // レコードに対応する名前を更新するときに使う
-  // 既に登録されている名前に変更しようとした場合にisUpdateをfalseにする
+  /// レコードに対応する名前を更新するときに使う
+  ///
+  /// 既に登録されている名前に変更しようとした場合にisUpdateをfalseにする
   Future updateRecordName(List<TextEditingController> newTextList,
       List<TextEditingController> oldTextList) async {
     var index = 0;
@@ -73,7 +75,7 @@ class NameModel with ChangeNotifier {
     notifyListeners();
   }
 
-  // 名前と、レコードと名前の対応をそれぞれDBに記録
+  /// 名前と、レコードと名前の対応をそれぞれDBに記録
   Future setNewName(List<TextEditingController> textList) async {
     for (final text in textList) {
       if (allNameList.map((name) => name.name).toList().contains(text.text)) {

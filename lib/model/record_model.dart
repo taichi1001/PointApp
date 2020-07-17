@@ -21,6 +21,7 @@ class RecordModel with ChangeNotifier {
     _fetchAll();
   }
 
+  /// 選択されたタグに応じて保持するタグデータを変更する
   void changeSelectedTag(String newTag, TagModel tagModel) {
     if(newTag == 'all') {
       selectedTagId = 0;
@@ -35,6 +36,7 @@ class RecordModel with ChangeNotifier {
     _fetchAll();
   }
 
+  /// 選択されたタグによって表示するレコードを切り替える
   void _selectToRecordDisplay() {
     if (selectedTagId == 0) {
       selectedTag = 'all';

@@ -27,6 +27,7 @@ class RecordContentsModel with ChangeNotifier {
     fetchAll();
   }
 
+  /// 入力されたRecordContentsを登録する
   Future addNewRecordContents(List<TextEditingController> textList) async {
     count++;
     var index = 0;
@@ -44,6 +45,7 @@ class RecordContentsModel with ChangeNotifier {
     await fetchAll();
   }
 
+  /// ランクレートを更新する
   Future updateRankRate(List<TextEditingController> textList) async {
     var index = 0;
     for (final text in textList) {
@@ -56,6 +58,7 @@ class RecordContentsModel with ChangeNotifier {
     await fetchAll();
   }
 
+  /// レコードに対応するランクレートを初期化する
   Future initRankRate() async {
     if (recordRankRateList.isEmpty) {
       for (int rank = 1; rank <= nameModel.recordNameList.length; rank++) {
@@ -69,6 +72,7 @@ class RecordContentsModel with ChangeNotifier {
     }
   }
 
+  // スコア計算
   void calcScore() {
     _initScore();
     if (record.mode == '順位モード') {
@@ -82,12 +86,14 @@ class RecordContentsModel with ChangeNotifier {
     }
   }
 
+  /// スコアを初期化する
   void _initScore() {
     for (final name in nameModel.recordNameList) {
       scoreMap[name.name] = 0;
     }
   }
 
+  /// スコアモード時のスコア計算
   void _calcByScoreMode() {
     for (final name in nameModel.recordNameList) {
       for (final contents in recordContentsList) {
@@ -98,6 +104,7 @@ class RecordContentsModel with ChangeNotifier {
     }
   }
 
+  /// 順位モード時のスコア計算
   void _calcByRankMode() {
     for (final name in nameModel.recordNameList) {
       for (final contents in recordContentsList) {
@@ -113,6 +120,7 @@ class RecordContentsModel with ChangeNotifier {
     }
   }
 
+  /// 順位重複モード時のスコア計算
   void _calculateByRankDuplicateMode() {
     _initScore();
     for (final perCount in recordContentsPerCount) {
@@ -134,6 +142,7 @@ class RecordContentsModel with ChangeNotifier {
     }
   }
 
+  /// 重複しているRecordContentsのスコアを計算する
   void _calcDuplicatedScore(List<RecordContents> dupList, int dupRate) {
     for (final name in nameModel.recordNameList) {
       for (final contents in dupList) {
@@ -144,6 +153,7 @@ class RecordContentsModel with ChangeNotifier {
     }
   }
 
+  /// 重複しているRecordContentsに適用するレートを計算する
   int _calcRateDuplicatedScore(List<RecordContents> dupList) {
     var sumDupRate = 0;
     for (int i = 0; i < dupList.length; i++) {
@@ -156,6 +166,7 @@ class RecordContentsModel with ChangeNotifier {
     return (sumDupRate / dupList.length).round();
   }
 
+  /// 重複していないRecordContentsを計算する
   void _calcContentsScoreNoDupList(List<RecordContents> noDupList) {
     for (final name in nameModel.recordNameList) {
       for (final contents in noDupList) {
@@ -171,7 +182,7 @@ class RecordContentsModel with ChangeNotifier {
     }
   }
 
-  // _makeDuplistsで生じる同じ組み合わせのうちの1つを削除する
+  /// _makeDuplistsで生じる同じ組み合わせのうちの1つを削除する
   List<List<RecordContents>> _removeDuplicateFromDuplists(
       List<List<RecordContents>> dupLists) {
     var rank = 0;
@@ -185,6 +196,11 @@ class RecordContentsModel with ChangeNotifier {
     return dupListsB;
   }
 
+  /// 入力されたRecordContentsのリストから重複している要素を抽出する
+  /// 
+  /// 重複している要素が2回づつ抽出されるのは仕様のため注意
+  /// 
+  /// _removeDuplicateFromDuplistsと組み合わせて使う
   List<List<RecordContents>> _makeDuplists(List<RecordContents> perCount) {
     final List<List<RecordContents>> dupLists = [];
     for (final recordContents1 in perCount) {
