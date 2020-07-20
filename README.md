@@ -18,13 +18,14 @@ A new Flutter application.
 
 - コンテンツ情報
 
-| 名前               | データ型   |  属性       | NULL | デフォルト値 | コメント | その他 |
-|--------------------|-----------|-------------|------|-------------|---------|--------|
-| record_contents_Id | INTEGER   | PRIMARY KEY | no   | なし         | ID      | AUTO_INCREMENT |
+| 名前               | データ型   |  属性       | NULL | デフォルト値 | コメント         | その他 |
+|--------------------|-----------|-------------|------|-------------|-----------------|--------|
+| record_contents_Id | INTEGER   | PRIMARY KEY | no   | なし         | ID             | AUTO_INCREMENT |
 | record_id          | INTEGER   |             | no   | なし         | レコード情報のID |  　　|
-| name_id            | INTEGER   |             | no   | なし         | 名前情報のID |  　　|
-| count              | INTEGER   |             | no   | なし         | 何試合目の情報か 　　|  　　|
-| score              | INTEGER   |             | no   | なし         | スコア 　| レコードのモードによって役割変わる　|
+| name_id            | INTEGER   |             | no   | なし         | 名前情報のID    |  　　|
+| count              | INTEGER   |             | no   | なし         | 何試合目の情報か |  　　|
+| score              | INTEGER   |             | no   | なし         | スコア 　       | レコードのモードによって役割変わる　|
+| calc_score         | INTEGER   |             | yes  | なし         | 計算後のスコア   |     |
 
 - 名前情報
 
@@ -73,3 +74,5 @@ A new Flutter application.
 ### タグごとの成績一覧
 
 ### 個人成績グラフ
+
+### Record共有機能
