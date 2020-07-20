@@ -62,7 +62,8 @@ class DatabaseService {
         record_id INTEGER NOT NULL,
         name_id INTEGER NOT NULL,
         count INTEGER NOT NULL,
-        score INTEGER NOT NULL
+        score INTEGER NOT NULL,
+        calc_score INTEGER
       )
     ''');
     await database.execute('''

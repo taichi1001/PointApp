@@ -98,6 +98,7 @@ class RecordContentsModel with ChangeNotifier {
     for (final name in nameModel.recordNameList) {
       for (final contents in recordContentsList) {
         if (name.nameId == contents.nameId) {
+          updateCalcScore(contents);
           scoreMap[name.name] = scoreMap[name.name] + contents.score;
         }
       }
@@ -111,6 +112,7 @@ class RecordContentsModel with ChangeNotifier {
         if (name.nameId == contents.nameId) {
           for (final rankRate in recordRankRateList) {
             if (contents.score == rankRate.rank) {
+              updateCalcScore(contents, rankRate.rate);
               scoreMap[name.name] = scoreMap[name.name] + rankRate.rate;
               break;
             }
@@ -133,7 +135,7 @@ class RecordContentsModel with ChangeNotifier {
       final List<RecordContents> noDupList =
           perCount.where((element) => !flatDupList.contains(element)).toList();
       _calcContentsScoreNoDupList(noDupList);
-      if (dupLists.isNotEmpty){
+      if (dupLists.isNotEmpty) {
         for (final dupList in dupLists) {
           final dupRate = _calcRateDuplicatedScore(dupList);
           _calcDuplicatedScore(dupList, dupRate);
@@ -147,6 +149,7 @@ class RecordContentsModel with ChangeNotifier {
     for (final name in nameModel.recordNameList) {
       for (final contents in dupList) {
         if (name.nameId == contents.nameId) {
+          updateCalcScore(contents, dupRate);
           scoreMap[name.name] = scoreMap[name.name] + dupRate;
         }
       }
@@ -173,6 +176,7 @@ class RecordContentsModel with ChangeNotifier {
         if (name.nameId == contents.nameId) {
           for (final rankRate in recordRankRateList) {
             if (contents.score == rankRate.rank) {
+              updateCalcScore(contents, rankRate.rate);
               scoreMap[name.name] = scoreMap[name.name] + rankRate.rate;
               break;
             }
@@ -197,9 +201,9 @@ class RecordContentsModel with ChangeNotifier {
   }
 
   /// 入力されたRecordContentsのリストから重複している要素を抽出する
-  /// 
+  ///
   /// 重複している要素が2回づつ抽出されるのは仕様のため注意
-  /// 
+  ///
   /// _removeDuplicateFromDuplistsと組み合わせて使う
   List<List<RecordContents>> _makeDuplists(List<RecordContents> perCount) {
     final List<List<RecordContents>> dupLists = [];
@@ -263,6 +267,15 @@ class RecordContentsModel with ChangeNotifier {
           .reduce(max);
     }
     this.count = count;
+  }
+
+  Future updateCalcScore(RecordContents contents, [int rate]) async {
+    if (rate == null) {
+      contents.calcScore = contents.score;
+    } else {
+      contents.calcScore = rate;
+    }
+    await update(contents);
   }
 
   Future fetchAll() async {

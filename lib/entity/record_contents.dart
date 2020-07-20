@@ -6,13 +6,15 @@ class RecordContents with ChangeNotifier {
   int nameId;
   int count;
   int score;
+  int calcScore;
 
   RecordContents(
       {this.recordContentsId,
       this.recordId,
       this.nameId,
       this.count,
-      this.score});
+      this.score,
+      this.calcScore});
 
   factory RecordContents.fromDatabaseJson(Map<String, dynamic> data) =>
       RecordContents(
@@ -21,6 +23,7 @@ class RecordContents with ChangeNotifier {
         nameId: data['name_id'],
         count: data['count'],
         score: data['score'],
+        calcScore: data['calc_score'],
       );
 
   Map<String, dynamic> toDatabaseJson() => {
@@ -28,7 +31,7 @@ class RecordContents with ChangeNotifier {
         'record_id': recordId,
         'name_id': nameId,
         'count': count,
-        'score': score,
+        'calc_score': score,
       };
 
   void updateScore(String newScore) {
