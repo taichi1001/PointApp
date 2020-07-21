@@ -47,15 +47,19 @@ class RecordListTile extends StatelessWidget {
               await recordContentsModel.initRankRate();
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => MultiProvider(
-                    providers: [
-                      ChangeNotifierProvider.value(value: record),
-                      ChangeNotifierProvider.value(value: recordContentsModel),
-                      ChangeNotifierProvider.value(
-                          value: recordContentsModel.nameModel),
-                    ],
-                    child: const RecordContentsScreen(),
-                  ),
+                  builder: (context) {
+                    recordContentsModel.fetchAll();
+                    return MultiProvider(
+                      providers: [
+                        ChangeNotifierProvider.value(value: record),
+                        ChangeNotifierProvider.value(
+                            value: recordContentsModel),
+                        ChangeNotifierProvider.value(
+                            value: recordContentsModel.nameModel),
+                      ],
+                      child: const RecordContentsScreen(),
+                    );
+                  },
                 ),
               );
             }

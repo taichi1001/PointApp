@@ -33,6 +33,9 @@ class RecordContentsScreen extends StatelessWidget {
                       value: record.isEdit,
                       onChanged: (bool value) {
                         record.changeIsEdit();
+                        if (!record.isEdit) {
+                          recordContentsModel.fetchAll();
+                        }
                       },
                     ),
                   ],

@@ -89,9 +89,9 @@ class _OkButton extends StatelessWidget {
         child: const Text('OK'),
         color: Colors.amber[800],
         textColor: Colors.white,
-        onPressed: () {
+        onPressed: () async{
           if (formKey.currentState.validate()) {
-            recordContentsModel.addNewRecordContents(controllers);
+            await recordContentsModel.addNewRecordContents(controllers);
             formKey.currentState.save();
             Navigator.pop(context);
           }

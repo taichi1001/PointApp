@@ -10,7 +10,7 @@ class RankRateUpdateAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<TextEditingController> _controllers = [];
+    List<TextEditingController> _controllers = [];
     return Consumer2<Record, RecordContentsModel>(
       builder: (context, record, recordContentsModel, _) {
         for (final rankRate in recordContentsModel.recordRankRateList) {
@@ -45,8 +45,9 @@ class RankRateUpdateAlertDialog extends StatelessWidget {
             ),
             FlatButton(
               child: const Text('OK'),
-              onPressed: () {
-                recordContentsModel.updateRankRate(_controllers);
+              onPressed: () async {
+                await recordContentsModel.updateRankRate(_controllers);
+                _controllers = [];
                 Navigator.pop(context);
               },
             ),
