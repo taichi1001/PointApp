@@ -12,6 +12,7 @@ import 'package:todo_app/repository/record_repository.dart';
 import 'package:todo_app/repository/tag_repository.dart';
 
 class GraphModel with ChangeNotifier {
+  String selectTagName;
   List<Record> allRecordList;
   List<Record> tagRecordList;
   List<Tag> allTagList;
@@ -31,13 +32,13 @@ class GraphModel with ChangeNotifier {
   final RecordContentsRepo recordContentsRepo = RecordContentsRepo();
   final RankRateRepo rankRateRepo = RankRateRepo();
 
-  GraphModel() {
+  GraphModel(this.selectTagName) {
     _fetchAll();
   }
 
   /// 指定されたタグに該当するレコードのリストを取得する
-  void _getTagRecordList(String tagName) {
-    final tag = allTagList.where((tag) => tag.tag == tagName).toList()[0];
+  void _getTagRecordList() {
+    final tag = allTagList.where((tag) => tag.tag == selectTagName).toList()[0];
     tagRecordList =
         allRecordList.where((record) => record.tagId == tag.tagId).toList();
   }
@@ -123,7 +124,7 @@ class GraphModel with ChangeNotifier {
     allNameList = await nameRepo.getAllName();
     allMappingList = await mappingRepo.getAllMapping();
 
-    _getTagRecordList('default');
+    _getTagRecordList();
     _getTagMappingList();
     _getTagNameList();
     _getTagRecordContentsList();
