@@ -31,7 +31,8 @@ class RecordContents with ChangeNotifier {
         'record_id': recordId,
         'name_id': nameId,
         'count': count,
-        'calc_score': score,
+        'score': score,
+        'calc_score': calcScore,
       };
 
   void updateScore(String newScore) {

@@ -12,6 +12,7 @@ import 'package:todo_app/repository/record_repository.dart';
 import 'package:todo_app/repository/tag_repository.dart';
 
 class GraphModel with ChangeNotifier {
+  String selectTagName;
   List<Record> allRecordList;
   List<Record> tagRecordList;
   List<Tag> allTagList;
@@ -21,8 +22,8 @@ class GraphModel with ChangeNotifier {
   List<MappingNameRecord> tagMappingList;
   List<RecordContents> allRecordContentsList;
   List<RecordContents> tagRecordContentsList;
-  Map<String, List<int>> scoreMap;
-  Map<String, int> nameCheckMap;
+  Map<String, List<int>> scoreMap = {};
+  Map<String, int> nameCheckMap = {};
 
   final RecordRepo recordRepo = RecordRepo();
   final MappingNameRecordRepo mappingRepo = MappingNameRecordRepo();
@@ -31,13 +32,13 @@ class GraphModel with ChangeNotifier {
   final RecordContentsRepo recordContentsRepo = RecordContentsRepo();
   final RankRateRepo rankRateRepo = RankRateRepo();
 
-  GraphModel() {
+  GraphModel(this.selectTagName) {
     _fetchAll();
   }
 
   /// 指定されたタグに該当するレコードのリストを取得する
-  void _getTagRecordList(String tagName) {
-    final tag = allTagList.where((tag) => tag.tag == tagName).toList()[0];
+  void _getTagRecordList() {
+    final tag = allTagList.where((tag) => tag.tag == selectTagName).toList()[0];
     tagRecordList =
         allRecordList.where((record) => record.tagId == tag.tagId).toList();
   }
@@ -61,10 +62,13 @@ class GraphModel with ChangeNotifier {
     for (final mapping in tagMappingList) {
       for (final name in allNameList) {
         if (mapping.nameId == name.nameId) {
-          list.add(name);
+          if(list.where((element) => element.name == name.name).toList().isEmpty) {
+            list.add(name);
+          }
         }
       }
     }
+    list.toSet().toList();
     tagNameList = list;
   }
 
@@ -84,7 +88,8 @@ class GraphModel with ChangeNotifier {
   /// スコア用Mapを初期化
   void _initScoreMap() {
     for (final name in tagNameList) {
-      scoreMap[name.name] = [0];
+      final initList = [0];
+      scoreMap[name.name] = initList;
     }
   }
 
@@ -123,7 +128,7 @@ class GraphModel with ChangeNotifier {
     allNameList = await nameRepo.getAllName();
     allMappingList = await mappingRepo.getAllMapping();
 
-    _getTagRecordList('default');
+    _getTagRecordList();
     _getTagMappingList();
     _getTagNameList();
     _getTagRecordContentsList();

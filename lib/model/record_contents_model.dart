@@ -272,12 +272,12 @@ class RecordContentsModel with ChangeNotifier {
   Future updateCalcScore(RecordContents contents, [int rate]) async {
     if (rate == null && contents.calcScore != contents.score) {
       contents.calcScore = contents.score;
-    } else if(contents.calcScore != rate){
+    } else if (contents.calcScore != rate) {
       contents.calcScore = rate;
     } else {
       return;
     }
-    await update(contents);
+    await recordContentsRepo.updateRecordContents(contents);
   }
 
   Future fetchAll() async {

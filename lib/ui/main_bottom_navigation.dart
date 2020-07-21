@@ -18,6 +18,10 @@ class MainBottomNavigation extends StatelessWidget {
             title: Text('Record'),
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.show_chart),
+            title: Text('Chart'),
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.data_usage),
             title: Text('DB'),
           ),
