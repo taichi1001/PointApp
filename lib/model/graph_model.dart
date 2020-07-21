@@ -35,13 +35,14 @@ class GraphModel with ChangeNotifier {
     _fetchAll();
   }
 
-  /// 指定されたタグに該当するレコードを名前別にMapで取得する
+  /// 指定されたタグに該当するレコードのリストを取得する
   void _getTagRecordList(String tagName) {
     final tag = allTagList.where((tag) => tag.tag == tagName).toList()[0];
     tagRecordList =
         allRecordList.where((record) => record.tagId == tag.tagId).toList();
   }
 
+  /// 指定されたタグに該当するMappingのリストを取得する
   void _getTagMappingList() {
     final List<MappingNameRecord> list = [];
     for (final mapping in allMappingList) {
@@ -54,6 +55,7 @@ class GraphModel with ChangeNotifier {
     tagMappingList = list;
   }
 
+  /// 指定されたタグに該当する名前のリストを取得する
   void _getTagNameList() {
     final List<Name> list = [];
     for (final mapping in tagMappingList) {
@@ -66,6 +68,7 @@ class GraphModel with ChangeNotifier {
     tagNameList = list;
   }
 
+  /// 指定されたタグに該当するRecordContentsのリストを取得する
   void _getTagRecordContentsList() {
     final List<RecordContents> list = [];
     for (final record in tagRecordList) {
@@ -78,18 +81,23 @@ class GraphModel with ChangeNotifier {
     tagRecordContentsList = list;
   }
 
+  /// スコア用Mapを初期化
   void _initScoreMap() {
     for (final name in tagNameList) {
       scoreMap[name.name] = [0];
     }
   }
 
+  /// 名前があるかどうかの判定用Mapを初期化
   void _initNameCheckMap() {
     for (final name in tagNameList) {
       nameCheckMap[name.name] = 0;
     }
   }
 
+  /// 指定されたタグに該当するスコアを名前ごとにMapで取得
+  /// 
+  /// ex. {a:[0,1,2,4], b:[0,2,4,6]}
   void _getTagScore() {
     for (final contents in tagRecordContentsList) {
       for (final name in tagNameList) {
