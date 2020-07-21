@@ -20,6 +20,11 @@ class Chart extends StatelessWidget {
   const Chart({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return const Text('Select Chart');
+    final graphModel = Provider.of<GraphModel>(context, listen: true);
+    if (graphModel.scoreMap.isEmpty) {
+      return const Text('Non Data');
+    } else {
+      return Text(graphModel.scoreMap.toString());
+    }
   }
 }
