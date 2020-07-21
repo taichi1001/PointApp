@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/model/graph_model.dart';
+import 'package:charts_flutter/flutter.dart';
 
 class ChartScreen extends StatelessWidget {
   const ChartScreen({Key key}) : super(key: key);

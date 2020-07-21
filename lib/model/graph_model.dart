@@ -22,8 +22,8 @@ class GraphModel with ChangeNotifier {
   List<MappingNameRecord> tagMappingList;
   List<RecordContents> allRecordContentsList;
   List<RecordContents> tagRecordContentsList;
-  Map<String, List<int>> scoreMap;
-  Map<String, int> nameCheckMap;
+  Map<String, List<int>> scoreMap = {};
+  Map<String, int> nameCheckMap = {};
 
   final RecordRepo recordRepo = RecordRepo();
   final MappingNameRecordRepo mappingRepo = MappingNameRecordRepo();
@@ -62,10 +62,13 @@ class GraphModel with ChangeNotifier {
     for (final mapping in tagMappingList) {
       for (final name in allNameList) {
         if (mapping.nameId == name.nameId) {
-          list.add(name);
+          if(list.where((element) => element.name == name.name).toList().isEmpty) {
+            list.add(name);
+          }
         }
       }
     }
+    list.toSet().toList();
     tagNameList = list;
   }
 
@@ -85,7 +88,8 @@ class GraphModel with ChangeNotifier {
   /// スコア用Mapを初期化
   void _initScoreMap() {
     for (final name in tagNameList) {
-      scoreMap[name.name] = [0];
+      final initList = [0];
+      scoreMap[name.name] = initList;
     }
   }
 
