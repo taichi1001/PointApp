@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/ui/record_screen.dart';
 import 'package:todo_app/ui/manage_db_screen.dart';
-import 'package:todo_app/ui/select_chart_screen.dart';
+import 'package:todo_app/ui/select_graph_screen.dart';
 
 class BottomNavigationModel with ChangeNotifier {
   final List<Widget> options = [

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/model/graph_model.dart';
 import 'package:todo_app/model/tag_model.dart';
-import 'package:todo_app/ui/chart_screen.dart';
+import 'package:todo_app/ui/graph_screen.dart';
 
 class SelectChartScreen extends StatelessWidget {
   const SelectChartScreen({Key key}) : super(key: key);
