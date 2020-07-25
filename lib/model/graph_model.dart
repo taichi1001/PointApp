@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:quiver/iterables.dart';
 import 'package:todo_app/entity/mapping_name_record.dart';
@@ -26,7 +27,7 @@ class GraphModel with ChangeNotifier {
   Map<String, List<int>> scoreMap = {};
   Map<String, List<int>> xAxis = {};
   Map<String, int> nameCheckMap = {};
-  int _gameCount;
+  int _scoreMapLengthMax;
 
   final RecordRepo recordRepo = RecordRepo();
   final MappingNameRecordRepo mappingRepo = MappingNameRecordRepo();
@@ -112,7 +113,6 @@ class GraphModel with ChangeNotifier {
       sortedTagRecordContentsList
           .sort((k1, k2) => k1.count.compareTo(k2.count));
     }
-
     tagRecordContentsList =
         sortedTagRecordContentsLists.expand((pair) => pair).toList();
   }
@@ -136,13 +136,12 @@ class GraphModel with ChangeNotifier {
   ///
   /// ex. {a:[0,1,2,4], b:[0,2,4,6]}
   void _getTagScore() {
-    _gameCount = 0;
     for (final contents in tagRecordContentsList) {
-      _prosessingPersonNotInPreviousGame(contents);
+      _processingPersonNotInPreviousGame(contents);
       _putScoreOfNameWhoMatchContentInArray(contents);
     }
     scoreMap.forEach((key, value) {
-      if (value.length < _gameCount + 1) {
+      if (value.length < _scoreMapLengthMax) {
         scoreMap[key].add(scoreMap[key].last);
       }
     });
@@ -159,17 +158,25 @@ class GraphModel with ChangeNotifier {
   }
 
   /// 1つ前のゲームに参加していなかった人の処理
-  void _prosessingPersonNotInPreviousGame(RecordContents contents) {
-    if (_gameCount != contents.count) {
-      _gameCount = contents.count;
-      if (_gameCount > 1) {
-        nameCheckMap.forEach((key, value) {
-          if (value < _gameCount - 1) {
-            scoreMap[key].add(scoreMap[key].last);
-            nameCheckMap[key]++;
-          }
-        });
-      }
+  void _processingPersonNotInPreviousGame(RecordContents contents) {
+    final List<int> scoreMapLengthList = [];
+    scoreMap.forEach((key, value) {
+      final scoreMapLength = value.length;
+      scoreMapLengthList.add(scoreMapLength);
+    });
+    _scoreMapLengthMax = scoreMapLengthList.reduce(math.max);
+//    最初のレコードの最初の試合以外ならtrue（つまり一番最初）
+    if (nameCheckMap.values.toList()[0] != 0) {
+      nameCheckMap.forEach((key, value) {
+
+        if (value < _scoreMapLengthMax - 2) {
+          print(key);
+          print(value);
+          print(_scoreMapLengthMax);
+          scoreMap[key].add(scoreMap[key].last);
+          nameCheckMap[key]++;
+        }
+      });
     }
   }
 
@@ -197,6 +204,6 @@ class GraphModel with ChangeNotifier {
     _initScoreMap();
     _initNameCheckMap();
     _getTagScore();
-    _getXAxis();
+//    _getXAxis();
   }
 }
