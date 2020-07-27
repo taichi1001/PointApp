@@ -11,7 +11,6 @@ import 'package:todo_app/repository/record_contents_repository.dart';
 class RecordContentsModel with ChangeNotifier {
   final Record record;
   NameModel nameModel;
-
   List<RecordContents> allRecordContentsList = [];
   List<RecordContents> recordContentsList = [];
   List<List<RecordContents>> recordContentsPerCount = [];

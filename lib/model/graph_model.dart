@@ -1,4 +1,6 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:quiver/iterables.dart';
 import 'package:todo_app/entity/mapping_name_record.dart';
 import 'package:todo_app/entity/name.dart';
 import 'package:todo_app/entity/record_contents.dart';
@@ -23,7 +25,9 @@ class GraphModel with ChangeNotifier {
   List<RecordContents> allRecordContentsList;
   List<RecordContents> tagRecordContentsList;
   Map<String, List<int>> scoreMap = {};
+  Map<String, List<int>> xAxis = {};
   Map<String, int> nameCheckMap = {};
+  int _scoreMapLengthMax;
 
   final RecordRepo recordRepo = RecordRepo();
   final MappingNameRecordRepo mappingRepo = MappingNameRecordRepo();
@@ -41,6 +45,11 @@ class GraphModel with ChangeNotifier {
     final tag = allTagList.where((tag) => tag.tag == selectTagName).toList()[0];
     tagRecordList =
         allRecordList.where((record) => record.tagId == tag.tagId).toList();
+  }
+
+  /// tagRecordListを日付順(昇順)にソートする
+  void _sortTagRecordList() {
+    tagRecordList.sort((k1, k2) => k1.date.compareTo(k2.date));
   }
 
   /// 指定されたタグに該当するMappingのリストを取得する
@@ -62,7 +71,10 @@ class GraphModel with ChangeNotifier {
     for (final mapping in tagMappingList) {
       for (final name in allNameList) {
         if (mapping.nameId == name.nameId) {
-          if(list.where((element) => element.name == name.name).toList().isEmpty) {
+          if (list
+              .where((element) => element.name == name.name)
+              .toList()
+              .isEmpty) {
             list.add(name);
           }
         }
@@ -85,6 +97,26 @@ class GraphModel with ChangeNotifier {
     tagRecordContentsList = list;
   }
 
+  /// tagRecordContentsListをRecordごとに試合順(昇順)にソートする
+  void _sortTagRecordContentsList() {
+    final List<List<RecordContents>> sortedTagRecordContentsLists = [];
+    for (final record in tagRecordList) {
+      final List<RecordContents> sortedTagRecordContentsList = [];
+      for (final recordContents in tagRecordContentsList) {
+        if (record.recordId == recordContents.recordId) {
+          sortedTagRecordContentsList.add(recordContents);
+        }
+      }
+      sortedTagRecordContentsLists.add(sortedTagRecordContentsList);
+    }
+    for (final sortedTagRecordContentsList in sortedTagRecordContentsLists) {
+      sortedTagRecordContentsList
+          .sort((k1, k2) => k1.count.compareTo(k2.count));
+    }
+    tagRecordContentsList =
+        sortedTagRecordContentsLists.expand((pair) => pair).toList();
+  }
+
   /// スコア用Mapを初期化
   void _initScoreMap() {
     for (final name in tagNameList) {
@@ -101,23 +133,58 @@ class GraphModel with ChangeNotifier {
   }
 
   /// 指定されたタグに該当するスコアを名前ごとにMapで取得
-  /// 
+  ///
   /// ex. {a:[0,1,2,4], b:[0,2,4,6]}
   void _getTagScore() {
     for (final contents in tagRecordContentsList) {
-      for (final name in tagNameList) {
-        if (name.nameId == contents.nameId) {
-          scoreMap[name.name]
-              .add(scoreMap[name.name].last + contents.calcScore);
-          nameCheckMap[name.name]++;
-          nameCheckMap.forEach((key, value) {
-            if (value < nameCheckMap[name.name] - 1) {
-              scoreMap[key].add(scoreMap[key].last);
-              nameCheckMap[key]++;
-            }
-          });
-        }
+      _processingPersonNotInPreviousGame(contents);
+      _putScoreOfNameWhoMatchContentInArray(contents);
+    }
+    scoreMap.forEach((key, value) {
+      if (value.length < _scoreMapLengthMax) {
+        scoreMap[key].add(scoreMap[key].last);
       }
+    });
+  }
+
+  /// 入力されたcontentsとマッチする名前のスコアを配列に加える
+  void _putScoreOfNameWhoMatchContentInArray(RecordContents contents) {
+    for (final name in tagNameList) {
+      if (name.nameId == contents.nameId) {
+        scoreMap[name.name].add(scoreMap[name.name].last + contents.calcScore);
+        nameCheckMap[name.name]++;
+      }
+    }
+  }
+
+  /// 1つ前のゲームに参加していなかった人の処理
+  void _processingPersonNotInPreviousGame(RecordContents contents) {
+    final List<int> scoreMapLengthList = [];
+    scoreMap.forEach((key, value) {
+      final scoreMapLength = value.length;
+      scoreMapLengthList.add(scoreMapLength);
+    });
+    _scoreMapLengthMax = scoreMapLengthList.reduce(math.max);
+//    最初のレコードの最初の試合以外ならtrue（つまり一番最初）
+    if (nameCheckMap.values.toList()[0] != 0) {
+      nameCheckMap.forEach((key, value) {
+
+        if (value < _scoreMapLengthMax - 2) {
+          print(key);
+          print(value);
+          print(_scoreMapLengthMax);
+          scoreMap[key].add(scoreMap[key].last);
+          nameCheckMap[key]++;
+        }
+      });
+    }
+  }
+
+  /// x軸となるMapを取得
+  void _getXAxis() {
+    final rangeXAxis = range(1, int.parse(scoreMap.keys.toList()[0]));
+    for (final key in scoreMap.keys.toList()) {
+      xAxis[key] = rangeXAxis;
     }
   }
 
@@ -129,11 +196,14 @@ class GraphModel with ChangeNotifier {
     allMappingList = await mappingRepo.getAllMapping();
 
     _getTagRecordList();
+    _sortTagRecordList();
     _getTagMappingList();
     _getTagNameList();
     _getTagRecordContentsList();
+    _sortTagRecordContentsList();
     _initScoreMap();
     _initNameCheckMap();
     _getTagScore();
+//    _getXAxis();
   }
 }
